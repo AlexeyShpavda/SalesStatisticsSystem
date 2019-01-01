@@ -42,6 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\DataTransferObjects\Abstract\DataTransferObject.cs" />
+    <Compile Include="Core\DataTransferObjects\CustomerDto.cs" />
+    <Compile Include="Core\DataTransferObjects\ManagerDto.cs" />
+    <Compile Include="Core\DataTransferObjects\ProductDto.cs" />
+    <Compile Include="Core\DataTransferObjects\SaleDto.cs" />
     <Compile Include="DataAccessLayer\Repositories\IGenericRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
