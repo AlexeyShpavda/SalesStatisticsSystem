@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 
 namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 {
