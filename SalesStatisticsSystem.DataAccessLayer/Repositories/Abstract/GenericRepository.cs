@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using SalesStatisticsSystem.DataAccessLayer.Support;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
