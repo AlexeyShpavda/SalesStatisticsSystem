@@ -46,7 +46,11 @@
     <Compile Include="Core\DataTransferObjects\ManagerDto.cs" />
     <Compile Include="Core\DataTransferObjects\ProductDto.cs" />
     <Compile Include="Core\DataTransferObjects\SaleDto.cs" />
+    <Compile Include="DataAccessLayer\Repositories\ICustomerRepository.cs" />
     <Compile Include="DataAccessLayer\Repositories\IGenericRepository.cs" />
+    <Compile Include="DataAccessLayer\Repositories\IManagerRepository.cs" />
+    <Compile Include="DataAccessLayer\Repositories\IProductRepository.cs" />
+    <Compile Include="DataAccessLayer\Repositories\ISaleRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

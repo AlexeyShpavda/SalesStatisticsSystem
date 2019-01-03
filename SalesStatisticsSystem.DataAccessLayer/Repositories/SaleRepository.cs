@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract;
 using SalesStatisticsSystem.Entity;
 
