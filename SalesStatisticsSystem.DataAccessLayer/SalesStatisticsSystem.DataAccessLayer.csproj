@@ -57,6 +57,10 @@
     <Compile Include="Mapper\AutoMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Abstract\GenericRepository.cs" />
+    <Compile Include="Repositories\CustomerRepository.cs" />
+    <Compile Include="Repositories\ManagerRepository.cs" />
+    <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\SaleRepository.cs" />
     <Compile Include="Support\ExpressionSupport.cs" />
   </ItemGroup>
   <ItemGroup>
