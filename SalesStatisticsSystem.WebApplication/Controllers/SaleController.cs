@@ -1,13 +1,23 @@
-﻿using System.Web.Mvc;
+﻿using System.Threading.Tasks;
+using System.Web.Mvc;
+using SalesStatisticsSystem.Core.Services;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
 {
     public class SaleController : Controller
     {
-        // GET: Sale
-        public ActionResult Index()
+        private readonly SaleService _saleService;
+
+        public SaleController()
         {
-            return View();
+            _saleService = new SaleService();
+        }
+
+        public async Task<ActionResult> Index()
+        {
+            var sales = await _saleService.GetSales();
+
+            return View(sales);
         }
     }
 }
