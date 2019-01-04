@@ -2,6 +2,7 @@
 using System.Threading;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
+using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Entity;
 
