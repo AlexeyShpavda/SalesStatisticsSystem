@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.DataAccessLayer.UnitOfWorks;
@@ -26,9 +27,9 @@ namespace SalesStatisticsSystem.Core.Services
         }
 
 
-        public IEnumerable<SaleDto> GetSales()
+        public async Task<IEnumerable<SaleDto>> GetSalesAsync()
         {
-            return SaleUnitOfWork.GetAll();
+            return await SaleUnitOfWork.GetSalesAsync();
         }
 
         private bool _disposed;

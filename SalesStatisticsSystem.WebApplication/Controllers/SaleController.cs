@@ -15,7 +15,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var sales = await _saleService.GetSales();
+            var sales = await _saleService.GetSalesAsync();
 
             return View(sales);
         }

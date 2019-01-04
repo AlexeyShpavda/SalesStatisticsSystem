@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
@@ -59,9 +60,9 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public IEnumerable<SaleDto> GetAll()
+        public async Task<IEnumerable<SaleDto>> GetSalesAsync()
         {
-            return Sales.GetAll();
+            return await Sales.GetAllAsync();
         }
     }
 }

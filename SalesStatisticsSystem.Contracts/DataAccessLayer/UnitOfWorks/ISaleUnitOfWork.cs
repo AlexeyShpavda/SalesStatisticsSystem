@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 
 namespace SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks
@@ -7,6 +8,6 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks
     {
         void Add(params SaleDto[] models);
 
-        IEnumerable<SaleDto> GetAll();
+        Task<IEnumerable<SaleDto>> GetSalesAsync();
     }
 }

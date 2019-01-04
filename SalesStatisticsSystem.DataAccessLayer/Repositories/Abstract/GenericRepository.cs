@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
@@ -78,9 +79,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             return Mapper.Map<TDto>(DbSet.Find(id));
         }
 
-        public IEnumerable<TDto> GetAll()
+        public async Task<IEnumerable<TDto>> GetAllAsync()
         {
-            return Mapper.Map<IEnumerable<TDto>>(DbSet.AsNoTracking());
+            var result = await DbSet.AsNoTracking().ToListAsync();
+
+            return Mapper.Map<IEnumerable<TDto>>(result);
         }
 
         public IEnumerable<TDto> Find(Expression<Func<TDto, bool>> predicate)
