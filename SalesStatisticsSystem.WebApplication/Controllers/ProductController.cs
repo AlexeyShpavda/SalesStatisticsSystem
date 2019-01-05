@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Core.Services;
 using SalesStatisticsSystem.WebApplication.Models;
 
@@ -41,13 +42,12 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             return View();
         }
 
-        // POST: Product/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ProductViewModel product)
         {
             try
             {
-                // TODO: Add insert logic here
+                _productService.Add(_mapper.Map<ProductDto>(product));
 
                 return RedirectToAction("Index");
             }

@@ -32,6 +32,11 @@ namespace SalesStatisticsSystem.Core.Services
             return await ProductUnitOfWork.GetAsync();
         }
 
+        public void Add(params ProductDto[] models)
+        {
+            ProductUnitOfWork.Add(models);
+        }
+
         private bool _disposed;
 
         protected virtual void Dispose(bool disposing)
