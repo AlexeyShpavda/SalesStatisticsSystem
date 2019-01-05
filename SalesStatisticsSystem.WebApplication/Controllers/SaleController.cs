@@ -22,9 +22,9 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var sales = await _saleService.GetSalesAsync();
+            var salesDto = await _saleService.GetSalesAsync();
 
-            var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(sales);
+            var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
 
             return View(salesViewModels);
         }
