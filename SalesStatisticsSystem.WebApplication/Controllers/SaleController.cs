@@ -26,7 +26,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
             var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(sales);
 
-            return View(sales);
+            return View(salesViewModels);
         }
     }
 }
