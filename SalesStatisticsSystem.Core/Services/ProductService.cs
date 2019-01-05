@@ -9,27 +9,27 @@ using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.Core.Services
 {
-    public class SaleService : IDisposable
+    public class ProductService
     {
         private SalesInformationEntities Context { get; }
 
         private ReaderWriterLockSlim Locker { get; }
 
-        private ISaleUnitOfWork SaleUnitOfWork { get; }
+        private IProductUnitOfWork ProductUnitOfWork { get; }
 
-        public SaleService()
+        public ProductService()
         {
             Context = new SalesInformationEntities();
 
             Locker = new ReaderWriterLockSlim();
 
-            SaleUnitOfWork = new SaleUnitOfWork(Context, Locker);
+            ProductUnitOfWork = new ProductUnitOfWork(Context, Locker);
         }
 
 
-        public async Task<IEnumerable<SaleDto>> GetSalesAsync()
+        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
         {
-            return await SaleUnitOfWork.GetAsync();
+            return await ProductUnitOfWork.GetAsync();
         }
 
         private bool _disposed;

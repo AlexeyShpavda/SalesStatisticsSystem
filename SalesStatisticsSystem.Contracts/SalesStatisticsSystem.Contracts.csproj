@@ -51,6 +51,8 @@
     <Compile Include="DataAccessLayer\Repositories\IManagerRepository.cs" />
     <Compile Include="DataAccessLayer\Repositories\IProductRepository.cs" />
     <Compile Include="DataAccessLayer\Repositories\ISaleRepository.cs" />
+    <Compile Include="DataAccessLayer\UnitOfWorks\IGenericUnitOfWork.cs" />
+    <Compile Include="DataAccessLayer\UnitOfWorks\IProductUnitOfWork.cs" />
     <Compile Include="DataAccessLayer\UnitOfWorks\ISaleUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

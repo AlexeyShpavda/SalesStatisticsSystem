@@ -60,7 +60,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public async Task<IEnumerable<SaleDto>> GetSalesAsync()
+        public async Task<IEnumerable<SaleDto>> GetAsync()
         {
             return await Sales.GetAllAsync();
         }
