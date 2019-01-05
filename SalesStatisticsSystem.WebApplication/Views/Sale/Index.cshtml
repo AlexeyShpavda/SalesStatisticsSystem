@@ -18,13 +18,13 @@
             @Html.DisplayNameFor(model => model.Sum)
         </th>
         <th>
-            @Html.DisplayNameFor(model=>model.CustomerViewModel)
+            @Html.DisplayNameFor(model=>model.Customer)
         </th>
         <th>
-            @Html.DisplayNameFor(model=>model.ProductViewModel)
+            @Html.DisplayNameFor(model=>model.Product)
         </th>
         <th>
-            @Html.DisplayNameFor(model=>model.ManagerViewModel)
+            @Html.DisplayNameFor(model=>model.Manager)
         </th>
     </tr>
 
@@ -36,9 +36,16 @@
         <td>
             @Html.DisplayFor(modelItem => item.Sum)
         </td>
-        @*<td>
-            @Html.DisplayFor(model=>model.)
-        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.FirstName)
+            @Html.DisplayFor(modelItem => item.Customer.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Manager.LastName)
+        </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Details", "Details", new { id=item.Id }) |

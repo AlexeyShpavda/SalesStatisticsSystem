@@ -8,12 +8,12 @@ namespace SalesStatisticsSystem.WebApplication.Models
 
         public DateTime Date { get; set; }
 
-        public CustomerViewModel CustomerViewModel { get; set; }
+        public CustomerViewModel Customer { get; set; }
 
-        public ProductViewModel ProductViewModel { get; set; }
+        public ProductViewModel Product { get; set; }
 
         public double Sum { get; set; }
 
-        public ManagerViewModel ManagerViewModel { get; set; }
+        public ManagerViewModel Manager { get; set; }
     }
 }
