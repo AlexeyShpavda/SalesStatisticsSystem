@@ -29,5 +29,19 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
             return View(salesViewModels);
         }
+
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                _saleService.Delete(id);
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

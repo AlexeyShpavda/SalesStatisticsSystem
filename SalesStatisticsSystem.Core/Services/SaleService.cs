@@ -32,6 +32,32 @@ namespace SalesStatisticsSystem.Core.Services
             return await SaleUnitOfWork.GetAllAsync();
         }
 
+        // TODO: Make async
+        public SaleDto GetAsync(int id)
+        {
+            return SaleUnitOfWork.GetAsync(id);
+        }
+
+        public void Add(params SaleDto[] models)
+        {
+            SaleUnitOfWork.Add(models);
+        }
+
+        public void Update(params SaleDto[] models)
+        {
+            SaleUnitOfWork.Update(models);
+        }
+
+        public void Delete(params SaleDto[] models)
+        {
+            SaleUnitOfWork.Delete(models);
+        }
+
+        public void Delete(int id)
+        {
+            SaleUnitOfWork.Delete(id);
+        }
+
         private bool _disposed;
 
         protected virtual void Dispose(bool disposing)
