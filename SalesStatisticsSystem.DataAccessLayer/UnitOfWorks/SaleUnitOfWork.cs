@@ -60,9 +60,43 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public async Task<IEnumerable<SaleDto>> GetAsync()
+        public void Update(params SaleDto[] sales)
+        {
+            Locker.EnterWriteLock();
+            try
+            {
+                foreach (var sale in sales)
+                {
+                    Customers.Update(sale.Customer);
+                    Customers.Save();
+                    sale.Customer.Id = Customers.GetId(sale.Customer.FirstName, sale.Customer.LastName);
+
+                    Managers.Update(sale.Manager);
+                    Managers.Save();
+                    sale.Manager.Id = Managers.GetId(sale.Manager.LastName);
+
+                    Products.Update(sale.Product);
+                    Products.Save();
+                    sale.Product.Id = Products.GetId(sale.Product.Name);
+
+                    Sales.Update(sale);
+                    Sales.Save();
+                }
+            }
+            finally
+            {
+                Locker.ExitWriteLock();
+            }
+        }
+
+        public async Task<IEnumerable<SaleDto>> GetAllAsync()
         {
             return await Sales.GetAllAsync();
+        }
+
+        public SaleDto GetAsync(int id)
+        {
+            return Sales.Get(id);
         }
     }
 }

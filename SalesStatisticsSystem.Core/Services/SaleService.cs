@@ -29,7 +29,7 @@ namespace SalesStatisticsSystem.Core.Services
 
         public async Task<IEnumerable<SaleDto>> GetSalesAsync()
         {
-            return await SaleUnitOfWork.GetAsync();
+            return await SaleUnitOfWork.GetAllAsync();
         }
 
         private bool _disposed;

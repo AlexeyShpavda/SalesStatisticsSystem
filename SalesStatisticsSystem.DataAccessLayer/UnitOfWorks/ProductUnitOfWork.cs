@@ -43,14 +43,31 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
+        public void Update(params ProductDto[] products)
+        {
+            Locker.EnterWriteLock();
+            try
+            {
+                foreach (var product in products)
+                {
+                    Products.Update(product);
+                    Products.Save();
+                }
+            }
+            finally
+            {
+                Locker.ExitWriteLock();
+            }
+        }
+
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             return await Products.GetAllAsync();
         }
 
-        public async Task<ProductDto> GetAsync(int id)
+        public ProductDto GetAsync(int id)
         {
-            return await Products.Get(id);
+            return Products.Get(id);
         }
     }
 }

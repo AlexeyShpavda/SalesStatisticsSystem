@@ -74,15 +74,20 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             }
         }
 
-        public async Task<TDto> Get(int id)
+        public TDto Get(int id)
         {
-            Expression<Func<TDto, bool>> predicate = x => x.Id == id;
+            // TODO: Working with nullable types in Expression Trees
 
-            var newPredicate = predicate.Project<TDto, TEntity>();
+            //Expression<Func<TDto, bool>> predicate = x => x.Id.Value == id;
 
-            var result = await DbSet.FirstOrDefaultAsync(newPredicate);
+            //var newPredicate = predicate.Project<TDto, TEntity>();
 
-            return Mapper.Map<TDto>(result);
+            //var result = await DbSet.FirstOrDefaultAsync(newPredicate);
+
+            //return Mapper.Map<TDto>(result);
+
+
+            return Mapper.Map<TDto>(DbSet.Find(id));
         }
 
         public async Task<IEnumerable<TDto>> GetAllAsync()

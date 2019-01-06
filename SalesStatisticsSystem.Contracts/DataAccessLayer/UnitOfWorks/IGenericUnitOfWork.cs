@@ -8,8 +8,10 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks
     {
         void Add(params TDto[] models);
 
+        void Update(params TDto[] models);
+
         Task<IEnumerable<TDto>> GetAllAsync();
 
-        Task<TDto> GetAsync(int id);
+        TDto GetAsync(int id);
     }
 }

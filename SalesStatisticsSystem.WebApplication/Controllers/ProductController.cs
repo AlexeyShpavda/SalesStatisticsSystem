@@ -36,7 +36,6 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             return View();
         }
 
-        // GET: Product/Create
         public ActionResult Create()
         {
             return View();
@@ -57,21 +56,21 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
-        // GET: Product/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public ActionResult Edit(int id)
         {
-            var product = await _productService.GetProductAsync(id);
+            var productDto = _productService.GetProductAsync(id);
 
-            return View();
+            var productViewModel = _mapper.Map<ProductViewModel>(productDto);
+
+            return View(productViewModel);
         }
 
-        // POST: Product/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ProductViewModel product)
         {
             try
             {
-                // TODO: Add update logic here
+                _productService.Update(_mapper.Map<ProductDto>(product));
 
                 return RedirectToAction("Index");
             }

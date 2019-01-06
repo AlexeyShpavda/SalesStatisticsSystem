@@ -32,14 +32,19 @@ namespace SalesStatisticsSystem.Core.Services
             return await ProductUnitOfWork.GetAllAsync();
         }
 
-        public async Task<ProductDto> GetProductAsync(int id)
+        public ProductDto GetProductAsync(int id)
         {
-            return await ProductUnitOfWork.GetAsync(id);
+            return ProductUnitOfWork.GetAsync(id);
         }
 
         public void Add(params ProductDto[] models)
         {
             ProductUnitOfWork.Add(models);
+        }
+
+        public void Update(params ProductDto[] models)
+        {
+            ProductUnitOfWork.Update(models);
         }
 
         private bool _disposed;
