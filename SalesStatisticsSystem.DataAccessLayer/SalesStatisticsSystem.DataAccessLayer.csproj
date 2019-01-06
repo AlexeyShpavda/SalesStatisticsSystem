@@ -62,6 +62,8 @@
     <Compile Include="Repositories\SaleRepository.cs" />
     <Compile Include="Support\AutoMapper.cs" />
     <Compile Include="Support\ExpressionSupport.cs" />
+    <Compile Include="UnitOfWorks\CustomerUnitOfWork.cs" />
+    <Compile Include="UnitOfWorks\ManagerUnitOfWork.cs" />
     <Compile Include="UnitOfWorks\ProductUnitOfWork.cs" />
     <Compile Include="UnitOfWorks\SaleUnitOfWork.cs" />
   </ItemGroup>

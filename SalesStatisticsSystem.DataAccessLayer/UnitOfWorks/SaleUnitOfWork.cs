@@ -31,6 +31,16 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Sales = new SaleRepository(Context, mapper);
         }
 
+        public async Task<IEnumerable<SaleDto>> GetAllAsync()
+        {
+            return await Sales.GetAllAsync();
+        }
+
+        public SaleDto GetAsync(int id)
+        {
+            return Sales.Get(id);
+        }
+
         public void Add(params SaleDto[] sales)
         {
             Locker.EnterWriteLock();
@@ -118,16 +128,6 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             {
                 Locker.ExitReadLock();
             }
-        }
-
-        public async Task<IEnumerable<SaleDto>> GetAllAsync()
-        {
-            return await Sales.GetAllAsync();
-        }
-
-        public SaleDto GetAsync(int id)
-        {
-            return Sales.Get(id);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
+using SalesStatisticsSystem.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.Core.Services

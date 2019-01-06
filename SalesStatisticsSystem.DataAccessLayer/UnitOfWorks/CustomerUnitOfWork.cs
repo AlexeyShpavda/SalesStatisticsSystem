@@ -9,15 +9,15 @@ using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 {
-    public class ProductUnitOfWork : IProductUnitOfWork
+    public class CustomerUnitOfWork : ICustomerUnitOfWork
     {
         private SalesInformationEntities Context { get; }
 
         private ReaderWriterLockSlim Locker { get; }
 
-        private IProductRepository Products { get; }
+        private ICustomerRepository Customers { get; }
 
-        public ProductUnitOfWork(SalesInformationEntities context, ReaderWriterLockSlim locker)
+        public CustomerUnitOfWork(SalesInformationEntities context, ReaderWriterLockSlim locker)
         {
             Context = context;
 
@@ -25,28 +25,28 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 
             var mapper = Support.AutoMapper.CreateConfiguration().CreateMapper();
 
-            Products = new ProductRepository(Context, mapper);
+            Customers = new CustomerRepository(Context, mapper);
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllAsync()
+        public async Task<IEnumerable<CustomerDto>> GetAllAsync()
         {
-            return await Products.GetAllAsync();
+            return await Customers.GetAllAsync();
         }
 
-        public ProductDto GetAsync(int id)
+        public CustomerDto GetAsync(int id)
         {
-            return Products.Get(id);
+            return Customers.Get(id);
         }
 
-        public void Add(params ProductDto[] products)
+        public void Add(params CustomerDto[] products)
         {
             Locker.EnterWriteLock();
             try
             {
                 foreach (var product in products)
                 {
-                    Products.AddUniqueProductToDatabase(product);
-                    Products.Save();
+                    Customers.AddUniqueCustomerToDatabase(product);
+                    Customers.Save();
                 }
             }
             finally
@@ -55,15 +55,15 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Update(params ProductDto[] products)
+        public void Update(params CustomerDto[] products)
         {
             Locker.EnterWriteLock();
             try
             {
                 foreach (var product in products)
                 {
-                    Products.Update(product);
-                    Products.Save();
+                    Customers.Update(product);
+                    Customers.Save();
                 }
             }
             finally
@@ -72,15 +72,15 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Delete(params ProductDto[] products)
+        public void Delete(params CustomerDto[] products)
         {
             Locker.EnterReadLock();
             try
             {
                 foreach (var product in products)
                 {
-                    Products.Remove(product);
-                    Products.Save();
+                    Customers.Remove(product);
+                    Customers.Save();
                 }
             }
             finally
@@ -94,8 +94,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterReadLock();
             try
             {
-                Products.Remove(id);
-                Products.Save();
+                Customers.Remove(id);
+                Customers.Save();
             }
             finally
             {
