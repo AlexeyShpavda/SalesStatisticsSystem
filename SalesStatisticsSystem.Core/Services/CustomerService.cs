@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.Core.Services
@@ -34,7 +35,7 @@ namespace SalesStatisticsSystem.Core.Services
         // TODO: Make async
         public CustomerDto GetAsync(int id)
         {
-            return CustomertUnitOfWork.GetAsync(id);
+            return CustomerUnitOfWork.GetAsync(id);
         }
 
         public void Add(params CustomerDto[] models)
