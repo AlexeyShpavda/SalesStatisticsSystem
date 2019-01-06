@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Core.Services;
 using SalesStatisticsSystem.WebApplication.Models;
 
@@ -9,7 +10,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 {
     public class SaleController : Controller
     {
-        private readonly SaleService _saleService;
+        private readonly ISaleService _saleService;
 
         private readonly IMapper _mapper;
 

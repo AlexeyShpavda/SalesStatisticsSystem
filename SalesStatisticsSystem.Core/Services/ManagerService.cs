@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.Core.Services
 {
-    public class ManagerService : IDisposable
+    public class ManagerService : IManagerService, IDisposable
     {
         private SalesInformationEntities Context { get; }
 
@@ -26,12 +27,10 @@ namespace SalesStatisticsSystem.Core.Services
             ManagerUnitOfWork = new ManagerUnitOfWork(Context, Locker);
         }
 
-
         public async Task<IEnumerable<ManagerDto>> GetAllAsync()
         {
             return await ManagerUnitOfWork.GetAllAsync();
         }
-
 
         // TODO: Make async
         public ManagerDto GetAsync(int id)

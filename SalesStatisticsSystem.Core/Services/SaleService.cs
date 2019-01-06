@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.Core.Services
 {
-    public class SaleService : IDisposable
+    public class SaleService : ISaleService, IDisposable
     {
         private SalesInformationEntities Context { get; }
 
@@ -25,7 +26,6 @@ namespace SalesStatisticsSystem.Core.Services
 
             SaleUnitOfWork = new SaleUnitOfWork(Context, Locker);
         }
-
 
         public async Task<IEnumerable<SaleDto>> GetAllAsync()
         {

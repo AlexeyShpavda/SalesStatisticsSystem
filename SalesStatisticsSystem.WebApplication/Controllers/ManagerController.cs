@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Core.Services;
 using SalesStatisticsSystem.WebApplication.Models;
 
@@ -10,7 +11,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 {
     public class ManagerController : Controller
     {
-        private readonly ManagerService _managerService;
+        private readonly IManagerService _managerService;
 
         private readonly IMapper _mapper;
 
