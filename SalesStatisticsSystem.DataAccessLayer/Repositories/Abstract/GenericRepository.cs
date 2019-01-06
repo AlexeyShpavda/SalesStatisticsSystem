@@ -74,9 +74,15 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             }
         }
 
-        public TDto Get(int id)
+        public async Task<TDto> Get(int id)
         {
-            return Mapper.Map<TDto>(DbSet.Find(id));
+            Expression<Func<TDto, bool>> predicate = x => x.Id == id;
+
+            var newPredicate = predicate.Project<TDto, TEntity>();
+
+            var result = await DbSet.FirstOrDefaultAsync(newPredicate);
+
+            return Mapper.Map<TDto>(result);
         }
 
         public async Task<IEnumerable<TDto>> GetAllAsync()

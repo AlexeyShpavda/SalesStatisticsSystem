@@ -58,8 +58,10 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         // GET: Product/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
+            var product = await _productService.GetProductAsync(id);
+
             return View();
         }
 

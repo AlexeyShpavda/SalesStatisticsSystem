@@ -29,7 +29,12 @@ namespace SalesStatisticsSystem.Core.Services
 
         public async Task<IEnumerable<ProductDto>> GetProductsAsync()
         {
-            return await ProductUnitOfWork.GetAsync();
+            return await ProductUnitOfWork.GetAllAsync();
+        }
+
+        public async Task<ProductDto> GetProductAsync(int id)
+        {
+            return await ProductUnitOfWork.GetAsync(id);
         }
 
         public void Add(params ProductDto[] models)

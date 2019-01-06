@@ -43,9 +43,14 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             return await Products.GetAllAsync();
+        }
+
+        public async Task<ProductDto> GetAsync(int id)
+        {
+            return await Products.Get(id);
         }
     }
 }
