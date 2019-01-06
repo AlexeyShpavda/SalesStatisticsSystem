@@ -1,6 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Core.Services;
+using SalesStatisticsSystem.WebApplication.Models;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
 {
@@ -17,13 +21,19 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _customerService = new CustomerService();
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var customersDto = await _customerService.GetAllAsync();
+
+            var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
+
+            return View(customersViewModels);
         }
 
         public ActionResult Details(int id)
         {
+            // TODO: Make additional fields (Address, Email, Phone number)
+
             return View();
         }
 
@@ -33,11 +43,11 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(CustomerViewModel customer)
         {
             try
             {
-                // TODO: Add insert logic here
+                _customerService.Add(_mapper.Map<CustomerDto>(customer));
 
                 return RedirectToAction("Index");
             }
@@ -49,15 +59,19 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View();
+            var customerDto = _customerService.GetAsync(id);
+
+            var customerViewModel = _mapper.Map<CustomerViewModel>(customerDto);
+
+            return View(customerViewModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(CustomerViewModel customer)
         {
             try
             {
-                // TODO: Add update logic here
+                _customerService.Update(_mapper.Map<CustomerDto>(customer));
 
                 return RedirectToAction("Index");
             }
@@ -71,9 +85,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             try
             {
-                // TODO: make delete by id
-
-                Delete(id);
+                _customerService.Delete(id);
 
                 return RedirectToAction("Index");
             }
