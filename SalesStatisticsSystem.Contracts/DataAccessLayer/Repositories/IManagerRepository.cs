@@ -7,5 +7,7 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
         void AddUniqueManagerToDatabase(ManagerDto managerDto);
 
         int? GetId(string managerLastName);
+
+        bool DoesManagerExist(ManagerDto managerDto);
     }
 }

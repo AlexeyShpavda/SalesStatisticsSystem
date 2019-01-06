@@ -7,5 +7,7 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
         void AddUniqueCustomerToDatabase(CustomerDto customerDto);
 
         int? GetId(string customerFirstName, string customerLastName);
+
+        bool DoesCustomerExist(CustomerDto customerDto);
     }
 }

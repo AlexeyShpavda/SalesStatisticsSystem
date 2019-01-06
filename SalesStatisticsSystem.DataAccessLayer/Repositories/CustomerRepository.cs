@@ -17,10 +17,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 
         public void AddUniqueCustomerToDatabase(CustomerDto customerDto)
         {
-            Expression<Func<CustomerDto, bool>> predicate = x =>
-                x.LastName == customerDto.LastName && x.FirstName == customerDto.FirstName;
-
-            if (Find(predicate).Any()) return;
+            if (DoesCustomerExist(customerDto)) return;
 
             Add(customerDto);
         }
@@ -31,6 +28,14 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
                 x.FirstName == customerFirstName && x.LastName == customerLastName;
 
             return Find(predicate).First().Id;
+        }
+
+        public bool DoesCustomerExist(CustomerDto customerDto)
+        {
+            Expression<Func<CustomerDto, bool>> predicate = x =>
+                x.LastName == customerDto.LastName && x.FirstName == customerDto.FirstName;
+
+            return Find(predicate).Any();
         }
     }
 }

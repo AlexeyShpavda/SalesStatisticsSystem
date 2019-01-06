@@ -17,9 +17,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 
         public void AddUniqueProductToDatabase(ProductDto productDto)
         {
-            Expression<Func<ProductDto, bool>> predicate = x => x.Name == productDto.Name;
-
-            if (Find(predicate).Any()) return;
+            if (DoesProductExist(productDto)) return;
 
             Add(productDto);
         }
@@ -29,6 +27,13 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
             Expression<Func<ProductDto, bool>> predicate = x => x.Name == productName;
 
             return Find(predicate).First().Id;
+        }
+
+        public bool DoesProductExist(ProductDto productDto)
+        {
+            Expression<Func<ProductDto, bool>> predicate = x => x.Name == productDto.Name;
+
+            return Find(predicate).Any();
         }
     }
 }

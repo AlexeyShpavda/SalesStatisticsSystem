@@ -17,9 +17,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 
         public void AddUniqueManagerToDatabase(ManagerDto managerDto)
         {
-            Expression<Func<ManagerDto, bool>> predicate = x => x.LastName == managerDto.LastName;
-
-            if (Find(predicate).Any()) return;
+            if (DoesManagerExist(managerDto)) return;
 
             Add(managerDto);
         }
@@ -29,6 +27,13 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
             Expression<Func<ManagerDto, bool>> predicate = x => x.LastName == managerLastName;
 
             return Find(predicate).First().Id;
+        }
+
+        public bool DoesManagerExist(ManagerDto managerDto)
+        {
+            Expression<Func<ManagerDto, bool>> predicate = x => x.LastName == managerDto.LastName;
+
+            return Find(predicate).Any();
         }
     }
 }
