@@ -83,8 +83,8 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public ActionResult Delete(int id)
         {
-            //try
-            //{
+            try
+            {
                 // TODO: make delete by id
 
                 //var productDto = _productService.GetProductAsync(id);
@@ -96,11 +96,11 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                 _productService.Delete(id);
 
                 return RedirectToAction("Index");
-            //}
-            //catch
-            //{
-            //    return View("Index");
-            //}
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
         }
     }
 }

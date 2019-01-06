@@ -60,6 +60,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
 
         public void Remove(params TDto[] models)
         {
+            // TODO: Id vs entity
             foreach (var model in models)
             {
                 var entity = DtoToEntity(model);

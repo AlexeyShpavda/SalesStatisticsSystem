@@ -3,33 +3,58 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
-using SalesStatisticsSystem.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.Core.Services
 {
-    public class SaleService : IDisposable
+    public class CustomerService : IDisposable
     {
         private SalesInformationEntities Context { get; }
 
         private ReaderWriterLockSlim Locker { get; }
 
-        private ISaleUnitOfWork SaleUnitOfWork { get; }
+        private ICustomerUnitOfWork CustomerUnitOfWork { get; }
 
-        public SaleService()
+        public CustomerService()
         {
             Context = new SalesInformationEntities();
 
             Locker = new ReaderWriterLockSlim();
 
-            SaleUnitOfWork = new SaleUnitOfWork(Context, Locker);
+            CustomerUnitOfWork = new CustomerUnitOfWork(Context, Locker);
         }
 
 
-        public async Task<IEnumerable<SaleDto>> GetAllAsync()
+        public async Task<IEnumerable<CustomerDto>> GetAllAsync()
         {
-            return await SaleUnitOfWork.GetAllAsync();
+            return await CustomerUnitOfWork.GetAllAsync();
+        }
+
+
+        // TODO: Make async
+        public CustomerDto GetAsync(int id)
+        {
+            return CustomertUnitOfWork.GetAsync(id);
+        }
+
+        public void Add(params CustomerDto[] models)
+        {
+            CustomerUnitOfWork.Add(models);
+        }
+
+        public void Update(params CustomerDto[] models)
+        {
+            CustomerUnitOfWork.Update(models);
+        }
+
+        public void Delete(params CustomerDto[] models)
+        {
+            CustomerUnitOfWork.Delete(models);
+        }
+
+        public void Delete(int id)
+        {
+            CustomerUnitOfWork.Delete(id);
         }
 
         private bool _disposed;

@@ -3,33 +3,58 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
-using SalesStatisticsSystem.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.Core.Services
 {
-    public class SaleService : IDisposable
+    public class ManagerService : IDisposable
     {
         private SalesInformationEntities Context { get; }
 
         private ReaderWriterLockSlim Locker { get; }
 
-        private ISaleUnitOfWork SaleUnitOfWork { get; }
+        private IManagerUnitOfWork ManagerUnitOfWork { get; }
 
-        public SaleService()
+        public ManagerService()
         {
             Context = new SalesInformationEntities();
 
             Locker = new ReaderWriterLockSlim();
 
-            SaleUnitOfWork = new SaleUnitOfWork(Context, Locker);
+            ManagerUnitOfWork = new ManagerUnitOfWork(Context, Locker);
         }
 
 
-        public async Task<IEnumerable<SaleDto>> GetAllAsync()
+        public async Task<IEnumerable<ManagerDto>> GetAllAsync()
         {
-            return await SaleUnitOfWork.GetAllAsync();
+            return await ManagerUnitOfWork.GetAllAsync();
+        }
+
+
+        // TODO: Make async
+        public ManagerDto GetAsync(int id)
+        {
+            return ManagerUnitOfWork.GetAsync(id);
+        }
+
+        public void Add(params ManagerDto[] models)
+        {
+            ManagerUnitOfWork.Add(models);
+        }
+
+        public void Update(params ManagerDto[] models)
+        {
+            ManagerUnitOfWork.Update(models);
+        }
+
+        public void Delete(params ManagerDto[] models)
+        {
+            ManagerUnitOfWork.Delete(models);
+        }
+
+        public void Delete(int id)
+        {
+            ManagerUnitOfWork.Delete(id);
         }
 
         private bool _disposed;

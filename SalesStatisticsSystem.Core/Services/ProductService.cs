@@ -9,7 +9,7 @@ using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.Core.Services
 {
-    public class ProductService
+    public class ProductService : IDisposable
     {
         private SalesInformationEntities Context { get; }
 
@@ -27,12 +27,14 @@ namespace SalesStatisticsSystem.Core.Services
         }
 
 
-        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             return await ProductUnitOfWork.GetAllAsync();
         }
 
-        public ProductDto GetProductAsync(int id)
+
+        // TODO: Make async
+        public ProductDto GetAsync(int id)
         {
             return ProductUnitOfWork.GetAsync(id);
         }
