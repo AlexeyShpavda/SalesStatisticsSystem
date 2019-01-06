@@ -1,6 +1,10 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Core.Services;
+using SalesStatisticsSystem.WebApplication.Models;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
 {
@@ -17,13 +21,19 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _managerService = new ManagerService();
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var managersDto = await _managerService.GetAllAsync();
+
+            var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
+
+            return View(managersViewModels);
         }
 
         public ActionResult Details(int id)
         {
+            // TODO: Make additional fields (Email, Phone number)
+
             return View();
         }
 
@@ -33,11 +43,11 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ManagerViewModel manager)
         {
             try
             {
-                // TODO: Add insert logic here
+                _managerService.Add(_mapper.Map<ManagerDto>(manager));
 
                 return RedirectToAction("Index");
             }
@@ -49,15 +59,19 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View();
+            var managerDto = _managerService.GetAsync(id);
+
+            var managerViewModel = _mapper.Map<ManagerViewModel>(managerDto);
+
+            return View(managerViewModel);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ManagerViewModel manager)
         {
             try
             {
-                // TODO: Add update logic here
+                _managerService.Update(_mapper.Map<ManagerDto>(manager));
 
                 return RedirectToAction("Index");
             }
@@ -71,9 +85,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             try
             {
-                // TODO: make delete by id
-
-                Delete(id);
+                _managerService.Delete(id);
 
                 return RedirectToAction("Index");
             }
