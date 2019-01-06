@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -48,17 +49,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             {
                 foreach (var sale in sales)
                 {
-                    Customers.AddUniqueCustomerToDatabase(sale.Customer);
-                    Customers.Save();
-                    sale.Customer.Id = Customers.GetId(sale.Customer.FirstName, sale.Customer.LastName);
-
-                    Managers.AddUniqueManagerToDatabase(sale.Manager);
-                    Managers.Save();
-                    sale.Manager.Id = Managers.GetId(sale.Manager.LastName);
-
-                    Products.AddUniqueProductToDatabase(sale.Product);
-                    Products.Save();
-                    sale.Product.Id = Products.GetId(sale.Product.Name);
+                    FindOutIds(sale);
 
                     Sales.Add(sale);
                     Sales.Save();
@@ -77,17 +68,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             {
                 foreach (var sale in sales)
                 {
-                    Customers.Update(sale.Customer);
-                    Customers.Save();
-                    sale.Customer.Id = Customers.GetId(sale.Customer.FirstName, sale.Customer.LastName);
-
-                    Managers.Update(sale.Manager);
-                    Managers.Save();
-                    sale.Manager.Id = Managers.GetId(sale.Manager.LastName);
-
-                    Products.Update(sale.Product);
-                    Products.Save();
-                    sale.Product.Id = Products.GetId(sale.Product.Name);
+                    FindOutIds(sale);
 
                     Sales.Update(sale);
                     Sales.Save();
@@ -127,6 +108,36 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             finally
             {
                 Locker.ExitReadLock();
+            }
+        }
+
+        private void FindOutIds(SaleDto sale)
+        {
+            if (Customers.DoesCustomerExist(sale.Customer))
+            {
+                sale.Customer.Id = Customers.GetId(sale.Customer.FirstName, sale.Customer.LastName);
+            }
+            else
+            {
+                throw new ArgumentException("There is no such Customer. Register it!");
+            }
+
+            if (Managers.DoesManagerExist(sale.Manager))
+            {
+                sale.Manager.Id = Managers.GetId(sale.Manager.LastName);
+            }
+            else
+            {
+                throw new ArgumentException("There is no such Manager. Register it!");
+            }
+
+            if (Products.DoesProductExist(sale.Product))
+            {
+                sale.Product.Id = Products.GetId(sale.Product.Name);
+            }
+            else
+            {
+                throw new ArgumentException("There is no such Product. Register it!");
             }
         }
     }
