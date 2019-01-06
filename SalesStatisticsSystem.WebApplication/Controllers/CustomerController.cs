@@ -1,9 +1,22 @@
 ﻿using System.Web.Mvc;
+using AutoMapper;
+using SalesStatisticsSystem.Core.Services;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
 {
     public class CustomerController : Controller
     {
+        private readonly CustomerService _customerService;
+
+        private readonly IMapper _mapper;
+
+        public CustomerController()
+        {
+            _mapper = Support.AutoMapper.CreateConfiguration().CreateMapper();
+
+            _customerService = new CustomerService();
+        }
+
         public ActionResult Index()
         {
             return View();

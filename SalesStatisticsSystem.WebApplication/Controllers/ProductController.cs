@@ -23,7 +23,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var productsDto = await _productService.GetProductsAsync();
+            var productsDto = await _productService.GetAllAsync();
 
             var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
 
@@ -59,7 +59,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public ActionResult Edit(int id)
         {
-            var productDto = _productService.GetProductAsync(id);
+            var productDto = _productService.GetAsync(id);
 
             var productViewModel = _mapper.Map<ProductViewModel>(productDto);
 
