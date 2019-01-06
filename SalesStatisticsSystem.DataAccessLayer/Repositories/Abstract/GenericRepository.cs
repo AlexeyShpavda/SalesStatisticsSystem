@@ -119,7 +119,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
 
         public void Save()
         {
-            Context.SaveChanges();
+            Context.SaveChangesAsync();
         }
     }
 }

@@ -52,6 +52,30 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
+        public ActionResult Edit(int id)
+        {
+            var saleDto = _saleService.GetAsync(id);
+
+            var saleViewModel = _mapper.Map<SaleViewModel>(saleDto);
+
+            return View(saleViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(SaleViewModel sale)
+        {
+            try
+            {
+                _saleService.Update(_mapper.Map<SaleDto>(sale));
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         public ActionResult Delete(int id)
         {
             try
