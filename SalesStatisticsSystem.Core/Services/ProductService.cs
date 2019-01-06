@@ -47,6 +47,16 @@ namespace SalesStatisticsSystem.Core.Services
             ProductUnitOfWork.Update(models);
         }
 
+        public void Delete(params ProductDto[] models)
+        {
+            ProductUnitOfWork.Delete(models);
+        }
+
+        public void Delete(int id)
+        {
+            ProductUnitOfWork.Delete(id);
+        }
+
         private bool _disposed;
 
         protected virtual void Dispose(bool disposing)

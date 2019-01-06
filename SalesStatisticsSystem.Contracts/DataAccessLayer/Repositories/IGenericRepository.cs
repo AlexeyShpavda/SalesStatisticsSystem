@@ -14,6 +14,8 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 
         void Remove(params TDto[] entities);
 
+        void Remove(int id);
+
         TDto Get(int id);
 
         Task<IEnumerable<TDto>> GetAllAsync();

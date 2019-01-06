@@ -60,6 +60,37 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
+        public void Delete(params ProductDto[] products)
+        {
+            Locker.EnterReadLock();
+            try
+            {
+                foreach (var product in products)
+                {
+                    Products.Remove(product);
+                    Products.Save();
+                }
+            }
+            finally
+            {
+                Locker.ExitReadLock();
+            }
+        }
+
+        public void Delete(int id)
+        {
+            Locker.EnterReadLock();
+            try
+            {
+                Products.Remove(id);
+                Products.Save();
+            }
+            finally
+            {
+                Locker.ExitReadLock();
+            }
+        }
+
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             return await Products.GetAllAsync();

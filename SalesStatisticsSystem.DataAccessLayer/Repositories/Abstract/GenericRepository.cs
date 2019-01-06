@@ -64,7 +64,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             {
                 var entity = DtoToEntity(model);
 
-                if (Context.Entry(entity).State == EntityState.Detached)
+                if (Context.Entry(entity).State == EntityState.Detached || Context.Entry(entity).State == EntityState.Modified)
                 {
                     DbSet.Attach(entity);
                 }
@@ -72,6 +72,19 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
                 DbSet.Remove(entity);
                 Context.Entry(entity).State = EntityState.Deleted;
             }
+        }
+
+        public void Remove(int id)
+        {
+            var entity = DbSet.Find(id);
+
+            if (Context.Entry(entity).State == EntityState.Detached || Context.Entry(entity).State == EntityState.Modified)
+            {
+                DbSet.Attach(entity);
+            }
+
+           DbSet.Remove(entity);
+           Context.Entry(entity).State = EntityState.Deleted;
         }
 
         public TDto Get(int id)
@@ -85,7 +98,6 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             //var result = await DbSet.FirstOrDefaultAsync(newPredicate);
 
             //return Mapper.Map<TDto>(result);
-
 
             return Mapper.Map<TDto>(DbSet.Find(id));
         }

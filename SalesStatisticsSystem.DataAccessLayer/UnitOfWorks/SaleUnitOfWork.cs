@@ -89,6 +89,37 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
+        public void Delete(params SaleDto[] sales)
+        {
+            Locker.EnterReadLock();
+            try
+            {
+                foreach (var sale in sales)
+                {
+                    Sales.Remove(sale);
+                    Sales.Save();
+                }
+            }
+            finally
+            {
+                Locker.ExitReadLock();
+            }
+        }
+
+        public void Delete(int id)
+        {
+            Locker.EnterReadLock();
+            try
+            {
+                Sales.Remove(id);
+                Sales.Save();
+            }
+            finally
+            {
+                Locker.ExitReadLock();
+            }
+        }
+
         public async Task<IEnumerable<SaleDto>> GetAllAsync()
         {
             return await Sales.GetAllAsync();

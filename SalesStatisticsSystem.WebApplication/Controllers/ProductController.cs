@@ -30,9 +30,10 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             return View(productsViewModels);
         }
 
-        // GET: Product/Details/5
         public ActionResult Details(int id)
         {
+            // TODO: Make additional fields (description)
+
             return View();
         }
 
@@ -80,26 +81,26 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
-        // GET: Product/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
+            //try
+            //{
+                // TODO: make delete by id
 
-        // POST: Product/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+                //var productDto = _productService.GetProductAsync(id);
+
+                //var productViewModel = _mapper.Map<ProductViewModel>(productDto);
+
+                //_productService.Delete(_mapper.Map<ProductDto>(productViewModel));
+
+                _productService.Delete(id);
 
                 return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            //}
+            //catch
+            //{
+            //    return View("Index");
+            //}
         }
     }
 }
