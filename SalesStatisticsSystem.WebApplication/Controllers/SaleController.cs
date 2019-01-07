@@ -34,7 +34,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public ActionResult Create()
         {
-            return View(new SaleViewModel {Date = DateTime.Now});
+            return View();
         }
 
         [HttpPost]
