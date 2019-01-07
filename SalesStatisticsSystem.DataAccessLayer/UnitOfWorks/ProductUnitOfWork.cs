@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -62,6 +63,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             {
                 foreach (var product in products)
                 {
+                    if (Products.DoesProductExist(product)) throw new ArgumentException("Product already exists!");
+
                     Products.Update(product);
                     Products.Save();
                 }

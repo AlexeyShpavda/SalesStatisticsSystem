@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -38,14 +39,14 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             return Customers.Get(id);
         }
 
-        public void Add(params CustomerDto[] products)
+        public void Add(params CustomerDto[] customers)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var product in products)
+                foreach (var customer in customers)
                 {
-                    Customers.AddUniqueCustomerToDatabase(product);
+                    Customers.AddUniqueCustomerToDatabase(customer);
                     Customers.Save();
                 }
             }
@@ -55,14 +56,16 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Update(params CustomerDto[] products)
+        public void Update(params CustomerDto[] customers)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var product in products)
+                foreach (var customer in customers)
                 {
-                    Customers.Update(product);
+                    if (Customers.DoesCustomerExist(customer)) throw new ArgumentException("Customer already exists!");
+
+                    Customers.Update(customer);
                     Customers.Save();
                 }
             }
@@ -72,14 +75,14 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Delete(params CustomerDto[] products)
+        public void Delete(params CustomerDto[] customers)
         {
             Locker.EnterReadLock();
             try
             {
-                foreach (var product in products)
+                foreach (var customer in customers)
                 {
-                    Customers.Remove(product);
+                    Customers.Remove(customer);
                     Customers.Save();
                 }
             }

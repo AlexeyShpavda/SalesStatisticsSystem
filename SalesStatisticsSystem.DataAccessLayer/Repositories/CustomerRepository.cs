@@ -17,7 +17,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 
         public void AddUniqueCustomerToDatabase(CustomerDto customerDto)
         {
-            if (DoesCustomerExist(customerDto)) return;
+            if (DoesCustomerExist(customerDto)) throw new ArgumentException("Customer already exists!");
 
             Add(customerDto);
         }

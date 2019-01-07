@@ -17,7 +17,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 
         public void AddUniqueProductToDatabase(ProductDto productDto)
         {
-            if (DoesProductExist(productDto)) return;
+            if (DoesProductExist(productDto)) throw new ArgumentException("Product already exists!");
 
             Add(productDto);
         }

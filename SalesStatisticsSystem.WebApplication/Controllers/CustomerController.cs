@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -52,8 +53,10 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception exception)
             {
+                ViewBag.Error = exception.Message;
+
                 return View();
             }
         }
@@ -76,8 +79,10 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception exception)
             {
+                ViewBag.Error = exception.Message;
+
                 return View();
             }
         }

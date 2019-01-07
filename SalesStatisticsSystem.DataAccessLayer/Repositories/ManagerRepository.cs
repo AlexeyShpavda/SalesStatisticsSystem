@@ -17,7 +17,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 
         public void AddUniqueManagerToDatabase(ManagerDto managerDto)
         {
-            if (DoesManagerExist(managerDto)) return;
+            if (DoesManagerExist(managerDto)) throw new ArgumentException("Manager already exists!");
 
             Add(managerDto);
         }

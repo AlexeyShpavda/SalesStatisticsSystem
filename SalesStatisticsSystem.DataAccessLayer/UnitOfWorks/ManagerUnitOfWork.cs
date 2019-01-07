@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -38,14 +39,14 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             return Managers.Get(id);
         }
 
-        public void Add(params ManagerDto[] products)
+        public void Add(params ManagerDto[] managers)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var product in products)
+                foreach (var manager in managers)
                 {
-                    Managers.AddUniqueManagerToDatabase(product);
+                    Managers.AddUniqueManagerToDatabase(manager);
                     Managers.Save();
                 }
             }
@@ -55,14 +56,16 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Update(params ManagerDto[] products)
+        public void Update(params ManagerDto[] managers)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var product in products)
+                foreach (var manager in managers)
                 {
-                    Managers.Update(product);
+                    if (Managers.DoesManagerExist(manager)) throw new ArgumentException("Manager already exists!");
+
+                    Managers.Update(manager);
                     Managers.Save();
                 }
             }
@@ -72,14 +75,14 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Delete(params ManagerDto[] products)
+        public void Delete(params ManagerDto[] managers)
         {
             Locker.EnterReadLock();
             try
             {
-                foreach (var product in products)
+                foreach (var manager in managers)
                 {
-                    Managers.Remove(product);
+                    Managers.Remove(manager);
                     Managers.Save();
                 }
             }
