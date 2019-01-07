@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.WebApplication.Models;
+using SalesStatisticsSystem.WebApplication.Models.SaleViewModels;
 
 namespace SalesStatisticsSystem.WebApplication.Support
 {

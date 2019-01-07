@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace SalesStatisticsSystem.WebApplication.Models
+namespace SalesStatisticsSystem.WebApplication.Models.SaleViewModels
 {
     public class ProductViewModel
     {
