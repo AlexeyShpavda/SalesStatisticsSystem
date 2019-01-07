@@ -42,6 +42,11 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(sale);
+                }
+
                 _saleService.Add(_mapper.Map<SaleDto>(sale));
 
                 return RedirectToAction("Index");
@@ -68,6 +73,11 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(sale);
+                }
+
                 _saleService.Update(_mapper.Map<SaleDto>(sale));
 
                 return RedirectToAction("Index");
