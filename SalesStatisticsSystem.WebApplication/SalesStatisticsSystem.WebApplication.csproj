@@ -84,6 +84,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
@@ -171,10 +173,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Authentication\LoginModel.cs" />
-    <Compile Include="Models\Authentication\RegistrationModel.cs" />
-    <Compile Include="Models\Authentication\User.cs" />
     <Compile Include="Models\Authentication\UserContext.cs" />
+    <Compile Include="Models\Authentication\ViewModels\LoginModel.cs" />
+    <Compile Include="Models\Authentication\ViewModels\RegistrationModel.cs" />
+    <Compile Include="Models\Authentication\Models\Role.cs" />
+    <Compile Include="Models\Authentication\Models\User.cs" />
+    <Compile Include="Models\Authentication\UserDbInitializer.cs" />
     <Compile Include="Models\SaleViewModels\CustomerViewModel.cs" />
     <Compile Include="Models\SaleViewModels\ManagerViewModel.cs" />
     <Compile Include="Models\SaleViewModels\ProductViewModel.cs" />
@@ -236,8 +240,8 @@
     <Content Include="Views\Manager\_Manager.cshtml" />
     <Content Include="Views\Customer\_Customer.cshtml" />
     <Content Include="Views\Sale\_Sale.cshtml" />
-    <Content Include="Views\Authentication\Registration.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
+    <Content Include="Views\Authentication\Registration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

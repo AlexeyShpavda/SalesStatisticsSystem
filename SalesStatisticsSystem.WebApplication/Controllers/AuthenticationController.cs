@@ -6,6 +6,8 @@ using System.Web.Security;
 using SalesStatisticsSystem.WebApplication.Models.Authentication;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using SalesStatisticsSystem.WebApplication.Models.Authentication.Models;
+using SalesStatisticsSystem.WebApplication.Models.Authentication.ViewModels;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
 {

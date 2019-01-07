@@ -1,11 +1,10 @@
-﻿@model SalesStatisticsSystem.WebApplication.Models.Authentication.LoginModel
+﻿@model SalesStatisticsSystem.WebApplication.Models.Authentication.ViewModels.LoginModel
 
 @{
     ViewBag.Title = "Login";
 }
 
 <h2>Login</h2>
-
 
 @using (Html.BeginForm()) 
 {
@@ -42,7 +41,3 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
