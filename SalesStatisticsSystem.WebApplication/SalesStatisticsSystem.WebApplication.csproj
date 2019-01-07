@@ -206,6 +206,7 @@
     <Content Include="Views\Product\_Product.cshtml" />
     <Content Include="Views\Manager\_Manager.cshtml" />
     <Content Include="Views\Customer\_Customer.cshtml" />
+    <Content Include="Views\Sale\_Sale.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
