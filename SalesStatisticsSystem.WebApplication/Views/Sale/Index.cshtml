@@ -15,16 +15,19 @@
             @Html.DisplayNameFor(model => model.Date)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Sum)
-        </th>
-        <th>
             @Html.DisplayNameFor(model=>model.Customer)
         </th>
         <th>
             @Html.DisplayNameFor(model=>model.Product)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Sum)
+        </th>
+        <th>
             @Html.DisplayNameFor(model=>model.Manager)
+        </th>
+        <th>
+            Actions
         </th>
     </tr>
 
@@ -34,14 +37,14 @@
             @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Sum)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.Customer.FirstName)
             @Html.DisplayFor(modelItem => item.Customer.LastName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Product.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sum)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Manager.LastName)
