@@ -203,6 +203,9 @@
     <Content Include="Views\Manager\Edit.cshtml" />
     <Content Include="Views\Sale\Create.cshtml" />
     <Content Include="Views\Sale\Edit.cshtml" />
+    <Content Include="Views\Product\_Product.cshtml" />
+    <Content Include="Views\Manager\_Manager.cshtml" />
+    <Content Include="Views\Customer\_Customer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

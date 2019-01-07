@@ -46,8 +46,10 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception exception)
             {
+                ViewBag.Error = exception.Message;
+
                 return View();
             }
         }
@@ -70,8 +72,10 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception exception)
             {
+                ViewBag.Error = exception.Message;
+
                 return View();
             }
         }
