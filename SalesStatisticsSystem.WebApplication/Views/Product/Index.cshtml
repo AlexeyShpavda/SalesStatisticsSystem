@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<SalesStatisticsSystem.WebApplication.Models.SaleViewModels.ProductViewModel>
-
+<script src="~/Views/Product/script.js"></script>
 @{
     ViewBag.Title = "Index";
 }
@@ -9,7 +9,9 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+
+<input type="text" onkeyup="searchFilter()" id="entryField" placeholder="Search by product name"/>
+<table class="table" id="lookupTable">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
@@ -20,7 +22,7 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr id="lol">
         <td>
             @Html.DisplayFor(modelItem => item.Name)
         </td>
