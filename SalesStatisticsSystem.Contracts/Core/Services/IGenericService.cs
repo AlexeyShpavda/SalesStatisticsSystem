@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 
 namespace SalesStatisticsSystem.Contracts.Core.Services
