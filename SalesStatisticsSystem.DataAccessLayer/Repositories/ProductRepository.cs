@@ -15,11 +15,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
         }
 
-        public void AddUniqueProductToDatabase(ProductDto productDto)
+        public ProductDto AddUniqueProductToDatabase(ProductDto productDto)
         {
             if (DoesProductExist(productDto)) throw new ArgumentException("Product already exists!");
 
-            Add(productDto);
+            return Add(productDto);
         }
 
         public int? GetId(string productName)

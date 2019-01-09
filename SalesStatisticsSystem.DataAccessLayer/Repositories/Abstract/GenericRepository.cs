@@ -36,50 +36,31 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             return Mapper.Map<TEntity>(dto);
         }
 
-        public void Add(params TDto[] models)
+        public TDto Add(TDto model)
         {
-            foreach (var model in models)
-            {
-                var entity = DtoToEntity(model);
+            var entity = DtoToEntity(model);
 
-                DbSet.Add(entity);
-                Context.Entry(entity).State = EntityState.Added;
-            }
+            var result = DbSet.Add(entity);
+            Context.Entry(entity).State = EntityState.Added;
+
+            return Mapper.Map<TDto>(result);
         }
 
-        public void Update(params TDto[] models)
+        public TDto Update(TDto model)
         {
-            foreach (var model in models)
-            {
-                var entity = DtoToEntity(model);
+            var entity = DtoToEntity(model);
 
-                DbSet.Attach(entity);
-                Context.Entry(entity).State = EntityState.Modified;
-            }
-        }
+            var result = DbSet.Attach(entity);
+            Context.Entry(entity).State = EntityState.Modified;
 
-        public void Remove(params TDto[] models)
-        {
-            // TODO: Id vs entity
-            foreach (var model in models)
-            {
-                var entity = DtoToEntity(model);
-
-                if (Context.Entry(entity).State == EntityState.Detached || Context.Entry(entity).State == EntityState.Modified)
-                {
-                    DbSet.Attach(entity);
-                }
-
-                DbSet.Remove(entity);
-                Context.Entry(entity).State = EntityState.Deleted;
-            }
+            return Mapper.Map<TDto>(result);
         }
 
         public void Remove(int id)
         {
             var entity = DbSet.Find(id);
 
-            if (Context.Entry(entity).State == EntityState.Detached || Context.Entry(entity).State == EntityState.Modified)
+            if (Context.Entry(entity).State == EntityState.Detached)
             {
                 DbSet.Attach(entity);
             }
@@ -117,9 +98,9 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             return Mapper.Map<IEnumerable<TDto>>(DbSet.AsNoTracking().Where(newPredicate));
         }
 
-        public void Save()
+        public async Task<int> SaveAsync()
         {
-            Context.SaveChangesAsync();
+            return await Context.SaveChangesAsync();
         }
     }
 }

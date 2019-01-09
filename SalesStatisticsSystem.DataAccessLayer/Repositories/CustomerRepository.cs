@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
@@ -15,11 +16,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
         }
 
-        public void AddUniqueCustomerToDatabase(CustomerDto customerDto)
+        public CustomerDto AddUniqueCustomerToDatabase(CustomerDto customerDto)
         {
             if (DoesCustomerExist(customerDto)) throw new ArgumentException("Customer already exists!");
 
-            Add(customerDto);
+            return Add(customerDto);
         }
 
         public int? GetId(string customerFirstName, string customerLastName)
