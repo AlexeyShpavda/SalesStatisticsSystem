@@ -47,8 +47,8 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(ProductViewModel product)
         {
-            //try
-            //{
+            try
+            {
                 if (!ModelState.IsValid)
                 {
                     return View(product);
@@ -57,13 +57,13 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                 await _productService.AddAsync(_mapper.Map<ProductDto>(product));
 
                 return RedirectToAction("Index");
-            //}
-            //catch (Exception exception)
-            //{
-            //    ViewBag.Error = exception.Message;
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
 
-            //    return View();
-            //}
+                return View();
+            }
         }
 
         public ActionResult Edit(int id)
