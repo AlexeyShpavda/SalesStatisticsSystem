@@ -45,7 +45,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CustomerViewModel customer)
+        public async Task<ActionResult> Create(CustomerViewModel customer)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(customer);
                 }
 
-                _customerService.Add(_mapper.Map<CustomerDto>(customer));
+                await _customerService.AddAsync(_mapper.Map<CustomerDto>(customer));
 
                 return RedirectToAction("Index");
             }
@@ -76,7 +76,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(CustomerViewModel customer)
+        public async Task<ActionResult> Edit(CustomerViewModel customer)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(customer);
                 }
 
-                _customerService.Update(_mapper.Map<CustomerDto>(customer));
+                await _customerService.UpdateAsync(_mapper.Map<CustomerDto>(customer));
 
                 return RedirectToAction("Index");
             }

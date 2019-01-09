@@ -45,7 +45,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ManagerViewModel manager)
+        public async Task<ActionResult> Create(ManagerViewModel manager)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(manager);
                 }
 
-                _managerService.Add(_mapper.Map<ManagerDto>(manager));
+                await _managerService.AddAsync(_mapper.Map<ManagerDto>(manager));
 
                 return RedirectToAction("Index");
             }
@@ -76,7 +76,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(ManagerViewModel manager)
+        public async Task<ActionResult> Edit(ManagerViewModel manager)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(manager);
                 }
 
-                _managerService.Update(_mapper.Map<ManagerDto>(manager));
+                await _managerService.UpdateAsync(_mapper.Map<ManagerDto>(manager));
 
                 return RedirectToAction("Index");
             }

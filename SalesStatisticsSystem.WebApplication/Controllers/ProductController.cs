@@ -45,25 +45,25 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ProductViewModel product)
+        public async Task<ActionResult> Create(ProductViewModel product)
         {
-            try
-            {
+            //try
+            //{
                 if (!ModelState.IsValid)
                 {
                     return View(product);
                 }
 
-                _productService.Add(_mapper.Map<ProductDto>(product));
+                await _productService.AddAsync(_mapper.Map<ProductDto>(product));
 
                 return RedirectToAction("Index");
-            }
-            catch (Exception exception)
-            {
-                ViewBag.Error = exception.Message;
+            //}
+            //catch (Exception exception)
+            //{
+            //    ViewBag.Error = exception.Message;
 
-                return View();
-            }
+            //    return View();
+            //}
         }
 
         public ActionResult Edit(int id)
@@ -76,7 +76,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(ProductViewModel product)
+        public async Task<ActionResult> Edit(ProductViewModel product)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(product);
                 }
 
-                _productService.Update(_mapper.Map<ProductDto>(product));
+                await _productService.UpdateAsync(_mapper.Map<ProductDto>(product));
 
                 return RedirectToAction("Index");
             }
