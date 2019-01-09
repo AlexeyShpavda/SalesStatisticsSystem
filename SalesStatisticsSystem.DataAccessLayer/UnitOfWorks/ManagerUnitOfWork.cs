@@ -39,16 +39,15 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             return Managers.Get(id);
         }
 
-        public void Add(params ManagerDto[] managers)
+        public async Task<ManagerDto> AddAsync(ManagerDto manager)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var manager in managers)
-                {
-                    Managers.AddUniqueManagerToDatabase(manager);
-                    Managers.Save();
-                }
+                var result = Managers.AddUniqueManagerToDatabase(manager);
+                await Managers.SaveAsync();
+
+                return result;
             }
             finally
             {
@@ -56,39 +55,21 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Update(params ManagerDto[] managers)
+        public async Task<ManagerDto> UpdateAsync(ManagerDto manager)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var manager in managers)
-                {
-                    if (Managers.DoesManagerExist(manager)) throw new ArgumentException("Manager already exists!");
+                if (Managers.DoesManagerExist(manager)) throw new ArgumentException("Manager already exists!");
 
-                    Managers.Update(manager);
-                    Managers.Save();
-                }
+                var result = Managers.Update(manager);
+                await Managers.SaveAsync();
+
+                return result;
             }
             finally
             {
                 Locker.ExitWriteLock();
-            }
-        }
-
-        public void Delete(params ManagerDto[] managers)
-        {
-            Locker.EnterReadLock();
-            try
-            {
-                foreach (var manager in managers)
-                {
-                    Managers.Remove(manager);
-                    Managers.Save();
-                }
-            }
-            finally
-            {
-                Locker.ExitReadLock();
             }
         }
 
@@ -98,7 +79,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             try
             {
                 Managers.Remove(id);
-                Managers.Save();
+                Managers.SaveAsync();
             }
             finally
             {

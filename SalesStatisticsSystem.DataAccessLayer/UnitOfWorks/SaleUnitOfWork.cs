@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -42,18 +43,17 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             return Sales.Get(id);
         }
 
-        public void Add(params SaleDto[] sales)
+        public async Task<SaleDto> AddAsync(SaleDto sale)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var sale in sales)
-                {
-                    FindOutIds(sale);
+                FindOutIds(sale);
 
-                    Sales.Add(sale);
-                    Sales.Save();
-                }
+                var result = Sales.Add(sale);
+                await Sales.SaveAsync();
+
+                return result;
             }
             finally
             {
@@ -61,39 +61,21 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Update(params SaleDto[] sales)
+        public async Task<SaleDto> UpdateAsync(SaleDto sale)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var sale in sales)
-                {
-                    FindOutIds(sale);
+                FindOutIds(sale);
 
-                    Sales.Update(sale);
-                    Sales.Save();
-                }
+                var result = Sales.Update(sale);
+                await Sales.SaveAsync();
+
+                return result;
             }
             finally
             {
                 Locker.ExitWriteLock();
-            }
-        }
-
-        public void Delete(params SaleDto[] sales)
-        {
-            Locker.EnterReadLock();
-            try
-            {
-                foreach (var sale in sales)
-                {
-                    Sales.Remove(sale);
-                    Sales.Save();
-                }
-            }
-            finally
-            {
-                Locker.ExitReadLock();
             }
         }
 
@@ -103,7 +85,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             try
             {
                 Sales.Remove(id);
-                Sales.Save();
+                Sales.SaveAsync();
             }
             finally
             {

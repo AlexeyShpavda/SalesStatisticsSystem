@@ -39,16 +39,16 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             return Customers.Get(id);
         }
 
-        public void Add(params CustomerDto[] customers)
+        public async Task<CustomerDto> AddAsync(CustomerDto customer)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var customer in customers)
-                {
-                    Customers.AddUniqueCustomerToDatabase(customer);
-                    Customers.Save();
-                }
+                var result = Customers.AddUniqueCustomerToDatabase(customer);
+
+                await Customers.SaveAsync();
+
+                return result;
             }
             finally
             {
@@ -56,39 +56,21 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Update(params CustomerDto[] customers)
+        public async Task<CustomerDto> UpdateAsync(CustomerDto customer)
         {
             Locker.EnterWriteLock();
             try
             {
-                foreach (var customer in customers)
-                {
-                    if (Customers.DoesCustomerExist(customer)) throw new ArgumentException("Customer already exists!");
+                if (Customers.DoesCustomerExist(customer)) throw new ArgumentException("Customer already exists!");
 
-                    Customers.Update(customer);
-                    Customers.Save();
-                }
+                var result = Customers.Update(customer);
+                await Customers.SaveAsync();
+
+                return result;
             }
             finally
             {
                 Locker.ExitWriteLock();
-            }
-        }
-
-        public void Delete(params CustomerDto[] customers)
-        {
-            Locker.EnterReadLock();
-            try
-            {
-                foreach (var customer in customers)
-                {
-                    Customers.Remove(customer);
-                    Customers.Save();
-                }
-            }
-            finally
-            {
-                Locker.ExitReadLock();
             }
         }
 
@@ -98,7 +80,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             try
             {
                 Customers.Remove(id);
-                Customers.Save();
+                Customers.SaveAsync();
             }
             finally
             {
