@@ -52,7 +52,10 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
             finally
             {
-                Locker.ExitWriteLock();
+                if (Locker.IsWriteLockHeld)
+                {
+                    Locker.ExitWriteLock();
+                }
             }
         }
 
@@ -70,7 +73,10 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
             finally
             {
-                Locker.ExitWriteLock();
+                if (Locker.IsWriteLockHeld)
+                {
+                    Locker.ExitWriteLock();
+                }
             }
         }
 
@@ -84,7 +90,10 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
             finally
             {
-                Locker.ExitReadLock();
+                if (Locker.IsReadLockHeld)
+                {
+                    Locker.ExitReadLock();
+                }
             }
         }
     }
