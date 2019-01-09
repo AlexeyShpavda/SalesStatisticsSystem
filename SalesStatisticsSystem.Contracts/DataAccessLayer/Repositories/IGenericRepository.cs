@@ -8,11 +8,9 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 {
     public interface IGenericRepository<TDto> where TDto : DataTransferObject
     {
-        void Add(params TDto[] models);
+        TDto Add(TDto model);
 
-        void Update(params TDto[] entities);
-
-        void Remove(params TDto[] entities);
+        TDto Update(TDto model);
 
         void Remove(int id);
 
@@ -22,6 +20,6 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 
         IEnumerable<TDto> Find(Expression<Func<TDto, bool>> predicate);
 
-        void Save();
+        Task<int> SaveAsync();
     }
 }

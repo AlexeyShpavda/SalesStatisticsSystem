@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 
 namespace SalesStatisticsSystem.Contracts.Core.Services
@@ -10,11 +11,9 @@ namespace SalesStatisticsSystem.Contracts.Core.Services
 
         TDto GetAsync(int id);
 
-        void Add(params TDto[] models);
+        Task<TDto> AddAsync(TDto model);
 
-        void Update(params TDto[] models);
-
-        void Delete(params TDto[] models);
+        Task<TDto> UpdateAsync(TDto model);
 
         void Delete(int id);
     }

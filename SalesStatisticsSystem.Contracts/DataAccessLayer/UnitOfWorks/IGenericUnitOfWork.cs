@@ -6,11 +6,9 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks
 {
     public interface IGenericUnitOfWork<TDto> where TDto :DataTransferObject
     {
-        void Add(params TDto[] models);
+        Task<TDto> AddAsync(TDto model);
 
-        void Update(params TDto[] models);
-
-        void Delete(params TDto[] products);
+        Task<TDto> UpdateAsync(TDto model);
 
         void Delete(int id);
 

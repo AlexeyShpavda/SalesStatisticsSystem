@@ -4,7 +4,7 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 {
     public interface IManagerRepository : IGenericRepository<ManagerDto>
     {
-        void AddUniqueManagerToDatabase(ManagerDto managerDto);
+        ManagerDto AddUniqueManagerToDatabase(ManagerDto managerDto);
 
         int? GetId(string managerLastName);
 
