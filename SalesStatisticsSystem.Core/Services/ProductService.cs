@@ -38,19 +38,14 @@ namespace SalesStatisticsSystem.Core.Services
             return ProductUnitOfWork.GetAsync(id);
         }
 
-        public void Add(params ProductDto[] models)
+        public async Task<ProductDto> AddAsync(ProductDto model)
         {
-            ProductUnitOfWork.Add(models);
+            return await ProductUnitOfWork.AddAsync(model);
         }
 
-        public void Update(params ProductDto[] models)
+        public async Task<ProductDto> UpdateAsync(ProductDto model)
         {
-            ProductUnitOfWork.Update(models);
-        }
-
-        public void Delete(params ProductDto[] models)
-        {
-            ProductUnitOfWork.Delete(models);
+            return await ProductUnitOfWork.UpdateAsync(model);
         }
 
         public void Delete(int id)
