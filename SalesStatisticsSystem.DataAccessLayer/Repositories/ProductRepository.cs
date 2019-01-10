@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
@@ -15,25 +16,29 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
         }
 
-        public ProductDto AddUniqueProductToDatabase(ProductDto productDto)
+        public async Task<ProductDto> AddUniqueProductToDatabaseAsync(ProductDto productDto)
         {
-            if (DoesProductExist(productDto)) throw new ArgumentException("Product already exists!");
+            if (await DoesProductExistAsync(productDto)) throw new ArgumentException("Product already exists!");
 
             return Add(productDto);
         }
 
-        public int? GetId(string productName)
+        public async Task<int> GetIdAsync(string productName)
         {
             Expression<Func<ProductDto, bool>> predicate = x => x.Name == productName;
 
-            return Find(predicate).First().Id;
+            var result = await Find(predicate);
+
+            return result.First().Id;
         }
 
-        public bool DoesProductExist(ProductDto productDto)
+        public async Task<bool> DoesProductExistAsync(ProductDto productDto)
         {
             Expression<Func<ProductDto, bool>> predicate = x => x.Name == productDto.Name;
 
-            return Find(predicate).Any();
+            var result = await Find(predicate);
+
+            return result.Any();
         }
     }
 }

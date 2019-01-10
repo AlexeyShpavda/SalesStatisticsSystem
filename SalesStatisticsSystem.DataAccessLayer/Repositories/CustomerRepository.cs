@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
@@ -15,27 +16,31 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
         }
 
-        public CustomerDto AddUniqueCustomerToDatabase(CustomerDto customerDto)
+        public async Task<CustomerDto> AddUniqueCustomerToDatabaseAsync(CustomerDto customerDto)
         {
-            if (DoesCustomerExist(customerDto)) throw new ArgumentException("Customer already exists!");
+            if (await DoesCustomerExistAsync(customerDto)) throw new ArgumentException("Customer already exists!");
 
             return Add(customerDto);
         }
 
-        public int? GetId(string customerFirstName, string customerLastName)
+        public async Task<int> GetIdAsync(string customerFirstName, string customerLastName)
         {
             Expression<Func<CustomerDto, bool>> predicate = x =>
                 x.FirstName == customerFirstName && x.LastName == customerLastName;
 
-            return Find(predicate).First().Id;
+            var result = await Find(predicate);
+
+            return result.First().Id;
         }
 
-        public bool DoesCustomerExist(CustomerDto customerDto)
+        public async Task<bool> DoesCustomerExistAsync(CustomerDto customerDto)
         {
             Expression<Func<CustomerDto, bool>> predicate = x =>
                 x.LastName == customerDto.LastName && x.FirstName == customerDto.FirstName;
 
-            return Find(predicate).Any();
+            var result = await Find(predicate);
+
+            return result.Any();
         }
     }
 }

@@ -56,9 +56,9 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             return Mapper.Map<TDto>(result);
         }
 
-        public void Remove(int id)
+        public async Task DeleteAsync(int id)
         {
-            var entity = DbSet.Find(id);
+            var entity = Mapper.Map<TEntity>(await GetAsync(id));
 
             if (Context.Entry(entity).State == EntityState.Detached)
             {
@@ -69,19 +69,15 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
            Context.Entry(entity).State = EntityState.Deleted;
         }
 
-        public TDto Get(int id)
+        public async Task<TDto> GetAsync(int id)
         {
-            // TODO: Working with nullable types in Expression Trees
+            Expression<Func<TDto, bool>> predicate = x => x.Id == id;
 
-            //Expression<Func<TDto, bool>> predicate = x => x.Id.Value == id;
+            var newPredicate = predicate.Project<TDto, TEntity>();
 
-            //var newPredicate = predicate.Project<TDto, TEntity>();
+            var result = await DbSet.AsNoTracking().FirstOrDefaultAsync(newPredicate);
 
-            //var result = await DbSet.FirstOrDefaultAsync(newPredicate);
-
-            //return Mapper.Map<TDto>(result);
-
-            return Mapper.Map<TDto>(DbSet.Find(id));
+            return Mapper.Map<TDto>(result);
         }
 
         public async Task<IEnumerable<TDto>> GetAllAsync()
@@ -91,11 +87,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             return Mapper.Map<IEnumerable<TDto>>(result);
         }
 
-        public IEnumerable<TDto> Find(Expression<Func<TDto, bool>> predicate)
+        public async Task<IEnumerable<TDto>> Find(Expression<Func<TDto, bool>> predicate)
         {
             var newPredicate = predicate.Project<TDto, TEntity>();
 
-            return Mapper.Map<IEnumerable<TDto>>(DbSet.AsNoTracking().Where(newPredicate));
+            return Mapper.Map<IEnumerable<TDto>>(await DbSet.AsNoTracking().Where(newPredicate).ToListAsync());
         }
 
         public async Task<int> SaveAsync()

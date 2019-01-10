@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
@@ -15,25 +16,29 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
         }
 
-        public ManagerDto AddUniqueManagerToDatabase(ManagerDto managerDto)
+        public async Task<ManagerDto> AddUniqueManagerToDatabaseAsync(ManagerDto managerDto)
         {
-            if (DoesManagerExist(managerDto)) throw new ArgumentException("Manager already exists!");
+            if (await DoesManagerExistAsync(managerDto)) throw new ArgumentException("Manager already exists!");
 
             return Add(managerDto);
         }
 
-        public int? GetId(string managerLastName)
+        public async Task<int> GetIdAsync(string managerLastName)
         {
             Expression<Func<ManagerDto, bool>> predicate = x => x.LastName == managerLastName;
 
-            return Find(predicate).First().Id;
+            var result = await Find(predicate);
+
+            return result.First().Id;
         }
 
-        public bool DoesManagerExist(ManagerDto managerDto)
+        public async Task<bool> DoesManagerExistAsync(ManagerDto managerDto)
         {
             Expression<Func<ManagerDto, bool>> predicate = x => x.LastName == managerDto.LastName;
 
-            return Find(predicate).Any();
+            var result = await Find(predicate);
+
+            return result.Any();
         }
     }
 }
