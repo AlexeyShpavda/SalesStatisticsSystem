@@ -179,6 +179,7 @@
     <Compile Include="Models\Authentication\Models\Role.cs" />
     <Compile Include="Models\Authentication\Models\User.cs" />
     <Compile Include="Models\Authentication\UserDbInitializer.cs" />
+    <Compile Include="Models\Filters\SaleFilter.cs" />
     <Compile Include="Models\SaleViewModels\CustomerViewModel.cs" />
     <Compile Include="Models\SaleViewModels\ManagerViewModel.cs" />
     <Compile Include="Models\SaleViewModels\ProductViewModel.cs" />
