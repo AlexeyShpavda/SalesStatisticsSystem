@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -95,6 +96,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
                     Locker.ExitReadLock();
                 }
             }
+        }
+
+        public async Task<IEnumerable<CustomerDto>> FindAsync(Expression<Func<CustomerDto, bool>> predicate)
+        {
+            return await Customers.FindAsync(predicate);
         }
     }
 }

@@ -6,25 +6,18 @@
 <h2>All Products</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", null,new { @class = "btn btn-primary" })
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
 
 @using (Html.BeginForm("index", "Product", FormMethod.Get))
 {
     <div class="input-group">
         <span class="input-group-btn">
-            <button class="btn btn-default" type="button">Go!</button>
+            <input class="btn btn-primary" type="submit" value="Search" />
         </span>
-        @Html.TextBox("Search", null, new {@class = "form-control"})@*<input class="btn btn-primary" type="submit" value="Search"/>*@
+        @Html.TextBox("searching", null, new { @class = "form-control" })
     </div>
 }
-
-@*<div class="input-group">
-    <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Go!</button>
-    </span>
-    <input type="text" class="form-control">
-</div>*@
 
 <table class="table" id="table">
     <tr>
