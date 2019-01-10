@@ -32,10 +32,9 @@ namespace SalesStatisticsSystem.Core.Services
             return await ProductUnitOfWork.GetAllAsync();
         }
 
-        // TODO: Make async
-        public ProductDto GetAsync(int id)
+        public async Task<ProductDto> GetAsync(int id)
         {
-            return ProductUnitOfWork.GetAsync(id);
+            return await ProductUnitOfWork.GetAsync(id);
         }
 
         public async Task<ProductDto> AddAsync(ProductDto model)
@@ -48,9 +47,9 @@ namespace SalesStatisticsSystem.Core.Services
             return await ProductUnitOfWork.UpdateAsync(model);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            ProductUnitOfWork.Delete(id);
+            await ProductUnitOfWork.DeleteAsync(id);
         }
 
         private bool _disposed;
