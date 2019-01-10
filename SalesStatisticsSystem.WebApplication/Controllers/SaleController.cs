@@ -59,9 +59,9 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var saleDto = _saleService.GetAsync(id);
+            var saleDto = await _saleService.GetAsync(id);
 
             var saleViewModel = _mapper.Map<SaleViewModel>(saleDto);
 
@@ -82,7 +82,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 ViewBag.Error = exception.Message;
 
@@ -90,16 +90,18 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                _saleService.Delete(id);
+                await _saleService.DeleteAsync(id);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception exception)
             {
+                ViewBag.Error = exception.Message;
+
                 return RedirectToAction("Index");
             }
         }

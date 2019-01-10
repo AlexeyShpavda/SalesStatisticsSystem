@@ -32,13 +32,6 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             return View(managersViewModels);
         }
 
-        public ActionResult Details(int id)
-        {
-            // TODO: Make additional fields (Email, Phone number)
-
-            return View();
-        }
-
         public ActionResult Create()
         {
             return View();
@@ -66,9 +59,9 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var managerDto = _managerService.GetAsync(id);
+            var managerDto = await _managerService.GetAsync(id);
 
             var managerViewModel = _mapper.Map<ManagerViewModel>(managerDto);
 
@@ -97,16 +90,18 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                _managerService.Delete(id);
+                await _managerService.DeleteAsync(id);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception exception)
             {
+                ViewBag.Error = exception.Message;
+
                 return RedirectToAction("Index");
             }
         }

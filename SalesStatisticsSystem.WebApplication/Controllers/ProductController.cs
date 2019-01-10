@@ -32,13 +32,6 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             return View(productsViewModels);
         }
 
-        public ActionResult Details(int id)
-        {
-            // TODO: Make additional fields (description)
-
-            return View();
-        }
-
         public ActionResult Create()
         {
             return View();
@@ -66,9 +59,9 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var productDto = _productService.GetAsync(id);
+            var productDto = await _productService.GetAsync(id);
 
             var productViewModel = _mapper.Map<ProductViewModel>(productDto);
 
@@ -97,24 +90,18 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             }
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
-                // TODO: make delete by id
-
-                //var productDto = _productService.GetProductAsync(id);
-
-                //var productViewModel = _mapper.Map<ProductViewModel>(productDto);
-
-                //_productService.Delete(_mapper.Map<ProductDto>(productViewModel));
-
-                _productService.Delete(id);
+                await _productService.DeleteAsync(id);
 
                 return RedirectToAction("Index");
-            }
-            catch
+        }
+            catch (Exception exception)
             {
+                ViewBag.Error = exception.Message;
+
                 return RedirectToAction("Index");
             }
         }
