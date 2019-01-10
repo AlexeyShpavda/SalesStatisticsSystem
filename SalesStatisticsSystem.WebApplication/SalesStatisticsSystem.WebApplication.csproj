@@ -244,6 +244,7 @@
     <Content Include="Views\Sale\_Sale.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
     <Content Include="Views\Authentication\Registration.cshtml" />
+    <Content Include="Views\Sale\_SalesFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

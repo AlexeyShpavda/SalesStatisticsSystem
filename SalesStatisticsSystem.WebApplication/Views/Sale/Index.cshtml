@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SalesStatisticsSystem.WebApplication.Models.SaleViewModels.SaleViewModel>
+﻿@using SalesStatisticsSystem.WebApplication.Models.Filters
+@model IEnumerable<SalesStatisticsSystem.WebApplication.Models.SaleViewModels.SaleViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -10,7 +11,9 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<input class="form-control" type="text" id="inputField" onkeyup="searchFilter()" placeholder="Search by Date." />
+@*<input class="form-control" type="text" id="inputField" onkeyup="searchFilter()" placeholder="Search by Date." />*@
+
+@{ Html.RenderPartial("_SalesFilter", (SaleFilter) ViewBag.SaleFilter);}
 
 <table class="table" id="table">
     <tr>
@@ -18,23 +21,24 @@
             @Html.DisplayNameFor(model => model.Date)
         </th>
         <th>
-            @Html.DisplayNameFor(model=>model.Customer)
+            @Html.DisplayNameFor(model => model.Customer)
         </th>
         <th>
-            @Html.DisplayNameFor(model=>model.Product)
+            @Html.DisplayNameFor(model => model.Product)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Sum)
         </th>
         <th>
-            @Html.DisplayNameFor(model=>model.Manager)
+            @Html.DisplayNameFor(model => model.Manager)
         </th>
         <th>
             Actions
         </th>
     </tr>
 
-    @foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
@@ -53,13 +57,12 @@
                 @Html.DisplayFor(modelItem => item.Manager.LastName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
     }
 
 </table>
 
-@Scripts.Render("~/Content/JavaScript/SearchFilter/filter.js")
+@*@Scripts.Render("~/Content/JavaScript/SearchFilter/filter.js")*@

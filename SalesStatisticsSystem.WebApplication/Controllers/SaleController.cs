@@ -6,6 +6,7 @@ using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Core.Services;
+using SalesStatisticsSystem.WebApplication.Models.Filters;
 using SalesStatisticsSystem.WebApplication.Models.SaleViewModels;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
@@ -23,9 +24,32 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _saleService = new SaleService();
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(SaleFilter saleFilter)
         {
-            var salesDto = await _saleService.GetAllAsync();
+            ViewBag.SaleFilter = new SaleFilter();
+
+            IEnumerable<SaleDto> salesDto;
+            if (saleFilter.CustomerFirstName == null &&
+                saleFilter.CustomerLastName == null &&
+                saleFilter.DateFrom == null &&
+                saleFilter.DateTo == null &&
+                saleFilter.ManagerLastName == null &&
+                saleFilter.ProductName == null &&
+                saleFilter.SumFrom == null &&
+                saleFilter.SumTo == null)
+            {
+                salesDto = await _saleService.GetAllAsync();
+            }
+            else
+            {
+                salesDto = await _saleService.FindAsync(x =>
+                    x.Date >= saleFilter.DateFrom && x.Date <= saleFilter.DateTo && 
+                    x.Sum >= saleFilter.SumFrom && x.Sum <= saleFilter.SumTo &&
+                    x.Customer.FirstName.Contains(saleFilter.CustomerFirstName) &&
+                    x.Customer.LastName.Contains(saleFilter.CustomerLastName) &&
+                    x.Manager.LastName.Contains(saleFilter.ManagerLastName) &&
+                    x.Product.Name.Contains(saleFilter.ProductName));
+            }
 
             var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
 
