@@ -34,9 +34,9 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             return await Customers.GetAllAsync();
         }
 
-        public CustomerDto GetAsync(int id)
+        public async Task<CustomerDto> GetAsync(int id)
         {
-            return Customers.Get(id);
+            return await Customers.GetAsync(id);
         }
 
         public async Task<CustomerDto> AddAsync(CustomerDto customer)
@@ -44,7 +44,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                var result = Customers.AddUniqueCustomerToDatabase(customer);
+                var result = await Customers.AddUniqueCustomerToDatabaseAsync(customer);
 
                 await Customers.SaveAsync();
 
@@ -64,7 +64,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                if (Customers.DoesCustomerExist(customer)) throw new ArgumentException("Customer already exists!");
+                if (await Customers.DoesCustomerExistAsync(customer)) throw new ArgumentException("Customer already exists!");
 
                 var result = Customers.Update(customer);
                 await Customers.SaveAsync();
@@ -80,13 +80,13 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             Locker.EnterReadLock();
             try
             {
-                Customers.Remove(id);
-                Customers.SaveAsync();
+                await Customers.DeleteAsync(id);
+                await Customers.SaveAsync();
             }
             finally
             {

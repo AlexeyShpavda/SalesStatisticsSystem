@@ -34,9 +34,9 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             return await Products.GetAllAsync();
         }
 
-        public ProductDto GetAsync(int id)
+        public async Task<ProductDto> GetAsync(int id)
         {
-            return Products.Get(id);
+            return await Products.GetAsync(id);
         }
 
         public async Task<ProductDto> AddAsync(ProductDto product)
@@ -44,7 +44,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                var result = Products.AddUniqueProductToDatabase(product);
+                var result = await Products.AddUniqueProductToDatabaseAsync(product);
                 await Products.SaveAsync();
 
                 return result;
@@ -63,7 +63,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                if (Products.DoesProductExist(product)) throw new ArgumentException("Product already exists!");
+                if (await Products.DoesProductExistAsync(product)) throw new ArgumentException("Product already exists!");
 
                 var result = Products.Update(product);
                 await Products.SaveAsync();
@@ -79,13 +79,13 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             Locker.EnterReadLock();
             try
             {
-                Products.Remove(id);
-                Products.SaveAsync();
+                await Products.DeleteAsync(id);
+                await Products.SaveAsync();
             }
             finally
             {

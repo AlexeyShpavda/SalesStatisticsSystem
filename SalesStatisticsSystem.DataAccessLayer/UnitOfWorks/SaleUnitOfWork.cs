@@ -37,9 +37,9 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             return await Sales.GetAllAsync();
         }
 
-        public SaleDto GetAsync(int id)
+        public async Task<SaleDto> GetAsync(int id)
         {
-            return Sales.Get(id);
+            return await Sales.GetAsync(id);
         }
 
         public async Task<SaleDto> AddAsync(SaleDto sale)
@@ -47,7 +47,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                FindOutIds(sale);
+                await FindOutIds(sale);
 
                 var result = Sales.Add(sale);
                 await Sales.SaveAsync();
@@ -68,7 +68,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                FindOutIds(sale);
+                await FindOutIds(sale);
 
                 var result = Sales.Update(sale);
                 await Sales.SaveAsync();
@@ -84,13 +84,13 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             Locker.EnterReadLock();
             try
             {
-                Sales.Remove(id);
-                Sales.SaveAsync();
+                await Sales.DeleteAsync(id);
+                await Sales.SaveAsync();
             }
             finally
             {
@@ -101,29 +101,29 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
         }
 
-        private void FindOutIds(SaleDto sale)
+        private async Task FindOutIds(SaleDto sale)
         {
-            if (Customers.DoesCustomerExist(sale.Customer))
+            if (await Customers.DoesCustomerExistAsync(sale.Customer))
             {
-                sale.Customer.Id = Customers.GetId(sale.Customer.FirstName, sale.Customer.LastName);
+                sale.Customer.Id = await Customers.GetIdAsync(sale.Customer.FirstName, sale.Customer.LastName);
             }
             else
             {
                 throw new ArgumentException("There is no such Customer. Register it!");
             }
 
-            if (Managers.DoesManagerExist(sale.Manager))
+            if (await Managers.DoesManagerExistAsync(sale.Manager))
             {
-                sale.Manager.Id = Managers.GetId(sale.Manager.LastName);
+                sale.Manager.Id = await Managers.GetIdAsync(sale.Manager.LastName);
             }
             else
             {
                 throw new ArgumentException("There is no such Manager. Register it!");
             }
 
-            if (Products.DoesProductExist(sale.Product))
+            if (await Products.DoesProductExistAsync(sale.Product))
             {
-                sale.Product.Id = Products.GetId(sale.Product.Name);
+                sale.Product.Id = await Products.GetIdAsync(sale.Product.Name);
             }
             else
             {
