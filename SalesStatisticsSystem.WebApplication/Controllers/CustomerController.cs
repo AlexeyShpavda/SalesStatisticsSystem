@@ -23,9 +23,18 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _customerService = new CustomerService();
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string firstNameSearching, string lastNameSearching)
         {
-            var customersDto = await _customerService.GetAllAsync();
+            IEnumerable<CustomerDto> customersDto;
+            if (firstNameSearching == null && lastNameSearching == null) 
+            {
+                customersDto = await _customerService.GetAllAsync();
+            }
+            else
+            {
+                customersDto = await _customerService.FindAsync(x =>
+                    x.FirstName.Contains(firstNameSearching) && x.LastName.Contains(lastNameSearching));
+            }
 
             var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
 
