@@ -23,9 +23,17 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _managerService = new ManagerService();
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searching)
         {
-            var managersDto = await _managerService.GetAllAsync();
+            IEnumerable<ManagerDto> managersDto;
+            if (searching == null)
+            {
+                managersDto = await _managerService.GetAllAsync();
+            }
+            else
+            {
+                managersDto = await _managerService.FindAsync(x => x.LastName.Contains(searching));
+            }
 
             var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
 
