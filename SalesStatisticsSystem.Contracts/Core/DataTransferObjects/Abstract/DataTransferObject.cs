@@ -2,6 +2,6 @@
 {
     public abstract class DataTransferObject
     {
-        public int? Id { get; set; } = null;
+        public int Id { get; set; }
     }
 }

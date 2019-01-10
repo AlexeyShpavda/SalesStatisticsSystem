@@ -10,10 +10,10 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks
 
         Task<TDto> UpdateAsync(TDto model);
 
-        void Delete(int id);
+        Task DeleteAsync(int id);
 
         Task<IEnumerable<TDto>> GetAllAsync();
 
-        TDto GetAsync(int id);
+        Task<TDto> GetAsync(int id);
     }
 }

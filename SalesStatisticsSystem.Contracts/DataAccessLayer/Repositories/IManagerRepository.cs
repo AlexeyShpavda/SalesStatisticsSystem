@@ -1,13 +1,14 @@
-﻿using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+﻿using System.Threading.Tasks;
+using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 
 namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 {
     public interface IManagerRepository : IGenericRepository<ManagerDto>
     {
-        ManagerDto AddUniqueManagerToDatabase(ManagerDto managerDto);
+        Task<ManagerDto> AddUniqueManagerToDatabaseAsync(ManagerDto managerDto);
 
-        int? GetId(string managerLastName);
+        Task<int> GetIdAsync(string managerLastName);
 
-        bool DoesManagerExist(ManagerDto managerDto);
+        Task<bool> DoesManagerExistAsync(ManagerDto managerDto);
     }
 }

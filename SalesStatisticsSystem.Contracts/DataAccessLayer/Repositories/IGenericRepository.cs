@@ -12,13 +12,13 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 
         TDto Update(TDto model);
 
-        void Remove(int id);
+        Task DeleteAsync(int id);
 
-        TDto Get(int id);
+        Task<TDto> GetAsync(int id);
 
         Task<IEnumerable<TDto>> GetAllAsync();
 
-        IEnumerable<TDto> Find(Expression<Func<TDto, bool>> predicate);
+        Task<IEnumerable<TDto>> Find(Expression<Func<TDto, bool>> predicate);
 
         Task<int> SaveAsync();
     }

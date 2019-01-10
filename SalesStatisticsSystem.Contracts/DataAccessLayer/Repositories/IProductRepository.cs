@@ -1,13 +1,14 @@
-﻿using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+﻿using System.Threading.Tasks;
+using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 
 namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 {
     public interface IProductRepository : IGenericRepository<ProductDto>
     {
-        ProductDto AddUniqueProductToDatabase(ProductDto productDto);
+        Task<ProductDto> AddUniqueProductToDatabaseAsync(ProductDto productDto);
 
-        int? GetId(string productName);
+        Task<int> GetIdAsync(string productName);
 
-        bool DoesProductExist(ProductDto productDto);
+        Task<bool> DoesProductExistAsync(ProductDto productDto);
     }
 }
