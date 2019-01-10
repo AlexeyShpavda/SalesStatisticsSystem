@@ -18,7 +18,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public ProductController()
         {
-            _mapper = Support.AutoMapper.CreateConfiguration().CreateMapper();
+            _mapper = Support.Adapter.AutoMapper.CreateConfiguration().CreateMapper();
 
             _productService = new ProductService();
         }

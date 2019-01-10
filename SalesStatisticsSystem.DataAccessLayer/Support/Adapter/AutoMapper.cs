@@ -2,7 +2,7 @@
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Entity;
 
-namespace SalesStatisticsSystem.DataAccessLayer.Support
+namespace SalesStatisticsSystem.DataAccessLayer.Support.Adapter
 {
     internal static class AutoMapper
     {

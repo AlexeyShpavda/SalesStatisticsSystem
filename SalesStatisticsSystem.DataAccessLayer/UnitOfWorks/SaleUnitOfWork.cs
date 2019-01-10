@@ -25,7 +25,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Context = context;
             Locker = locker;
 
-            var mapper = Support.AutoMapper.CreateConfiguration().CreateMapper();
+            var mapper = Support.Adapter.AutoMapper.CreateConfiguration().CreateMapper();
             Customers = new CustomerRepository(Context, mapper);
             Managers = new ManagerRepository(Context, mapper);
             Products = new ProductRepository(Context, mapper);

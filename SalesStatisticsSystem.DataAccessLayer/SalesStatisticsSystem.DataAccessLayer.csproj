@@ -60,7 +60,7 @@
     <Compile Include="Repositories\ManagerRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\SaleRepository.cs" />
-    <Compile Include="Support\AutoMapper.cs" />
+    <Compile Include="Support\Adapter\AutoMapper.cs" />
     <Compile Include="Support\ExpressionSupport.cs" />
     <Compile Include="UnitOfWorks\CustomerUnitOfWork.cs" />
     <Compile Include="UnitOfWorks\ManagerUnitOfWork.cs" />

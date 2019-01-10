@@ -184,7 +184,7 @@
     <Compile Include="Models\SaleViewModels\ProductViewModel.cs" />
     <Compile Include="Models\SaleViewModels\SaleViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Support\AutoMapper.cs" />
+    <Compile Include="Support\Adapter\AutoMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
