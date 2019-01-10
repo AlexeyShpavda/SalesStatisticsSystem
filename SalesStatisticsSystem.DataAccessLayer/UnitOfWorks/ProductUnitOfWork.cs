@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
@@ -94,6 +96,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
                     Locker.ExitReadLock();
                 }
             }
+        }
+
+        public async Task<IEnumerable<ProductDto>> FindAsync(Expression<Func<ProductDto, bool>> predicate)
+        {
+            return await Products.FindAsync(predicate);
         }
     }
 }

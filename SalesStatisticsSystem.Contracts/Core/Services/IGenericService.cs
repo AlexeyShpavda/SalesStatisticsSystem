@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 
@@ -15,5 +17,7 @@ namespace SalesStatisticsSystem.Contracts.Core.Services
         Task<TDto> UpdateAsync(TDto model);
 
         Task DeleteAsync(int id);
+
+        Task<IEnumerable<TDto>> FindAsync(Expression<Func<TDto, bool>> predicate);
     }
 }

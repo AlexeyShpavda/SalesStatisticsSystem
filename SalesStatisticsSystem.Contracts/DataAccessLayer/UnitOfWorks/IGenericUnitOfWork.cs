@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 
@@ -15,5 +17,7 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks
         Task<IEnumerable<TDto>> GetAllAsync();
 
         Task<TDto> GetAsync(int id);
+
+        Task<IEnumerable<TDto>> FindAsync(Expression<Func<TDto, bool>> predicate);
     }
 }

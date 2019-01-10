@@ -23,9 +23,17 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _productService = new ProductService();
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string searching)
         {
-            var productsDto = await _productService.GetAllAsync();
+            IEnumerable<ProductDto> productsDto;
+            if (searching == null)
+            {
+                productsDto = await _productService.GetAllAsync();
+            }
+            else
+            {
+                productsDto = await _productService.FindAsync(x => x.Name.Contains(searching));
+            }
 
             var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
 

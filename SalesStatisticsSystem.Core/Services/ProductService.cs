@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -50,6 +51,11 @@ namespace SalesStatisticsSystem.Core.Services
         public async Task DeleteAsync(int id)
         {
             await ProductUnitOfWork.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<ProductDto>> FindAsync(Expression<Func<ProductDto, bool>> predicate)
+        {
+            return await ProductUnitOfWork.FindAsync(predicate);
         }
 
         private bool _disposed;

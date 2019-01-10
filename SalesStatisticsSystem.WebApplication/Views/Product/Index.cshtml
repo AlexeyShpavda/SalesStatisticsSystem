@@ -6,10 +6,25 @@
 <h2>All Products</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null,new { @class = "btn btn-primary" })
 </p>
 
-<input class="form-control" type="text" id="inputField" onkeyup="searchFilter()" placeholder="Search by product name." />
+@using (Html.BeginForm("index", "Product", FormMethod.Get))
+{
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button">Go!</button>
+        </span>
+        @Html.TextBox("Search", null, new {@class = "form-control"})@*<input class="btn btn-primary" type="submit" value="Search"/>*@
+    </div>
+}
+
+@*<div class="input-group">
+    <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+    </span>
+    <input type="text" class="form-control">
+</div>*@
 
 <table class="table" id="table">
     <tr>
@@ -29,12 +44,9 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
     }
 
 </table>
-
-@Scripts.Render("~/Content/JavaScript/SearchFilter/filter.js")
