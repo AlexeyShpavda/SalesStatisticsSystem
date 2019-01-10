@@ -18,7 +18,7 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 
         Task<IEnumerable<TDto>> GetAllAsync();
 
-        Task<IEnumerable<TDto>> Find(Expression<Func<TDto, bool>> predicate);
+        Task<IEnumerable<TDto>> FindAsync(Expression<Func<TDto, bool>> predicate);
 
         Task<int> SaveAsync();
     }

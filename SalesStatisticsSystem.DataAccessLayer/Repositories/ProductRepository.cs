@@ -27,7 +27,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
             Expression<Func<ProductDto, bool>> predicate = x => x.Name == productName;
 
-            var result = await Find(predicate);
+            var result = await FindAsync(predicate);
 
             return result.First().Id;
         }
@@ -36,7 +36,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
             Expression<Func<ProductDto, bool>> predicate = x => x.Name == productDto.Name;
 
-            var result = await Find(predicate);
+            var result = await FindAsync(predicate);
 
             return result.Any();
         }

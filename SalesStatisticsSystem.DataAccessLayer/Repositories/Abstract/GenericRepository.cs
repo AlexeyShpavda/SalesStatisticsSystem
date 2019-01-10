@@ -87,7 +87,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             return Mapper.Map<IEnumerable<TDto>>(result);
         }
 
-        public async Task<IEnumerable<TDto>> Find(Expression<Func<TDto, bool>> predicate)
+        public async Task<IEnumerable<TDto>> FindAsync(Expression<Func<TDto, bool>> predicate)
         {
             var newPredicate = predicate.Project<TDto, TEntity>();
 
