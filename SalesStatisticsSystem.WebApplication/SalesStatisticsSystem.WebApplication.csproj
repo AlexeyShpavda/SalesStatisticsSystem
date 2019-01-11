@@ -180,6 +180,7 @@
     <Compile Include="Models\Authentication\Models\User.cs" />
     <Compile Include="Models\Authentication\UserDbInitializer.cs" />
     <Compile Include="Models\Filters\CustomerFilter.cs" />
+    <Compile Include="Models\Filters\ManagerFilter.cs" />
     <Compile Include="Models\Filters\SaleFilter.cs" />
     <Compile Include="Models\SaleViewModels\CustomerViewModel.cs" />
     <Compile Include="Models\SaleViewModels\ManagerViewModel.cs" />
@@ -242,7 +243,7 @@
     <Content Include="Views\Sale\Create.cshtml" />
     <Content Include="Views\Sale\Edit.cshtml" />
     <Content Include="Views\Product\_Product.cshtml" />
-    <Content Include="Views\Manager\_Manager.cshtml" />
+    <Content Include="Views\Manager\Partial\_Manager.cshtml" />
     <Content Include="Views\Customer\Partial\_Customer.cshtml" />
     <Content Include="Views\Sale\_Sale.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
@@ -250,6 +251,8 @@
     <Content Include="Views\Sale\_SalesFilter.cshtml" />
     <Content Include="Views\Customer\Partial\_CustomerTable.cshtml" />
     <Content Include="Views\Customer\Partial\_CustomerFilter.cshtml" />
+    <Content Include="Views\Manager\Partial\_ManagerTable.cshtml" />
+    <Content Include="Views\Manager\Partial\_ManagerFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

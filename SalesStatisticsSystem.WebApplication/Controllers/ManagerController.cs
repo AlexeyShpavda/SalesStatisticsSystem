@@ -6,6 +6,7 @@ using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Core.Services;
+using SalesStatisticsSystem.WebApplication.Models.Filters;
 using SalesStatisticsSystem.WebApplication.Models.SaleViewModels;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
@@ -23,21 +24,34 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _managerService = new ManagerService();
         }
 
-        public async Task<ActionResult> Index(string searching)
+        public async Task<ActionResult> Index()
+        {
+            ViewBag.ManagerFilter = new ManagerFilter();
+
+            var managersDto = await _managerService.GetAllAsync();
+
+            var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
+
+            return View(managersViewModels);
+        }
+
+        public async Task<ActionResult> Find(ManagerFilter managerFilter)
         {
             IEnumerable<ManagerDto> managersDto;
-            if (searching == null)
+            if (managerFilter.LastName == null)
             {
                 managersDto = await _managerService.GetAllAsync();
             }
             else
             {
-                managersDto = await _managerService.FindAsync(x => x.LastName.Contains(searching));
+                managersDto = await _managerService.FindAsync(x =>
+                    x.LastName.Contains(managerFilter.LastName));
+
             }
 
             var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
 
-            return View(managersViewModels);
+            return PartialView("Partial/_ManagerTable", managersViewModels);
         }
 
         public ActionResult Create()
