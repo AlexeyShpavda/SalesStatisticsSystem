@@ -179,6 +179,7 @@
     <Compile Include="Models\Authentication\Models\Role.cs" />
     <Compile Include="Models\Authentication\Models\User.cs" />
     <Compile Include="Models\Authentication\UserDbInitializer.cs" />
+    <Compile Include="Models\Filters\CustomerFilter.cs" />
     <Compile Include="Models\Filters\SaleFilter.cs" />
     <Compile Include="Models\SaleViewModels\CustomerViewModel.cs" />
     <Compile Include="Models\SaleViewModels\ManagerViewModel.cs" />
@@ -205,6 +206,8 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -240,11 +243,13 @@
     <Content Include="Views\Sale\Edit.cshtml" />
     <Content Include="Views\Product\_Product.cshtml" />
     <Content Include="Views\Manager\_Manager.cshtml" />
-    <Content Include="Views\Customer\_Customer.cshtml" />
+    <Content Include="Views\Customer\Partial\_Customer.cshtml" />
     <Content Include="Views\Sale\_Sale.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
     <Content Include="Views\Authentication\Registration.cshtml" />
     <Content Include="Views\Sale\_SalesFilter.cshtml" />
+    <Content Include="Views\Customer\Partial\_CustomerTable.cshtml" />
+    <Content Include="Views\Customer\Partial\_CustomerFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -6,6 +6,7 @@ using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Core.Services;
+using SalesStatisticsSystem.WebApplication.Models.Filters;
 using SalesStatisticsSystem.WebApplication.Models.SaleViewModels;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
@@ -23,22 +24,34 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _customerService = new CustomerService();
         }
 
-        public async Task<ActionResult> Index(string firstNameSearching, string lastNameSearching)
+        public async Task<ActionResult> Index()
+        {
+            ViewBag.CustomerFilter = new CustomerFilter();
+
+            var customersDto = await _customerService.GetAllAsync();
+
+            var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
+
+            return View(customersViewModels);
+        }
+
+        public async Task<ActionResult> Find(CustomerFilter customerFilter)
         {
             IEnumerable<CustomerDto> customersDto;
-            if (firstNameSearching == null && lastNameSearching == null) 
+            if (customerFilter.FirstName == null && customerFilter.LastName == null)
             {
                 customersDto = await _customerService.GetAllAsync();
             }
             else
             {
-                customersDto = await _customerService.FindAsync(x =>
-                    x.FirstName.Contains(firstNameSearching) && x.LastName.Contains(lastNameSearching));
+            customersDto = await _customerService.FindAsync(x =>
+                x.FirstName.Contains(customerFilter.FirstName) || x.LastName.Contains(customerFilter.LastName));
+
             }
 
             var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
 
-            return View(customersViewModels);
+            return PartialView("Partial/_CustomerTable", customersViewModels);
         }
 
         public ActionResult Create()
