@@ -246,16 +246,17 @@
     <Content Include="Views\Product\Partial\_Product.cshtml" />
     <Content Include="Views\Manager\Partial\_Manager.cshtml" />
     <Content Include="Views\Customer\Partial\_Customer.cshtml" />
-    <Content Include="Views\Sale\_Sale.cshtml" />
+    <Content Include="Views\Sale\Partial\_Sale.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
     <Content Include="Views\Authentication\Registration.cshtml" />
-    <Content Include="Views\Sale\_SalesFilter.cshtml" />
     <Content Include="Views\Customer\Partial\_CustomerTable.cshtml" />
     <Content Include="Views\Customer\Partial\_CustomerFilter.cshtml" />
     <Content Include="Views\Manager\Partial\_ManagerTable.cshtml" />
     <Content Include="Views\Manager\Partial\_ManagerFilter.cshtml" />
     <Content Include="Views\Product\Partial\_ProductTable.cshtml" />
     <Content Include="Views\Product\Partial\_ProductFilter.cshtml" />
+    <Content Include="Views\Sale\Partial\_SaleTable.cshtml" />
+    <Content Include="Views\Sale\Partial\_SaleFilter.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

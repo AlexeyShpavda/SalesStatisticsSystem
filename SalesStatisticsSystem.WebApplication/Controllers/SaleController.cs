@@ -28,13 +28,23 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             ViewBag.SaleFilter = new SaleFilter();
 
+            var salesDto = await _saleService.GetAllAsync();
+
+            var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
+
+            return View(salesViewModels);
+        }
+
+        public async Task<ActionResult> Find(SaleFilter saleFilter)
+        {
+
             IEnumerable<SaleDto> salesDto;
-            if (saleFilter.CustomerFirstName == null &&
-                saleFilter.CustomerLastName == null &&
+            if (saleFilter.CustomerFilter.FirstName == null &&
+                saleFilter.CustomerFilter.LastName == null &&
                 saleFilter.DateFrom == null &&
                 saleFilter.DateTo == null &&
-                saleFilter.ManagerLastName == null &&
-                saleFilter.ProductName == null &&
+                saleFilter.ManagerFilter.LastName == null &&
+                saleFilter.ProductFilter.Name == null &&
                 saleFilter.SumFrom == null &&
                 saleFilter.SumTo == null)
             {
@@ -43,17 +53,17 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             else
             {
                 salesDto = await _saleService.FindAsync(x =>
-                    x.Date >= saleFilter.DateFrom && x.Date <= saleFilter.DateTo && 
-                    x.Sum >= saleFilter.SumFrom && x.Sum <= saleFilter.SumTo &&
-                    x.Customer.FirstName.Contains(saleFilter.CustomerFirstName) &&
-                    x.Customer.LastName.Contains(saleFilter.CustomerLastName) &&
-                    x.Manager.LastName.Contains(saleFilter.ManagerLastName) &&
-                    x.Product.Name.Contains(saleFilter.ProductName));
+                    (x.Date >= saleFilter.DateFrom && x.Date <= saleFilter.DateTo) ||
+                    (x.Sum >= saleFilter.SumFrom && x.Sum <= saleFilter.SumTo) ||
+                    x.Customer.FirstName.Contains(saleFilter.CustomerFilter.FirstName) ||
+                    x.Customer.LastName.Contains(saleFilter.CustomerFilter.LastName) ||
+                    x.Manager.LastName.Contains(saleFilter.ManagerFilter.LastName) ||
+                    x.Product.Name.Contains(saleFilter.ProductFilter.Name));
             }
 
             var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
 
-            return View(salesViewModels);
+            return PartialView("Partial/_SaleTable", salesViewModels);
         }
 
         public ActionResult Create()
