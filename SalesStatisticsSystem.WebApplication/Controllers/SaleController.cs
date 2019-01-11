@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -26,11 +27,21 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index(SaleFilter saleFilter)
         {
-            ViewBag.SaleFilter = new SaleFilter();
-
             var salesDto = await _saleService.GetAllAsync();
 
-            var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
+            var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto).ToList();
+
+            #region Chart
+            var uniqueProducts = salesViewModels.Select(x => x.Product.Name).Distinct();
+
+            var productSalesQuantity = uniqueProducts
+                .Select(product => salesViewModels.Count(x => x.Product.Name == product)).ToList();
+
+            ViewBag.UniqueProducts = uniqueProducts;
+            ViewBag.ProductSalesQuantity = productSalesQuantity;
+            #endregion
+
+            ViewBag.SaleFilter = new SaleFilter();
 
             return View(salesViewModels);
         }

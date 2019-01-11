@@ -11,7 +11,12 @@
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
 
-@{ Html.RenderPartial("~/Views/Sale/Partial/_SaleFilter.cshtml", (SaleFilter)ViewBag.SaleFilter);}
+@{Html.RenderPartial(
+          "~/Views/Sale/Partial/_Chart.cshtml",
+          new { uniqueProducts = ViewBag.UniqueProducts, productSalesQuantity = ViewBag.ProductSalesQuantity });
+}
+
+@Html.Partial("~/Views/Sale/Partial/_SaleFilter.cshtml", (SaleFilter)ViewBag.SaleFilter)
 
 <div id="updatedTableWithAjax">
     @Html.Partial("~/Views/Sale/Partial/_SaleTable.cshtml", Model)
