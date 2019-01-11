@@ -6,6 +6,7 @@ using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Core.Services;
+using SalesStatisticsSystem.WebApplication.Models.Filters;
 using SalesStatisticsSystem.WebApplication.Models.SaleViewModels;
 
 namespace SalesStatisticsSystem.WebApplication.Controllers
@@ -23,21 +24,32 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             _productService = new ProductService();
         }
 
-        public async Task<ActionResult> Index(string searching)
+        public async Task<ActionResult> Index()
+        {
+            ViewBag.ProductFilter = new ProductFilter();
+
+            var productsDto = await _productService.GetAllAsync();
+
+            var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
+
+            return View(productsViewModels);
+        }
+
+        public async Task<ActionResult> Find(ProductFilter productFilter)
         {
             IEnumerable<ProductDto> productsDto;
-            if (searching == null)
+            if (productFilter.Name == null)
             {
                 productsDto = await _productService.GetAllAsync();
             }
             else
             {
-                productsDto = await _productService.FindAsync(x => x.Name.Contains(searching));
+                productsDto = await _productService.FindAsync(x => x.Name.Contains(productFilter.Name));
             }
 
             var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
 
-            return View(productsViewModels);
+            return PartialView("Partial/_ProductTable", productsViewModels);
         }
 
         public ActionResult Create()

@@ -1,4 +1,6 @@
-﻿@model IEnumerable<SalesStatisticsSystem.WebApplication.Models.SaleViewModels.ProductViewModel>
+﻿@using SalesStatisticsSystem.WebApplication.Models.Filters
+@model IEnumerable<SalesStatisticsSystem.WebApplication.Models.SaleViewModels.ProductViewModel>
+
 @{
     ViewBag.Title = "Index";
 }
@@ -9,37 +11,10 @@
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
 
-@using (Html.BeginForm("index", "Product", FormMethod.Get))
-{
-    <div class="input-group">
-        <span class="input-group-btn">
-            <input class="btn btn-primary" type="submit" value="Search" />
-        </span>
-        @Html.TextBox("searching", null, new { @class = "form-control" })
-    </div>
-}
+<div id="filterDiv">
+    @Html.Partial("~/Views/Product/Partial/_ProductFilter.cshtml", (ProductFilter)ViewBag.ProductFilter)
+</div>
 
-<table class="table" id="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            Actions
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
+<div id="updatedTableWithAjax">
+    @Html.Partial("~/Views/Product/Partial/_ProductTable.cshtml", Model)
+</div>
