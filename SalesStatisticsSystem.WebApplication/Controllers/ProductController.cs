@@ -28,7 +28,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             ViewBag.ProductFilter = new ProductFilter();
 
-            var productsDto = await _productService.GetAllAsync();
+            var productsDto = await _productService.GetAllAsync().ConfigureAwait(false);
 
             var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
 
@@ -40,11 +40,12 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             IEnumerable<ProductDto> productsDto;
             if (productFilter.Name == null)
             {
-                productsDto = await _productService.GetAllAsync();
+                productsDto = await _productService.GetAllAsync().ConfigureAwait(false);
             }
             else
             {
-                productsDto = await _productService.FindAsync(x => x.Name.Contains(productFilter.Name));
+                productsDto = await _productService.FindAsync(x => x.Name.Contains(productFilter.Name))
+                    .ConfigureAwait(false);
             }
 
             var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
@@ -67,7 +68,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(product);
                 }
 
-                await _productService.AddAsync(_mapper.Map<ProductDto>(product));
+                await _productService.AddAsync(_mapper.Map<ProductDto>(product)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -81,7 +82,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var productDto = await _productService.GetAsync(id);
+            var productDto = await _productService.GetAsync(id).ConfigureAwait(false);
 
             var productViewModel = _mapper.Map<ProductViewModel>(productDto);
 
@@ -98,7 +99,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(product);
                 }
 
-                await _productService.UpdateAsync(_mapper.Map<ProductDto>(product));
+                await _productService.UpdateAsync(_mapper.Map<ProductDto>(product)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -114,10 +115,10 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             try
             {
-                await _productService.DeleteAsync(id);
+                await _productService.DeleteAsync(id).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
-        }
+            }
             catch (Exception exception)
             {
                 ViewBag.Error = exception.Message;

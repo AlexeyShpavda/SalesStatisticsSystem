@@ -28,7 +28,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             ViewBag.CustomerFilter = new CustomerFilter();
 
-            var customersDto = await _customerService.GetAllAsync();
+            var customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
 
             var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
 
@@ -40,12 +40,13 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             IEnumerable<CustomerDto> customersDto;
             if (customerFilter.FirstName == null && customerFilter.LastName == null)
             {
-                customersDto = await _customerService.GetAllAsync();
+                customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
             }
             else
             {
-            customersDto = await _customerService.FindAsync(x =>
-                x.FirstName.Contains(customerFilter.FirstName) || x.LastName.Contains(customerFilter.LastName));
+                customersDto = await _customerService.FindAsync(x =>
+                        x.FirstName.Contains(customerFilter.FirstName) || x.LastName.Contains(customerFilter.LastName))
+                    .ConfigureAwait(false);
 
             }
 
@@ -69,7 +70,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(customer);
                 }
 
-                await _customerService.AddAsync(_mapper.Map<CustomerDto>(customer));
+                await _customerService.AddAsync(_mapper.Map<CustomerDto>(customer)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -83,7 +84,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var customerDto = await _customerService.GetAsync(id);
+            var customerDto = await _customerService.GetAsync(id).ConfigureAwait(false);
 
             var customerViewModel = _mapper.Map<CustomerViewModel>(customerDto);
 
@@ -100,7 +101,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(customer);
                 }
 
-                await _customerService.UpdateAsync(_mapper.Map<CustomerDto>(customer));
+                await _customerService.UpdateAsync(_mapper.Map<CustomerDto>(customer)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -116,7 +117,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             try
             {
-                await _customerService.DeleteAsync(id);
+                await _customerService.DeleteAsync(id).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }

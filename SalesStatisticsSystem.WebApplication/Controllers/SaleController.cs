@@ -27,7 +27,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index(SaleFilter saleFilter)
         {
-            var salesDto = await _saleService.GetAllAsync();
+            var salesDto = await _saleService.GetAllAsync().ConfigureAwait(false);
 
             var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto).ToList();
 
@@ -59,7 +59,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                 saleFilter.SumFrom == null &&
                 saleFilter.SumTo == null)
             {
-                salesDto = await _saleService.GetAllAsync();
+                salesDto = await _saleService.GetAllAsync().ConfigureAwait(false);
             }
             else
             {
@@ -69,7 +69,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     x.Customer.FirstName.Contains(saleFilter.CustomerFilter.FirstName) ||
                     x.Customer.LastName.Contains(saleFilter.CustomerFilter.LastName) ||
                     x.Manager.LastName.Contains(saleFilter.ManagerFilter.LastName) ||
-                    x.Product.Name.Contains(saleFilter.ProductFilter.Name));
+                    x.Product.Name.Contains(saleFilter.ProductFilter.Name)).ConfigureAwait(false);
             }
 
             var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
@@ -92,7 +92,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(sale);
                 }
 
-                await _saleService.AddAsync(_mapper.Map<SaleDto>(sale));
+                await _saleService.AddAsync(_mapper.Map<SaleDto>(sale)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -106,7 +106,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var saleDto = await _saleService.GetAsync(id);
+            var saleDto = await _saleService.GetAsync(id).ConfigureAwait(false);
 
             var saleViewModel = _mapper.Map<SaleViewModel>(saleDto);
 
@@ -123,7 +123,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(sale);
                 }
 
-                await _saleService.UpdateAsync(_mapper.Map<SaleDto>(sale));
+                await _saleService.UpdateAsync(_mapper.Map<SaleDto>(sale)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -139,7 +139,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             try
             {
-                await _saleService.DeleteAsync(id);
+                await _saleService.DeleteAsync(id).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }

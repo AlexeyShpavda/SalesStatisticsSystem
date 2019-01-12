@@ -32,7 +32,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             using (var userContext = new UserContext())
             {
                 var user = await userContext.Users.FirstOrDefaultAsync(u =>
-                    u.Email == loginModel.Email && u.Password == loginModel.Password);
+                    u.Email == loginModel.Email && u.Password == loginModel.Password).ConfigureAwait(false);
 
                 if (user != null)
                 {
@@ -62,17 +62,19 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
             using (var userContext = new UserContext())
             {
-                var user = await userContext.Users.FirstOrDefaultAsync(u => u.Email == registrationModel.Email);
+                var user = await userContext.Users.FirstOrDefaultAsync(u => u.Email == registrationModel.Email)
+                    .ConfigureAwait(false);
 
                 if (user == null)
                 {
-                    userContext.Users.Add(new User()
-                        { Email = registrationModel.Email, Password = registrationModel.Password });
+                    userContext.Users.Add(new User
+                    { Email = registrationModel.Email, Password = registrationModel.Password });
 
-                    await userContext.SaveChangesAsync();
+                    await userContext.SaveChangesAsync().ConfigureAwait(false);
 
                     user = await userContext.Users.FirstOrDefaultAsync(u =>
-                        u.Email == registrationModel.Email && u.Password == registrationModel.Password);
+                            u.Email == registrationModel.Email && u.Password == registrationModel.Password)
+                        .ConfigureAwait(false);
 
                     if (user != null)
                     {
@@ -82,7 +84,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("","User is already registered");
+                    ModelState.AddModelError("", "User is already registered");
                 }
             }
 

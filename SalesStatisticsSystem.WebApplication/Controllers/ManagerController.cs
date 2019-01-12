@@ -28,7 +28,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             ViewBag.ManagerFilter = new ManagerFilter();
 
-            var managersDto = await _managerService.GetAllAsync();
+            var managersDto = await _managerService.GetAllAsync().ConfigureAwait(false);
 
             var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
 
@@ -40,12 +40,12 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
             IEnumerable<ManagerDto> managersDto;
             if (managerFilter.LastName == null)
             {
-                managersDto = await _managerService.GetAllAsync();
+                managersDto = await _managerService.GetAllAsync().ConfigureAwait(false);
             }
             else
             {
                 managersDto = await _managerService.FindAsync(x =>
-                    x.LastName.Contains(managerFilter.LastName));
+                    x.LastName.Contains(managerFilter.LastName)).ConfigureAwait(false);
 
             }
 
@@ -69,7 +69,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(manager);
                 }
 
-                await _managerService.AddAsync(_mapper.Map<ManagerDto>(manager));
+                await _managerService.AddAsync(_mapper.Map<ManagerDto>(manager)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -83,7 +83,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var managerDto = await _managerService.GetAsync(id);
+            var managerDto = await _managerService.GetAsync(id).ConfigureAwait(false);
 
             var managerViewModel = _mapper.Map<ManagerViewModel>(managerDto);
 
@@ -100,7 +100,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
                     return View(manager);
                 }
 
-                await _managerService.UpdateAsync(_mapper.Map<ManagerDto>(manager));
+                await _managerService.UpdateAsync(_mapper.Map<ManagerDto>(manager)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -116,7 +116,7 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
         {
             try
             {
-                await _managerService.DeleteAsync(id);
+                await _managerService.DeleteAsync(id).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
