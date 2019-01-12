@@ -26,32 +26,58 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            ViewBag.ManagerFilter = new ManagerFilter();
+            try
+            {
+                ViewBag.ManagerFilter = new ManagerFilter();
 
-            var managersDto = await _managerService.GetAllAsync().ConfigureAwait(false);
+                var managersDto = await _managerService.GetAllAsync().ConfigureAwait(false);
 
-            var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
+                var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
 
-            return View(managersViewModels);
+                return View(managersViewModels);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
+
+                return View();
+            }
         }
 
         public async Task<ActionResult> Find(ManagerFilter managerFilter)
         {
-            IEnumerable<ManagerDto> managersDto;
-            if (managerFilter.LastName == null)
+            try
             {
-                managersDto = await _managerService.GetAllAsync().ConfigureAwait(false);
+                if (!ModelState.IsValid)
+                {
+                    var dto = await _managerService.GetAllAsync().ConfigureAwait(false);
+
+                    var viewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(dto);
+
+                    return PartialView("Partial/_ManagerTable", viewModels);
+                }
+
+                IEnumerable<ManagerDto> managersDto;
+                if (managerFilter.LastName == null)
+                {
+                    managersDto = await _managerService.GetAllAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    managersDto = await _managerService.FindAsync(x =>
+                        x.LastName.Contains(managerFilter.LastName)).ConfigureAwait(false);
+                }
+
+                var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
+
+                return PartialView("Partial/_ManagerTable", managersViewModels);
             }
-            else
+            catch (Exception exception)
             {
-                managersDto = await _managerService.FindAsync(x =>
-                    x.LastName.Contains(managerFilter.LastName)).ConfigureAwait(false);
+                ViewBag.Error = exception.Message;
 
+                return PartialView("Partial/_ManagerTable");
             }
-
-            var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
-
-            return PartialView("Partial/_ManagerTable", managersViewModels);
         }
 
         public ActionResult Create()
@@ -83,11 +109,20 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var managerDto = await _managerService.GetAsync(id).ConfigureAwait(false);
+            try
+            {
+                var managerDto = await _managerService.GetAsync(id).ConfigureAwait(false);
 
-            var managerViewModel = _mapper.Map<ManagerViewModel>(managerDto);
+                var managerViewModel = _mapper.Map<ManagerViewModel>(managerDto);
 
-            return View(managerViewModel);
+                return View(managerViewModel);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
+
+                return View();
+            }
         }
 
         [HttpPost]

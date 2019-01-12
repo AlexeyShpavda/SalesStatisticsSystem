@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<SalesStatisticsSystem.WebApplication.Models.SaleViewModels.CustomerViewModel>
 
+<h3>@ViewBag.Error</h3>
+
 <table class="table">
     <tr>
         <th>
@@ -10,22 +12,34 @@
         </th>
         <th></th>
     </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="3">
+                No Customer List.
+            </td>
+        </tr>
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            <div class="btn-group" role="group" aria-label="Basic example">
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
-            </div>
-        </td>
-    </tr>
-}
 
 </table>

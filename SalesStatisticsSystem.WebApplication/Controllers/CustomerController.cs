@@ -26,33 +26,59 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            ViewBag.CustomerFilter = new CustomerFilter();
+            try
+            {
+                ViewBag.CustomerFilter = new CustomerFilter();
 
-            var customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
+                var customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
 
-            var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
+                var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
 
-            return View(customersViewModels);
+                return View(customersViewModels);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
+
+                return View();
+            }
         }
 
         public async Task<ActionResult> Find(CustomerFilter customerFilter)
         {
-            IEnumerable<CustomerDto> customersDto;
-            if (customerFilter.FirstName == null && customerFilter.LastName == null)
+            try
             {
-                customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
+                if (!ModelState.IsValid)
+                {
+                    var dto = await _customerService.GetAllAsync().ConfigureAwait(false);
+
+                    var viewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(dto);
+
+                    return PartialView("Partial/_CustomerTable", viewModels);
+                }
+
+                IEnumerable<CustomerDto> customersDto;
+                if (customerFilter.FirstName == null && customerFilter.LastName == null)
+                {
+                    customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    customersDto = await _customerService.FindAsync(x =>
+                            x.FirstName.Contains(customerFilter.FirstName) || x.LastName.Contains(customerFilter.LastName))
+                        .ConfigureAwait(false);
+                }
+
+                var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
+
+                return PartialView("Partial/_CustomerTable", customersViewModels);
             }
-            else
+            catch (Exception exception)
             {
-                customersDto = await _customerService.FindAsync(x =>
-                        x.FirstName.Contains(customerFilter.FirstName) || x.LastName.Contains(customerFilter.LastName))
-                    .ConfigureAwait(false);
+                ViewBag.Error = exception.Message;
 
+                return PartialView("Partial/_CustomerTable");
             }
-
-            var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
-
-            return PartialView("Partial/_CustomerTable", customersViewModels);
         }
 
         public ActionResult Create()
@@ -84,11 +110,20 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var customerDto = await _customerService.GetAsync(id).ConfigureAwait(false);
+            try
+            {
+                var customerDto = await _customerService.GetAsync(id).ConfigureAwait(false);
 
-            var customerViewModel = _mapper.Map<CustomerViewModel>(customerDto);
+                var customerViewModel = _mapper.Map<CustomerViewModel>(customerDto);
 
-            return View(customerViewModel);
+                return View(customerViewModel);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
+
+                return View();
+            }
         }
 
         [HttpPost]

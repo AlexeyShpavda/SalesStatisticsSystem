@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<SalesStatisticsSystem.WebApplication.Models.SaleViewModels.ManagerViewModel>
 
+<h3>@ViewBag.Error</h3>
+
 <table class="table" id="table">
     <tr>
         <th>
@@ -9,18 +11,28 @@
             Actions
         </th>
     </tr>
-
-    @foreach (var item in Model)
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </td>
+            </tr>
+        }
+    }
+    else
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
-                </div>
+            <td colspan="2">
+                No Manager List.
             </td>
         </tr>
     }

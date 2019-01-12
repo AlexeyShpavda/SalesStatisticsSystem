@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.Ajax.Utilities;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Core.Services;
@@ -27,54 +28,81 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index(SaleFilter saleFilter)
         {
-            var salesDto = await _saleService.GetAllAsync().ConfigureAwait(false);
+            try
+            {
+                var salesDto = await _saleService.GetAllAsync().ConfigureAwait(false);
 
-            var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto).ToList();
+                var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto).ToList();
 
-            #region Chart
-            var uniqueProducts = salesViewModels.Select(x => x.Product.Name).Distinct();
+                #region Chart
+                var uniqueProducts = salesViewModels.Select(x => x.Product.Name).Distinct();
 
-            var productSalesQuantity = uniqueProducts
-                .Select(product => salesViewModels.Count(x => x.Product.Name == product)).ToList();
+                var productSalesQuantity = uniqueProducts
+                    .Select(product => salesViewModels.Count(x => x.Product.Name == product)).ToList();
 
-            ViewBag.UniqueProducts = uniqueProducts;
-            ViewBag.ProductSalesQuantity = productSalesQuantity;
-            #endregion
+                ViewBag.UniqueProducts = uniqueProducts;
+                ViewBag.ProductSalesQuantity = productSalesQuantity;
+                #endregion
 
-            ViewBag.SaleFilter = new SaleFilter();
+                ViewBag.SaleFilter = new SaleFilter();
 
-            return View(salesViewModels);
+                return View(salesViewModels);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
+
+                return View();
+            }
         }
 
         public async Task<ActionResult> Find(SaleFilter saleFilter)
         {
-
-            IEnumerable<SaleDto> salesDto;
-            if (saleFilter.CustomerFilter.FirstName == null &&
-                saleFilter.CustomerFilter.LastName == null &&
-                saleFilter.DateFrom == null &&
-                saleFilter.DateTo == null &&
-                saleFilter.ManagerFilter.LastName == null &&
-                saleFilter.ProductFilter.Name == null &&
-                saleFilter.SumFrom == null &&
-                saleFilter.SumTo == null)
+            try
             {
-                salesDto = await _saleService.GetAllAsync().ConfigureAwait(false);
+                if (!ModelState.IsValid)
+                {
+                    var dto = await _saleService.GetAllAsync().ConfigureAwait(false);
+
+                    var viewModels = _mapper.Map<IEnumerable<SaleViewModel>>(dto);
+
+                    return PartialView("Partial/_SaleTable", viewModels);
+                }
+
+                IEnumerable<SaleDto> salesDto;
+                if (saleFilter.CustomerFilter.FirstName == null &&
+                    saleFilter.CustomerFilter.LastName == null &&
+                    saleFilter.DateFrom == null &&
+                    saleFilter.DateTo == null &&
+                    saleFilter.ManagerFilter.LastName == null &&
+                    saleFilter.ProductFilter.Name == null &&
+                    saleFilter.SumFrom == null &&
+                    saleFilter.SumTo == null)
+                {
+                    salesDto = await _saleService.GetAllAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    salesDto = await _saleService.FindAsync(x =>
+                        (x.Date >= saleFilter.DateFrom && x.Date <= saleFilter.DateTo) ||
+                        (x.Sum >= saleFilter.SumFrom && x.Sum <= saleFilter.SumTo) ||
+                        x.Customer.FirstName.Contains(saleFilter.CustomerFilter.FirstName) ||
+                        x.Customer.LastName.Contains(saleFilter.CustomerFilter.LastName) ||
+                        x.Manager.LastName.Contains(saleFilter.ManagerFilter.LastName) ||
+                        x.Product.Name.Contains(saleFilter.ProductFilter.Name)).ConfigureAwait(false);
+                }
+
+                var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
+
+                return PartialView("Partial/_SaleTable", salesViewModels);
             }
-            else
+            catch (Exception exception)
             {
-                salesDto = await _saleService.FindAsync(x =>
-                    (x.Date >= saleFilter.DateFrom && x.Date <= saleFilter.DateTo) ||
-                    (x.Sum >= saleFilter.SumFrom && x.Sum <= saleFilter.SumTo) ||
-                    x.Customer.FirstName.Contains(saleFilter.CustomerFilter.FirstName) ||
-                    x.Customer.LastName.Contains(saleFilter.CustomerFilter.LastName) ||
-                    x.Manager.LastName.Contains(saleFilter.ManagerFilter.LastName) ||
-                    x.Product.Name.Contains(saleFilter.ProductFilter.Name)).ConfigureAwait(false);
+                ViewBag.Error = exception.Message;
+
+                return PartialView("Partial/_SaleTable");
             }
 
-            var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
-
-            return PartialView("Partial/_SaleTable", salesViewModels);
         }
 
         public ActionResult Create()
@@ -106,11 +134,20 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var saleDto = await _saleService.GetAsync(id).ConfigureAwait(false);
+            try
+            {
+                var saleDto = await _saleService.GetAsync(id).ConfigureAwait(false);
 
-            var saleViewModel = _mapper.Map<SaleViewModel>(saleDto);
+                var saleViewModel = _mapper.Map<SaleViewModel>(saleDto);
 
-            return View(saleViewModel);
+                return View(saleViewModel);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
+
+                return View();
+            }
         }
 
         [HttpPost]

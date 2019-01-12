@@ -26,31 +26,58 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Index()
         {
-            ViewBag.ProductFilter = new ProductFilter();
+            try
+            {
+                ViewBag.ProductFilter = new ProductFilter();
 
-            var productsDto = await _productService.GetAllAsync().ConfigureAwait(false);
+                var productsDto = await _productService.GetAllAsync().ConfigureAwait(false);
 
-            var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
+                var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
 
-            return View(productsViewModels);
+                return View(productsViewModels);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
+
+                return View();
+            }
         }
 
         public async Task<ActionResult> Find(ProductFilter productFilter)
         {
-            IEnumerable<ProductDto> productsDto;
-            if (productFilter.Name == null)
+            try
             {
-                productsDto = await _productService.GetAllAsync().ConfigureAwait(false);
+                if (!ModelState.IsValid)
+                {
+                    var dto = await _productService.GetAllAsync().ConfigureAwait(false);
+
+                    var viewModels = _mapper.Map<IEnumerable<ProductViewModel>>(dto);
+
+                    return PartialView("Partial/_ProductTable", viewModels);
+                }
+
+                IEnumerable<ProductDto> productsDto;
+                if (productFilter.Name == null)
+                {
+                    productsDto = await _productService.GetAllAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    productsDto = await _productService.FindAsync(x => x.Name.Contains(productFilter.Name))
+                        .ConfigureAwait(false);
+                }
+
+                var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
+
+                return PartialView("Partial/_ProductTable", productsViewModels);
             }
-            else
+            catch (Exception exception)
             {
-                productsDto = await _productService.FindAsync(x => x.Name.Contains(productFilter.Name))
-                    .ConfigureAwait(false);
+                ViewBag.Error = exception.Message;
+
+                return PartialView("Partial/_ProductTable");
             }
-
-            var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
-
-            return PartialView("Partial/_ProductTable", productsViewModels);
         }
 
         public ActionResult Create()
@@ -82,11 +109,20 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            var productDto = await _productService.GetAsync(id).ConfigureAwait(false);
+            try
+            {
+                var productDto = await _productService.GetAsync(id).ConfigureAwait(false);
 
-            var productViewModel = _mapper.Map<ProductViewModel>(productDto);
+                var productViewModel = _mapper.Map<ProductViewModel>(productDto);
 
-            return View(productViewModel);
+                return View(productViewModel);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
+
+                return View();
+            }
         }
 
         [HttpPost]
