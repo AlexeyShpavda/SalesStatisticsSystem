@@ -16,12 +16,15 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
         }
 
-        public async Task<CustomerDto> AddUniqueCustomerToDatabaseAsync(CustomerDto customerDto)
+        public async Task<bool> TryAddUniqueCustomerAsync(CustomerDto customerDto)
         {
             if (await DoesCustomerExistAsync(customerDto).ConfigureAwait(false))
-                throw new ArgumentException("Customer already exists!");
+            {
+                return false;
+            }
 
-            return Add(customerDto);
+            Add(customerDto);
+            return true;
         }
 
         public async Task<int> GetIdAsync(string customerFirstName, string customerLastName)

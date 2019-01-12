@@ -116,7 +116,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
             else
             {
-                throw new ArgumentException("There is no such Customer. Register it!");
+                ThrowArgumentException("There is no such Customer. Register it!");
             }
 
             if (await Managers.DoesManagerExistAsync(sale.Manager))
@@ -125,7 +125,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
             else
             {
-                throw new ArgumentException("There is no such Manager. Register it!");
+                ThrowArgumentException("There is no such Manager. Register it!");
             }
 
             if (await Products.DoesProductExistAsync(sale.Product))
@@ -134,8 +134,13 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             }
             else
             {
-                throw new ArgumentException("There is no such Product. Register it!");
+                ThrowArgumentException("There is no such Product. Register it!");
             }
+        }
+
+        private static void ThrowArgumentException(string message)
+        {
+            throw new ArgumentException(message);
         }
     }
 }

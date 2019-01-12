@@ -5,7 +5,7 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 {
     public interface IProductRepository : IGenericRepository<ProductDto>
     {
-        Task<ProductDto> AddUniqueProductToDatabaseAsync(ProductDto productDto);
+        Task<bool> TryAddUniqueProductAsync(ProductDto productDto);
 
         Task<int> GetIdAsync(string productName);
 

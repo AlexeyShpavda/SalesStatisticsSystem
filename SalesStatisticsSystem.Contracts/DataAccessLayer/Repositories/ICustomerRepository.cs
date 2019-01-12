@@ -5,7 +5,7 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 {
     public interface ICustomerRepository : IGenericRepository<CustomerDto>
     {
-        Task<CustomerDto> AddUniqueCustomerToDatabaseAsync(CustomerDto customerDto);
+        Task<bool> TryAddUniqueCustomerAsync(CustomerDto customerDto);
 
         Task<int> GetIdAsync(string customerFirstName, string customerLastName);
 

@@ -45,10 +45,16 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                var result = await Products.AddUniqueProductToDatabaseAsync(product).ConfigureAwait(false);
-                await Products.SaveAsync().ConfigureAwait(false);
-
-                return result;
+                if (await Products.TryAddUniqueProductAsync(product).ConfigureAwait(false))
+                {
+                    await Products.SaveAsync().ConfigureAwait(false);
+                    return await GetAsync(await Products.GetIdAsync(product.Name)
+                        .ConfigureAwait(false)).ConfigureAwait(false);
+                }
+                else
+                {
+                    throw new ArgumentException("Product already exists!");
+                }
             }
             finally
             {

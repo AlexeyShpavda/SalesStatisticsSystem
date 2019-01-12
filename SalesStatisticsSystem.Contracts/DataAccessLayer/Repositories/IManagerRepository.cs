@@ -5,7 +5,7 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 {
     public interface IManagerRepository : IGenericRepository<ManagerDto>
     {
-        Task<ManagerDto> AddUniqueManagerToDatabaseAsync(ManagerDto managerDto);
+        Task<bool> TryAddUniqueManagerAsync(ManagerDto managerDto);
 
         Task<int> GetIdAsync(string managerLastName);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -45,11 +46,16 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                var result = await Customers.AddUniqueCustomerToDatabaseAsync(customer).ConfigureAwait(false);
-
-                await Customers.SaveAsync().ConfigureAwait(false);
-
-                return result;
+                if (await Customers.TryAddUniqueCustomerAsync(customer).ConfigureAwait(false))
+                {
+                    await Customers.SaveAsync().ConfigureAwait(false);
+                    return await GetAsync(await Customers.GetIdAsync(customer.FirstName, customer.LastName)
+                        .ConfigureAwait(false)).ConfigureAwait(false);
+                }
+                else
+                {
+                    throw new ArgumentException("Customer already exists!");
+                }
             }
             finally
             {

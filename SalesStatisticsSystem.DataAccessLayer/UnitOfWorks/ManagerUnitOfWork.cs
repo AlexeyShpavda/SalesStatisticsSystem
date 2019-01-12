@@ -45,10 +45,16 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                var result = await Managers.AddUniqueManagerToDatabaseAsync(manager).ConfigureAwait(false);
-                await Managers.SaveAsync().ConfigureAwait(false);
-
-                return result;
+                if (await Managers.TryAddUniqueManagerAsync(manager).ConfigureAwait(false))
+                {
+                    await Managers.SaveAsync().ConfigureAwait(false);
+                    return await GetAsync(await Managers.GetIdAsync(manager.LastName)
+                        .ConfigureAwait(false)).ConfigureAwait(false);
+                }
+                else
+                {
+                    throw new ArgumentException("Manager already exists!");
+                }
             }
             finally
             {

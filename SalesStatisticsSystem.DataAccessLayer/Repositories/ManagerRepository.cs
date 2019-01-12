@@ -16,12 +16,15 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
         }
 
-        public async Task<ManagerDto> AddUniqueManagerToDatabaseAsync(ManagerDto managerDto)
+        public async Task<bool> TryAddUniqueManagerAsync(ManagerDto managerDto)
         {
             if (await DoesManagerExistAsync(managerDto).ConfigureAwait(false))
-                throw new ArgumentException("Manager already exists!");
+            {
+                return false;
+            }
 
-            return Add(managerDto);
+            Add(managerDto);
+            return true;
         }
 
         public async Task<int> GetIdAsync(string managerLastName)

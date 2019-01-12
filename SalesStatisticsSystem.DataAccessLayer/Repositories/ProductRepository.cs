@@ -16,12 +16,15 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
         }
 
-        public async Task<ProductDto> AddUniqueProductToDatabaseAsync(ProductDto productDto)
+        public async Task<bool> TryAddUniqueProductAsync(ProductDto productDto)
         {
             if (await DoesProductExistAsync(productDto).ConfigureAwait(false))
-                throw new ArgumentException("Product already exists!");
+            {
+                return false;
+            }
 
-            return Add(productDto);
+            Add(productDto);
+            return true;
         }
 
         public async Task<int> GetIdAsync(string productName)
