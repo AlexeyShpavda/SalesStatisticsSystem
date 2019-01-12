@@ -30,32 +30,32 @@ namespace SalesStatisticsSystem.Core.Services
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            return await ProductUnitOfWork.GetAllAsync();
+            return await ProductUnitOfWork.GetAllAsync().ConfigureAwait(false);
         }
 
         public async Task<ProductDto> GetAsync(int id)
         {
-            return await ProductUnitOfWork.GetAsync(id);
+            return await ProductUnitOfWork.GetAsync(id).ConfigureAwait(false);
         }
 
         public async Task<ProductDto> AddAsync(ProductDto model)
         {
-            return await ProductUnitOfWork.AddAsync(model);
+            return await ProductUnitOfWork.AddAsync(model).ConfigureAwait(false);
         }
 
         public async Task<ProductDto> UpdateAsync(ProductDto model)
         {
-            return await ProductUnitOfWork.UpdateAsync(model);
+            return await ProductUnitOfWork.UpdateAsync(model).ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
         {
-            await ProductUnitOfWork.DeleteAsync(id);
+            await ProductUnitOfWork.DeleteAsync(id).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<ProductDto>> FindAsync(Expression<Func<ProductDto, bool>> predicate)
         {
-            return await ProductUnitOfWork.FindAsync(predicate);
+            return await ProductUnitOfWork.FindAsync(predicate).ConfigureAwait(false);
         }
 
         private bool _disposed;
