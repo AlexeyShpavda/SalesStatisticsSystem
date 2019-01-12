@@ -18,7 +18,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 
         public async Task<CustomerDto> AddUniqueCustomerToDatabaseAsync(CustomerDto customerDto)
         {
-            if (await DoesCustomerExistAsync(customerDto)) throw new ArgumentException("Customer already exists!");
+            if (await DoesCustomerExistAsync(customerDto).ConfigureAwait(false))
+                throw new ArgumentException("Customer already exists!");
 
             return Add(customerDto);
         }
@@ -28,7 +29,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
             Expression<Func<CustomerDto, bool>> predicate = x =>
                 x.FirstName == customerFirstName && x.LastName == customerLastName;
 
-            var result = await FindAsync(predicate);
+            var result = await FindAsync(predicate).ConfigureAwait(false);
 
             return result.First().Id;
         }
@@ -38,7 +39,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
             Expression<Func<CustomerDto, bool>> predicate = x =>
                 x.LastName == customerDto.LastName && x.FirstName == customerDto.FirstName;
 
-            var result = await FindAsync(predicate);
+            var result = await FindAsync(predicate).ConfigureAwait(false);
 
             return result.Any();
         }

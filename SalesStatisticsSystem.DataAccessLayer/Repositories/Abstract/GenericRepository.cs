@@ -58,7 +58,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
 
         public async Task DeleteAsync(int id)
         {
-            var entity = Mapper.Map<TEntity>(await GetAsync(id));
+            var entity = Mapper.Map<TEntity>(await GetAsync(id).ConfigureAwait(false));
 
             if (Context.Entry(entity).State == EntityState.Detached)
             {
@@ -75,14 +75,14 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
 
             var newPredicate = predicate.Project<TDto, TEntity>();
 
-            var result = await DbSet.AsNoTracking().FirstOrDefaultAsync(newPredicate);
+            var result = await DbSet.AsNoTracking().FirstOrDefaultAsync(newPredicate).ConfigureAwait(false);
 
             return Mapper.Map<TDto>(result);
         }
 
         public async Task<IEnumerable<TDto>> GetAllAsync()
         {
-            var result = await DbSet.AsNoTracking().ToListAsync();
+            var result = await DbSet.AsNoTracking().ToListAsync().ConfigureAwait(false);
 
             return Mapper.Map<IEnumerable<TDto>>(result);
         }
@@ -91,12 +91,13 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
         {
             var newPredicate = predicate.Project<TDto, TEntity>();
 
-            return Mapper.Map<IEnumerable<TDto>>(await DbSet.AsNoTracking().Where(newPredicate).ToListAsync());
+            return Mapper.Map<IEnumerable<TDto>>(await DbSet.AsNoTracking().Where(newPredicate).ToListAsync()
+                .ConfigureAwait(false));
         }
 
         public async Task<int> SaveAsync()
         {
-            return await Context.SaveChangesAsync();
+            return await Context.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

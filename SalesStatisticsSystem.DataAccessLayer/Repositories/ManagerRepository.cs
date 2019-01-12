@@ -18,7 +18,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 
         public async Task<ManagerDto> AddUniqueManagerToDatabaseAsync(ManagerDto managerDto)
         {
-            if (await DoesManagerExistAsync(managerDto)) throw new ArgumentException("Manager already exists!");
+            if (await DoesManagerExistAsync(managerDto).ConfigureAwait(false))
+                throw new ArgumentException("Manager already exists!");
 
             return Add(managerDto);
         }
@@ -27,7 +28,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
             Expression<Func<ManagerDto, bool>> predicate = x => x.LastName == managerLastName;
 
-            var result = await FindAsync(predicate);
+            var result = await FindAsync(predicate).ConfigureAwait(false);
 
             return result.First().Id;
         }
@@ -36,7 +37,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
         {
             Expression<Func<ManagerDto, bool>> predicate = x => x.LastName == managerDto.LastName;
 
-            var result = await FindAsync(predicate);
+            var result = await FindAsync(predicate).ConfigureAwait(false);
 
             return result.Any();
         }
