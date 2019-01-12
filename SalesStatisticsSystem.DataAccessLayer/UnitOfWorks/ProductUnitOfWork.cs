@@ -32,12 +32,12 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            return await Products.GetAllAsync();
+            return await Products.GetAllAsync().ConfigureAwait(false);
         }
 
         public async Task<ProductDto> GetAsync(int id)
         {
-            return await Products.GetAsync(id);
+            return await Products.GetAsync(id).ConfigureAwait(false);
         }
 
         public async Task<ProductDto> AddAsync(ProductDto product)
@@ -45,8 +45,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                var result = await Products.AddUniqueProductToDatabaseAsync(product);
-                await Products.SaveAsync();
+                var result = await Products.AddUniqueProductToDatabaseAsync(product).ConfigureAwait(false);
+                await Products.SaveAsync().ConfigureAwait(false);
 
                 return result;
             }
@@ -64,10 +64,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                if (await Products.DoesProductExistAsync(product)) throw new ArgumentException("Product already exists!");
+                if (await Products.DoesProductExistAsync(product).ConfigureAwait(false))
+                    throw new ArgumentException("Product already exists!");
 
                 var result = Products.Update(product);
-                await Products.SaveAsync();
+                await Products.SaveAsync().ConfigureAwait(false);
 
                 return result;
             }
@@ -85,8 +86,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterReadLock();
             try
             {
-                await Products.DeleteAsync(id);
-                await Products.SaveAsync();
+                await Products.DeleteAsync(id).ConfigureAwait(false);
+                await Products.SaveAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -99,7 +100,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 
         public async Task<IEnumerable<ProductDto>> FindAsync(Expression<Func<ProductDto, bool>> predicate)
         {
-            return await Products.FindAsync(predicate);
+            return await Products.FindAsync(predicate).ConfigureAwait(false);
         }
     }
 }

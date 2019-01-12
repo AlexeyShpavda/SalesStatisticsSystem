@@ -32,12 +32,12 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 
         public async Task<IEnumerable<ManagerDto>> GetAllAsync()
         {
-            return await Managers.GetAllAsync();
+            return await Managers.GetAllAsync().ConfigureAwait(false);
         }
 
         public async Task<ManagerDto> GetAsync(int id)
         {
-            return await Managers.GetAsync(id);
+            return await Managers.GetAsync(id).ConfigureAwait(false);
         }
 
         public async Task<ManagerDto> AddAsync(ManagerDto manager)
@@ -45,8 +45,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                var result = await Managers.AddUniqueManagerToDatabaseAsync(manager);
-                await Managers.SaveAsync();
+                var result = await Managers.AddUniqueManagerToDatabaseAsync(manager).ConfigureAwait(false);
+                await Managers.SaveAsync().ConfigureAwait(false);
 
                 return result;
             }
@@ -64,10 +64,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                if (await Managers.DoesManagerExistAsync(manager)) throw new ArgumentException("Manager already exists!");
+                if (await Managers.DoesManagerExistAsync(manager).ConfigureAwait(false))
+                    throw new ArgumentException("Manager already exists!");
 
                 var result = Managers.Update(manager);
-                await Managers.SaveAsync();
+                await Managers.SaveAsync().ConfigureAwait(false);
 
                 return result;
             }
@@ -85,8 +86,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterReadLock();
             try
             {
-                await Managers.DeleteAsync(id);
-                await Managers.SaveAsync();
+                await Managers.DeleteAsync(id).ConfigureAwait(false);
+                await Managers.SaveAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -99,7 +100,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 
         public async Task<IEnumerable<ManagerDto>> FindAsync(Expression<Func<ManagerDto, bool>> predicate)
         {
-            return await Managers.FindAsync(predicate);
+            return await Managers.FindAsync(predicate).ConfigureAwait(false);
         }
     }
 }

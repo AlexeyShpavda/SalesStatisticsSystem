@@ -32,12 +32,12 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 
         public async Task<IEnumerable<CustomerDto>> GetAllAsync()
         {
-            return await Customers.GetAllAsync();
+            return await Customers.GetAllAsync().ConfigureAwait(false);
         }
 
         public async Task<CustomerDto> GetAsync(int id)
         {
-            return await Customers.GetAsync(id);
+            return await Customers.GetAsync(id).ConfigureAwait(false);
         }
 
         public async Task<CustomerDto> AddAsync(CustomerDto customer)
@@ -45,9 +45,9 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                var result = await Customers.AddUniqueCustomerToDatabaseAsync(customer);
+                var result = await Customers.AddUniqueCustomerToDatabaseAsync(customer).ConfigureAwait(false);
 
-                await Customers.SaveAsync();
+                await Customers.SaveAsync().ConfigureAwait(false);
 
                 return result;
             }
@@ -65,10 +65,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterWriteLock();
             try
             {
-                if (await Customers.DoesCustomerExistAsync(customer)) throw new ArgumentException("Customer already exists!");
+                if (await Customers.DoesCustomerExistAsync(customer).ConfigureAwait(false))
+                    throw new ArgumentException("Customer already exists!");
 
                 var result = Customers.Update(customer);
-                await Customers.SaveAsync();
+                await Customers.SaveAsync().ConfigureAwait(false);
 
                 return result;
             }
@@ -86,8 +87,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Locker.EnterReadLock();
             try
             {
-                await Customers.DeleteAsync(id);
-                await Customers.SaveAsync();
+                await Customers.DeleteAsync(id).ConfigureAwait(false);
+                await Customers.SaveAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -100,7 +101,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 
         public async Task<IEnumerable<CustomerDto>> FindAsync(Expression<Func<CustomerDto, bool>> predicate)
         {
-            return await Customers.FindAsync(predicate);
+            return await Customers.FindAsync(predicate).ConfigureAwait(false);
         }
     }
 }
