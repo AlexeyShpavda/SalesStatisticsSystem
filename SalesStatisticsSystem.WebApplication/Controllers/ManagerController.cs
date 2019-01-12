@@ -17,11 +17,11 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         private readonly IMapper _mapper;
 
-        public ManagerController()
+        public ManagerController(IManagerService managerService, IMapper mapper)
         {
-            _mapper = Support.Adapter.AutoMapper.CreateConfiguration().CreateMapper();
+            _managerService = managerService;
 
-            _managerService = new ManagerService();
+            _mapper = mapper;
         }
 
         public async Task<ActionResult> Index()

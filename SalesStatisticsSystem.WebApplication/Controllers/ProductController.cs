@@ -17,11 +17,11 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         private readonly IMapper _mapper;
 
-        public ProductController()
+        public ProductController(IProductService productService, IMapper mapper)
         {
-            _mapper = Support.Adapter.AutoMapper.CreateConfiguration().CreateMapper();
+            _productService = productService;
 
-            _productService = new ProductService();
+            _mapper = mapper;
         }
 
         public async Task<ActionResult> Index()
