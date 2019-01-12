@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
-using SalesStatisticsSystem.Core.Services;
 using SalesStatisticsSystem.WebApplication.Models.Filters;
 using SalesStatisticsSystem.WebApplication.Models.SaleViewModels;
 

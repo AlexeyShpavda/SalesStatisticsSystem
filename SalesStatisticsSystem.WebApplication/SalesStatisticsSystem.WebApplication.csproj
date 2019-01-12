@@ -315,6 +315,14 @@
       <Project>{4597DD71-B6AA-4974-A2A9-25FAE9352BFE}</Project>
       <Name>SalesStatisticsSystem.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SalesStatisticsSystem.DataAccessLayer\SalesStatisticsSystem.DataAccessLayer.csproj">
+      <Project>{266E00CC-6D19-456D-91A1-E56A265C3E57}</Project>
+      <Name>SalesStatisticsSystem.DataAccessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SalesStatisticsSystem.Entity\SalesStatisticsSystem.Entity.csproj">
+      <Project>{E6F12439-A456-4317-AD09-888983858F94}</Project>
+      <Name>SalesStatisticsSystem.Entity</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

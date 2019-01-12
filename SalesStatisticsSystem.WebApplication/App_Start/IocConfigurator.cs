@@ -3,6 +3,7 @@ using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Core.Services;
 using SalesStatisticsSystem.WebApplication.Infrastructure;
 using Unity;
+using Unity.Lifetime;
 
 namespace SalesStatisticsSystem.WebApplication
 {
@@ -19,10 +20,10 @@ namespace SalesStatisticsSystem.WebApplication
 
         private static void RegisterServices(IUnityContainer unityContainer)
         {
-            unityContainer.RegisterType<ICustomerService, CustomerService>();
-            unityContainer.RegisterType<IProductService, ProductService>();
-            unityContainer.RegisterType<ISaleService, SaleService>();
-            unityContainer.RegisterType<IManagerService, ManagerService>();
+            unityContainer.RegisterType<ICustomerService, CustomerService>(new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IProductService, ProductService>(new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<ISaleService, SaleService>(new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IManagerService, ManagerService>(new ContainerControlledLifetimeManager());
             unityContainer.RegisterInstance(Support.Adapter.AutoMapper.CreateConfiguration().CreateMapper());
         }
     }
