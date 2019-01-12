@@ -11,6 +11,7 @@ namespace SalesStatisticsSystem.WebApplication
         protected void Application_Start()
         {
             Database.SetInitializer(new UserDbInitializer());
+            IocConfigurator.ConfigureIocUnityContainer();
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

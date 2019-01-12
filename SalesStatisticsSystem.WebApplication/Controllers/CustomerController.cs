@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
-using SalesStatisticsSystem.Core.Services;
 using SalesStatisticsSystem.WebApplication.Models.Filters;
 using SalesStatisticsSystem.WebApplication.Models.SaleViewModels;
 
@@ -17,11 +16,11 @@ namespace SalesStatisticsSystem.WebApplication.Controllers
 
         private readonly IMapper _mapper;
 
-        public CustomerController()
+        public CustomerController(ICustomerService customerService, IMapper mapper)
         {
-            _mapper = Support.Adapter.AutoMapper.CreateConfiguration().CreateMapper();
+            _customerService = customerService;
 
-            _customerService = new CustomerService();
+            _mapper = mapper;
         }
 
         public async Task<ActionResult> Index()
