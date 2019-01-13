@@ -8,6 +8,7 @@ using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Entity;
+using X.PagedList;
 
 namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 {
@@ -33,6 +34,11 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
             return await Products.GetAllAsync().ConfigureAwait(false);
+        }
+
+        public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int number, int size)
+        {
+            return await Products.GetUsingPagedListAsync(number, size).ConfigureAwait(false);
         }
 
         public async Task<ProductDto> GetAsync(int id)

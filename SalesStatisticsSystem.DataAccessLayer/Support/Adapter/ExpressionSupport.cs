@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace SalesStatisticsSystem.DataAccessLayer.Support
+namespace SalesStatisticsSystem.DataAccessLayer.Support.Adapter
 {
     public static class ExpressionSupport
     {

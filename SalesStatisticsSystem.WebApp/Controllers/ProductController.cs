@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using X.PagedList;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
@@ -23,24 +25,29 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             _mapper = mapper;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
-            try
-            {
+            //try
+            //{
                 ViewBag.ProductFilter = new ProductFilterModel();
 
-                var productsDto = await _productService.GetAllAsync().ConfigureAwait(false);
+                const int pageSize = 3;
 
-                var productsViewModels = _mapper.Map<IEnumerable<ProductViewModel>>(productsDto);
+                var productsDto = await _productService.GetUsingPagedListAsync(page ?? 1, pageSize);
 
-                return View(productsViewModels);
-            }
-            catch (Exception exception)
-            {
-                ViewBag.Error = exception.Message;
+                var lol = await _productService.GetAllAsync().ConfigureAwait(false);
+            //var productsDto = await _productService.GetAllAsync().ConfigureAwait(false);
+            var productsViewModels =
+                    _mapper.Map<IPagedList<ProductViewModel>>(productsDto);
 
-                return View();
-            }
+            return View(productsViewModels);
+                //}
+                //catch (Exception exception)
+                //{
+                //ViewBag.Error = exception.Message;
+
+                //return View();
+                //}
         }
 
         public async Task<ActionResult> Find(ProductFilterModel productFilterModel)

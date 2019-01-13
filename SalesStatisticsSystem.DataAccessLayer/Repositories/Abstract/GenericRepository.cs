@@ -4,11 +4,13 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
-using SalesStatisticsSystem.DataAccessLayer.Support;
+using SalesStatisticsSystem.DataAccessLayer.Support.Adapter;
 using SalesStatisticsSystem.Entity;
+using X.PagedList;
 
 namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
 {
@@ -85,6 +87,18 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             var result = await DbSet.AsNoTracking().ToListAsync().ConfigureAwait(false);
 
             return Mapper.Map<IEnumerable<TDto>>(result);
+        }
+
+        public async Task<IPagedList<TDto>> GetUsingPagedListAsync(int number, int size)
+        {
+            var result = await DbSet
+                .AsNoTracking()
+                .OrderBy("Id", SortDirection.Ascending)
+                .ToPagedListAsync(number, size)
+                .ConfigureAwait(false);
+
+            var lol = Mapper.Map<IPagedList<TDto>>(result);
+            return lol;
         }
 
         public async Task<IEnumerable<TDto>> FindAsync(Expression<Func<TDto, bool>> predicate)
