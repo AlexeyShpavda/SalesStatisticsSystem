@@ -650,6 +650,7 @@
     </Compile>
     <Compile Include="Infrastructure\UnitDependencyResolver.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Filters\Abstract\PagedListParameter.cs" />
     <Compile Include="Models\Filters\CustomerFilterModel.cs" />
     <Compile Include="Models\Filters\ManagerFilterModel.cs" />
     <Compile Include="Models\Filters\ProductFilterModel.cs" />

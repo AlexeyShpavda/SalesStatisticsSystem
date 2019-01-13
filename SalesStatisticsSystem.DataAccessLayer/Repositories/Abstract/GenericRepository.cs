@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 using AutoMapper;
+using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.DataAccessLayer.Support.Adapter;
@@ -89,13 +90,29 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             return Mapper.Map<IEnumerable<TDto>>(result);
         }
 
-        public async Task<IPagedList<TDto>> GetUsingPagedListAsync(int number, int size)
+        public async Task<IPagedList<TDto>> GetUsingPagedListAsync(int number, int size,
+            Expression<Func<TDto, bool>> predicate = null)
         {
-            var result = await DbSet
-                .AsNoTracking()
-                .OrderBy("Id", SortDirection.Ascending)
-                .ToPagedListAsync(number, size)
-                .ConfigureAwait(false);
+            IPagedList<TEntity> result;
+            if (predicate != null)
+            {
+                var newPredicate = predicate.Project<TDto, TEntity>();
+
+                result = await DbSet
+                    .AsNoTracking()
+                    .Where(newPredicate)
+                    .OrderBy("Id", SortDirection.Ascending)
+                    .ToPagedListAsync(number, size)
+                    .ConfigureAwait(false);
+            }
+            else
+            {
+                result = await DbSet
+                    .AsNoTracking()
+                    .OrderBy("Id", SortDirection.Ascending)
+                    .ToPagedListAsync(number, size)
+                    .ConfigureAwait(false);
+            }
 
             var lol = Mapper.Map<IPagedList<TDto>>(result);
             return lol;

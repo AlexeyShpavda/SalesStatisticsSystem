@@ -1,5 +1,4 @@
-﻿@using X.PagedList.Mvc;
-@using X.PagedList;
+﻿@using X.PagedList;
 @using SalesStatisticsSystem.WebApp.Models.Filters
 @model IPagedList<SalesStatisticsSystem.WebApp.Models.SaleViewModels.ProductViewModel>
 
@@ -20,5 +19,3 @@
 <div id="updatedTableWithAjax">
     @Html.Partial("~/Views/Product/Partial/_ProductTable.cshtml", Model)
 </div>
-
-@Html.PagedListPager(Model, page => Url.Action("Index", "Product", new { page }))

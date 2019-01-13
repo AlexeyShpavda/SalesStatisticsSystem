@@ -34,9 +34,10 @@ namespace SalesStatisticsSystem.Core.Services
             return await ProductUnitOfWork.GetAllAsync().ConfigureAwait(false);
         }
 
-        public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int number, int size)
+        public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int number, int size,
+            Expression<Func<ProductDto, bool>> predicate = null)
         {
-            return await ProductUnitOfWork.GetUsingPagedListAsync(number, size).ConfigureAwait(false);
+            return await ProductUnitOfWork.GetUsingPagedListAsync(number, size, predicate).ConfigureAwait(false);
         }
 
         public async Task<ProductDto> GetAsync(int id)

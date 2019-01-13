@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using AutoMapper;
+using X.PagedList;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract;
+using SalesStatisticsSystem.DataAccessLayer.Support;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.DataAccessLayer.Repositories
