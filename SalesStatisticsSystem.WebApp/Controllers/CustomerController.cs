@@ -7,6 +7,7 @@ using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
 using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
+using X.PagedList;
 
 namespace SalesStatisticsSystem.WebApp.Controllers
 {
@@ -23,15 +24,18 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             _mapper = mapper;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page)
         {
             try
             {
                 ViewBag.CustomerFilter = new CustomerFilterModel();
 
-                var customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
+                const int pageSize = 3;
 
-                var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
+                var customersDto = await _customerService.GetUsingPagedListAsync(page ?? 1, pageSize);
+
+                var customersViewModels =
+                        _mapper.Map<IPagedList<CustomerViewModel>>(customersDto);
 
                 return View(customersViewModels);
             }
@@ -47,28 +51,37 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                const int pageSize = 3;
+
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _customerService.GetAllAsync().ConfigureAwait(false);
+                    var dto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, pageSize)
+                        .ConfigureAwait(false);
 
-                    var viewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(dto);
+                    var viewModels = _mapper.Map<IPagedList<CustomerViewModel>>(dto);
 
                     return PartialView("Partial/_CustomerTable", viewModels);
                 }
 
-                IEnumerable<CustomerDto> customersDto;
+                IPagedList<CustomerDto> customersDto;
                 if (customerFilterModel.FirstName == null && customerFilterModel.LastName == null)
                 {
-                    customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
+                    customersDto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, pageSize)
+                        .ConfigureAwait(false);
                 }
                 else
                 {
-                    customersDto = await _customerService.FindAsync(x =>
-                            x.FirstName.Contains(customerFilterModel.FirstName) || x.LastName.Contains(customerFilterModel.LastName))
+                    customersDto = await _customerService.GetUsingPagedListAsync(
+                            customerFilterModel.Page ?? 1, pageSize,
+                        x => x.FirstName.Contains(customerFilterModel.FirstName) ||
+                                      x.LastName.Contains(customerFilterModel.LastName))
                         .ConfigureAwait(false);
                 }
 
-                var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
+                var customersViewModels = _mapper.Map<IPagedList<CustomerViewModel>>(customersDto);
+
+                ViewBag.CustomerFilterFirstNameValue = customerFilterModel.FirstName;
+                ViewBag.CustomerFilterLastNameValue = customerFilterModel.LastName;
 
                 return PartialView("Partial/_CustomerTable", customersViewModels);
             }
@@ -79,6 +92,63 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 return PartialView("Partial/_CustomerTable");
             }
         }
+
+        //public async Task<ActionResult> Index()
+        //{
+        //    try
+        //    {
+        //        ViewBag.CustomerFilter = new CustomerFilterModel();
+
+        //        var customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
+
+        //        var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
+
+        //        return View(customersViewModels);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        ViewBag.Error = exception.Message;
+
+        //        return View();
+        //    }
+        //}
+
+        //public async Task<ActionResult> Find(CustomerFilterModel customerFilterModel)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            var dto = await _customerService.GetAllAsync().ConfigureAwait(false);
+
+        //            var viewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(dto);
+
+        //            return PartialView("Partial/_CustomerTable", viewModels);
+        //        }
+
+        //        IEnumerable<CustomerDto> customersDto;
+        //        if (customerFilterModel.FirstName == null && customerFilterModel.LastName == null)
+        //        {
+        //            customersDto = await _customerService.GetAllAsync().ConfigureAwait(false);
+        //        }
+        //        else
+        //        {
+        //            customersDto = await _customerService.FindAsync(x =>
+        //                    x.FirstName.Contains(customerFilterModel.FirstName) || x.LastName.Contains(customerFilterModel.LastName))
+        //                .ConfigureAwait(false);
+        //        }
+
+        //        var customersViewModels = _mapper.Map<IEnumerable<CustomerViewModel>>(customersDto);
+
+        //        return PartialView("Partial/_CustomerTable", customersViewModels);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        ViewBag.Error = exception.Message;
+
+        //        return PartialView("Partial/_CustomerTable");
+        //    }
+        //}
 
         public ActionResult Create()
         {

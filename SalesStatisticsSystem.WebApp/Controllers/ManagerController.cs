@@ -76,7 +76,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                         .ConfigureAwait(false);
                 }
 
-                var managersViewModels = _mapper.Map<IPagedList<ProductViewModel>>(managersDto);
+                var managersViewModels = _mapper.Map<IPagedList<ManagerViewModel>>(managersDto);
 
                 ViewBag.ManagerFilterLastNameValue = managerFilterModel.LastName;
 
