@@ -1,0 +1,20 @@
+﻿@using SalesStatisticsSystem.WebApp.Models.Filters
+@model IEnumerable<SalesStatisticsSystem.WebApp.Models.SaleViewModels.ManagerViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>All Managers</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<div id="filterDiv">
+    @Html.Partial("~/Views/Manager/Partial/_ManagerFilter.cshtml", (ManagerFilterModel)ViewBag.ManagerFilter)
+</div>
+
+<div id="updatedTableWithAjax">
+    @Html.Partial("~/Views/Manager/Partial/_ManagerTable.cshtml", Model)
+</div>
