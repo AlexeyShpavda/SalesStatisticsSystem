@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+using System.Web.Helpers;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 using X.PagedList;
 
@@ -18,10 +18,8 @@ namespace SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories
 
         Task<TDto> GetAsync(int id);
 
-        Task<IEnumerable<TDto>> GetAllAsync();
-
-        Task<IPagedList<TDto>> GetUsingPagedListAsync(int number, int size,
-            Expression<Func<TDto, bool>> predicate = null);
+        Task<IPagedList<TDto>> GetUsingPagedListAsync(int pageNumber, int pageSize,
+            Expression<Func<TDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending);
 
         Task<IEnumerable<TDto>> FindAsync(Expression<Func<TDto, bool>> predicate);
 
