@@ -11,22 +11,14 @@ namespace SalesStatisticsSystem.WebApp.Models.Filters
         [DataType(DataType.Date)]
         public DateTime? DateTo { get; set; } = null;
 
-        public CustomerFilterModel CustomerFilter { get; set; }
+        public string CustomerFirstName { get; set; }
+        public string CustomerLastName { get; set; }
 
-        public ProductFilterModel ProductFilter { get; set; }
+        public string ProductName { get; set; }
 
         public decimal? SumFrom { get; set; } = null;
         public decimal? SumTo { get; set; } = null;
 
-        public ManagerFilterModel ManagerFilter { get; set; }
-
-        public SaleFilterModel()
-        {
-            CustomerFilter = new CustomerFilterModel();
-
-            ProductFilter = new ProductFilterModel();
-
-            ManagerFilter = new ManagerFilterModel();
-        }
+        public string ManagerLastName { get; set; }
     }
 }

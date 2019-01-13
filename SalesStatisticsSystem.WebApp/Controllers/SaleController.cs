@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
@@ -34,9 +35,25 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 const int pageSize = 3;
 
                 var salesDto = await _saleService.GetUsingPagedListAsync(page ?? 1, pageSize);
+                var salesForGraphDto =
+                    await _saleService.GetUsingPagedListAsync(page ?? 1, 100, null, SortDirection.Descending);
+
 
                 var salesViewModels =
                         _mapper.Map<IPagedList<SaleViewModel>>(salesDto);
+                var salesForGraphViewModels =
+                    _mapper.Map<IEnumerable<SaleViewModel>>(salesForGraphDto).ToList();
+
+                #region Chart
+
+                var uniqueProducts = salesForGraphViewModels.Select(x => x.Product.Name).Distinct();
+
+                var productSalesQuantity = uniqueProducts
+                    .Select(product => salesForGraphViewModels.Count(x => x.Product.Name == product));
+
+                ViewBag.UniqueProducts = uniqueProducts;
+                ViewBag.ProductSalesQuantity = productSalesQuantity;
+                #endregion
 
                 return View(salesViewModels);
             }
@@ -65,12 +82,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
 
                 IPagedList<SaleDto> salesDto;
-                if (saleFilterModel.CustomerFilter.FirstName == null &&
-                    saleFilterModel.CustomerFilter.LastName == null &&
+                if (saleFilterModel.CustomerFirstName == null &&
+                    saleFilterModel.CustomerLastName == null &&
                     saleFilterModel.DateFrom == null &&
                     saleFilterModel.DateTo == null &&
-                    saleFilterModel.ManagerFilter.LastName == null &&
-                    saleFilterModel.ProductFilter.Name == null &&
+                    saleFilterModel.ManagerLastName == null &&
+                    saleFilterModel.ProductName == null &&
                     saleFilterModel.SumFrom == null &&
                     saleFilterModel.SumTo == null)
                 {
@@ -81,22 +98,22 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 {
                     salesDto = await _saleService.GetUsingPagedListAsync(
                         saleFilterModel.Page ?? 1, pageSize, x =>
-                            (x.Date >= saleFilterModel.DateFrom && x.Date <= saleFilterModel.DateTo) ||
-                            (x.Sum >= saleFilterModel.SumFrom && x.Sum <= saleFilterModel.SumTo) ||
-                            x.Customer.FirstName.Contains(saleFilterModel.CustomerFilter.FirstName) ||
-                            x.Customer.LastName.Contains(saleFilterModel.CustomerFilter.LastName) ||
-                            x.Manager.LastName.Contains(saleFilterModel.ManagerFilter.LastName) ||
-                            x.Product.Name.Contains(saleFilterModel.ProductFilter.Name)).ConfigureAwait(false);
+                            (x.Date >= saleFilterModel.DateFrom && x.Date <= saleFilterModel.DateTo) &&
+                            (x.Sum >= saleFilterModel.SumFrom && x.Sum <= saleFilterModel.SumTo) &&
+                            x.Customer.FirstName.Contains(saleFilterModel.CustomerFirstName) &&
+                            x.Customer.LastName.Contains(saleFilterModel.CustomerLastName) &&
+                            x.Manager.LastName.Contains(saleFilterModel.ManagerLastName) &&
+                            x.Product.Name.Contains(saleFilterModel.ProductName)).ConfigureAwait(false);
                 }
 
                 var salesViewModels = _mapper.Map<IPagedList<SaleViewModel>>(salesDto);
 
-                ViewBag.SaleFilterCustomerFirstNameValue = saleFilterModel.CustomerFilter.FirstName;
-                ViewBag.SaleFilterCustomerLastNameValue = saleFilterModel.CustomerFilter.LastName;
+                ViewBag.SaleFilterCustomerFirstNameValue = saleFilterModel.CustomerFirstName;
+                ViewBag.SaleFilterCustomerLastNameValue = saleFilterModel.CustomerLastName;
                 ViewBag.SaleFilterDateFromValue = saleFilterModel.DateFrom;
                 ViewBag.SaleFilterDateToValue = saleFilterModel.DateTo;
-                ViewBag.SaleFilterManagerLastNameValue = saleFilterModel.ManagerFilter.LastName;
-                ViewBag.SaleFilterProductNameValue = saleFilterModel.ProductFilter.Name;
+                ViewBag.SaleFilterManagerLastNameValue = saleFilterModel.ManagerLastName;
+                ViewBag.SaleFilterProductNameValue = saleFilterModel.ProductName;
                 ViewBag.SaleFilterSumFromValue = saleFilterModel.SumFrom;
                 ViewBag.SaleFilterSumToValue = saleFilterModel.SumTo;
 
@@ -109,85 +126,6 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 return PartialView("Partial/_SaleTable");
             }
         }
-
-        //public async Task<ActionResult> Index()
-        //{
-        //    try
-        //    {
-        //        var salesDto = await _saleService.GetAllAsync().ConfigureAwait(false);
-
-        //        var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto).ToList();
-
-        //        #region Chart
-        //        var uniqueProducts = salesViewModels.Select(x => x.Product.Name).Distinct();
-
-        //        var productSalesQuantity = uniqueProducts
-        //            .Select(product => salesViewModels.Count(x => x.Product.Name == product)).ToList();
-
-        //        ViewBag.UniqueProducts = uniqueProducts;
-        //        ViewBag.ProductSalesQuantity = productSalesQuantity;
-        //        #endregion
-
-        //        ViewBag.SaleFilter = new SaleFilterModel();
-
-        //        return View(salesViewModels);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        ViewBag.Error = exception.Message;
-
-        //        return View();
-        //    }
-        //}
-
-        //public async Task<ActionResult> Find(SaleFilterModel saleFilterModel)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            var dto = await _saleService.GetAllAsync().ConfigureAwait(false);
-
-        //            var viewModels = _mapper.Map<IEnumerable<SaleViewModel>>(dto);
-
-        //            return PartialView("Partial/_SaleTable", viewModels);
-        //        }
-
-        //        IEnumerable<SaleDto> salesDto;
-        //        if (saleFilterModel.CustomerFilter.FirstName == null &&
-        //            saleFilterModel.CustomerFilter.LastName == null &&
-        //            saleFilterModel.DateFrom == null &&
-        //            saleFilterModel.DateTo == null &&
-        //            saleFilterModel.ManagerFilter.LastName == null &&
-        //            saleFilterModel.ProductFilter.Name == null &&
-        //            saleFilterModel.SumFrom == null &&
-        //            saleFilterModel.SumTo == null)
-        //        {
-        //            salesDto = await _saleService.GetAllAsync().ConfigureAwait(false);
-        //        }
-        //        else
-        //        {
-        //            salesDto = await _saleService.FindAsync(x =>
-        //                (x.Date >= saleFilterModel.DateFrom && x.Date <= saleFilterModel.DateTo) ||
-        //                (x.Sum >= saleFilterModel.SumFrom && x.Sum <= saleFilterModel.SumTo) ||
-        //                x.Customer.FirstName.Contains(saleFilterModel.CustomerFilter.FirstName) ||
-        //                x.Customer.LastName.Contains(saleFilterModel.CustomerFilter.LastName) ||
-        //                x.Manager.LastName.Contains(saleFilterModel.ManagerFilter.LastName) ||
-        //                x.Product.Name.Contains(saleFilterModel.ProductFilter.Name)).ConfigureAwait(false);
-        //        }
-
-        //        var salesViewModels = _mapper.Map<IEnumerable<SaleViewModel>>(salesDto);
-
-        //        return PartialView("Partial/_SaleTable", salesViewModels);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        ViewBag.Error = exception.Message;
-
-        //        return PartialView("Partial/_SaleTable");
-        //    }
-
-        //}
 
         public ActionResult Create()
         {
