@@ -27,19 +27,19 @@
         <div class="form-group">
             @Html.Label("Customer", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CustomerFilter.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "FirstName" } })
-                @Html.ValidationMessageFor(model => model.CustomerFilter.FirstName, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.CustomerFirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "FirstName" } })
+                @Html.ValidationMessageFor(model => model.CustomerFirstName, "", new { @class = "text-danger" })
 
-                @Html.EditorFor(model => model.CustomerFilter.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
-                @Html.ValidationMessageFor(model => model.CustomerFilter.LastName, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.CustomerLastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+                @Html.ValidationMessageFor(model => model.CustomerLastName, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.Label("Product", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductFilter.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
-                @Html.ValidationMessageFor(model => model.ProductFilter.Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
+                @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -57,8 +57,8 @@
         <div class="form-group">
             @Html.Label("Manager", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ManagerFilter.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
-                @Html.ValidationMessageFor(model => model.ManagerFilter.LastName, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.ManagerLastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last Name" } })
+                @Html.ValidationMessageFor(model => model.ManagerLastName, "", new { @class = "text-danger" })
             </div>
         </div>
 

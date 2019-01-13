@@ -1,11 +1,15 @@
-﻿@model IEnumerable<SalesStatisticsSystem.WebApp.Models.SaleViewModels.ManagerViewModel>
+﻿@using X.PagedList.Mvc;
+@using X.PagedList;
+@using SalesStatisticsSystem.WebApp.Models.Filters
+@using X.PagedList.Mvc.Common
+@model IPagedList<SalesStatisticsSystem.WebApp.Models.SaleViewModels.ManagerViewModel>
 
 <h3>@ViewBag.Error</h3>
 
 <table class="table" id="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.First().LastName)
         </th>
         <th>
             Actions
@@ -39,3 +43,5 @@
 
 </table>
 
+@Html.PagedListPager(Model, page => Url.Action("Find", "Manager", new ManagerFilterModel{ Page = page, LastName = ViewBag.ManagerFilterLastNameValue }),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "updatedTableWithAjax" }))

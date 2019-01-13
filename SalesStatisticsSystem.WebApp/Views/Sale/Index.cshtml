@@ -1,5 +1,6 @@
-﻿@using SalesStatisticsSystem.WebApp.Models.Filters
-@model IEnumerable<SalesStatisticsSystem.WebApp.Models.SaleViewModels.SaleViewModel>
+﻿@using X.PagedList;
+@using SalesStatisticsSystem.WebApp.Models.Filters
+@model IPagedList<SalesStatisticsSystem.WebApp.Models.SaleViewModels.SaleViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,8 +13,8 @@
 </p>
 
 @{Html.RenderPartial(
-      "~/Views/Sale/Partial/_Chart.cshtml",
-      new { uniqueProducts = ViewBag.UniqueProducts, productSalesQuantity = ViewBag.ProductSalesQuantity });
+        "~/Views/Sale/Partial/_Chart.cshtml",
+        new { uniqueProducts = ViewBag.UniqueProducts, productSalesQuantity = ViewBag.ProductSalesQuantity });
 }
 
 @Html.Partial("~/Views/Sale/Partial/_SaleFilter.cshtml", (SaleFilterModel)ViewBag.SaleFilter)
