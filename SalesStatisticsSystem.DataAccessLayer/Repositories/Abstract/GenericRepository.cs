@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 using AutoMapper;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.DataAccessLayer.Support.Adapter;
@@ -83,15 +82,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
             return Mapper.Map<TDto>(result);
         }
 
-        public async Task<IEnumerable<TDto>> GetAllAsync()
-        {
-            var result = await DbSet.AsNoTracking().ToListAsync().ConfigureAwait(false);
-
-            return Mapper.Map<IEnumerable<TDto>>(result);
-        }
-
-        public async Task<IPagedList<TDto>> GetUsingPagedListAsync(int number, int size,
-            Expression<Func<TDto, bool>> predicate = null)
+        public async Task<IPagedList<TDto>> GetUsingPagedListAsync(int pageNumber, int pageSize,
+            Expression<Func<TDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             IPagedList<TEntity> result;
             if (predicate != null)
@@ -101,21 +93,20 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
                 result = await DbSet
                     .AsNoTracking()
                     .Where(newPredicate)
-                    .OrderBy("Id", SortDirection.Ascending)
-                    .ToPagedListAsync(number, size)
+                    .OrderBy("Id", sortDirection)
+                    .ToPagedListAsync(pageNumber, pageSize)
                     .ConfigureAwait(false);
             }
             else
             {
                 result = await DbSet
                     .AsNoTracking()
-                    .OrderBy("Id", SortDirection.Ascending)
-                    .ToPagedListAsync(number, size)
+                    .OrderBy("Id", sortDirection)
+                    .ToPagedListAsync(pageNumber, pageSize)
                     .ConfigureAwait(false);
             }
 
-            var lol = Mapper.Map<IPagedList<TDto>>(result);
-            return lol;
+            return Mapper.Map<IPagedList<TDto>>(result);
         }
 
         public async Task<IEnumerable<TDto>> FindAsync(Expression<Func<TDto, bool>> predicate)

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Entity;
+using X.PagedList;
 
 namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
 {
@@ -33,9 +35,10 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Sales = new SaleRepository(Context, mapper);
         }
 
-        public async Task<IEnumerable<SaleDto>> GetAllAsync()
+        public async Task<IPagedList<SaleDto>> GetUsingPagedListAsync(int number, int size,
+            Expression<Func<SaleDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
-            return await Sales.GetAllAsync().ConfigureAwait(false);
+            return await Sales.GetUsingPagedListAsync(number, size, predicate).ConfigureAwait(false);
         }
 
         public async Task<SaleDto> GetAsync(int id)

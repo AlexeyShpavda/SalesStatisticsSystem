@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
@@ -31,13 +32,8 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
             Products = new ProductRepository(Context, mapper);
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllAsync()
-        {
-            return await Products.GetAllAsync().ConfigureAwait(false);
-        }
-
         public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int number, int size,
-            Expression<Func<ProductDto, bool>> predicate = null)
+            Expression<Func<ProductDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             return await Products.GetUsingPagedListAsync(number, size, predicate).ConfigureAwait(false);
         }

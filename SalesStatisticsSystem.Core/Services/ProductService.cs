@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
@@ -30,7 +31,7 @@ namespace SalesStatisticsSystem.Core.Services
         }
 
         public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int pageNumber, int pageSize,
-            Expression<Func<ProductDto, bool>> predicate = null)
+            Expression<Func<ProductDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             return await ProductUnitOfWork.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
                 .ConfigureAwait(false);
