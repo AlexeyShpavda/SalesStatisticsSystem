@@ -1,6 +1,8 @@
-﻿namespace SalesStatisticsSystem.WebApp.Models.Filters
+﻿using SalesStatisticsSystem.WebApp.Models.Filters.Abstract;
+
+namespace SalesStatisticsSystem.WebApp.Models.Filters
 {
-    public class CustomerFilterModel
+    public class CustomerFilterModel : PagedListParameter
     {
         public string FirstName { get; set; } = null;
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -12,18 +10,6 @@ using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
 
 namespace SalesStatisticsSystem.WebApp.Controllers
 {
-    public class TwoClasses
-    {
-        private IPagedList<ProductViewModel> products;
-        private ProductFilterModel productFilterModel;
-        public TwoClasses(IPagedList<ProductViewModel> products, ProductFilterModel productFilterModel)
-        {
-            this.products = products;
-            this.productFilterModel = productFilterModel;
-        }
-
-    }
-
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -68,7 +54,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, pageSize).ConfigureAwait(false);
+                    var dto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, pageSize)
+                        .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<ProductViewModel>>(dto);
 
@@ -90,7 +77,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
                 var productsViewModels = _mapper.Map<IPagedList<ProductViewModel>>(productsDto);
 
-                ViewBag.ProductFilterValue = productFilterModel.Name;
+                ViewBag.ProductFilterNameValue = productFilterModel.Name;
+
                 return PartialView("Partial/_ProductTable", productsViewModels);
             }
             catch (Exception exception)

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using SalesStatisticsSystem.WebApp.Models.Filters.Abstract;
 
 namespace SalesStatisticsSystem.WebApp.Models.Filters
 {
-    public class SaleFilterModel
+    public class SaleFilterModel : PagedListParameter
     {
         [DataType(DataType.Date)]
         public DateTime? DateFrom { get; set; } = null;
