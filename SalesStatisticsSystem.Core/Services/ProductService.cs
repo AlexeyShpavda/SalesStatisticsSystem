@@ -29,15 +29,11 @@ namespace SalesStatisticsSystem.Core.Services
             ProductUnitOfWork = new ProductUnitOfWork(Context, Locker);
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllAsync()
-        {
-            return await ProductUnitOfWork.GetAllAsync().ConfigureAwait(false);
-        }
-
-        public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int number, int size,
+        public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int pageNumber, int pageSize,
             Expression<Func<ProductDto, bool>> predicate = null)
         {
-            return await ProductUnitOfWork.GetUsingPagedListAsync(number, size, predicate).ConfigureAwait(false);
+            return await ProductUnitOfWork.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
+                .ConfigureAwait(false);
         }
 
         public async Task<ProductDto> GetAsync(int id)
