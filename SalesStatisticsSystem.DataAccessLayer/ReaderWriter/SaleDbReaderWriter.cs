@@ -5,15 +5,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
 using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
 using SalesStatisticsSystem.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
 
-namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
+namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
 {
-    public class SaleUnitOfWork : ISaleUnitOfWork
+    public class SaleDbReaderWriter : ISaleDbReaderWriter
     {
         private SalesInformationEntities Context { get; }
         private ReaderWriterLockSlim Locker { get; }
@@ -23,7 +23,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.UnitOfWorks
         private IProductRepository Products { get; }
         private ISaleRepository Sales { get; }
 
-        public SaleUnitOfWork(SalesInformationEntities context, ReaderWriterLockSlim locker)
+        public SaleDbReaderWriter(SalesInformationEntities context, ReaderWriterLockSlim locker)
         {
             Context = context;
             Locker = locker;

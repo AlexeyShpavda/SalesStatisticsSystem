@@ -90,10 +90,10 @@
     <Compile Include="Support\Adapter\PagedListSupport.cs" />
     <Compile Include="Support\Adapter\ExpressionSupport.cs" />
     <Compile Include="Support\Adapter\QueryableSupport.cs" />
-    <Compile Include="UnitOfWorks\CustomerUnitOfWork.cs" />
-    <Compile Include="UnitOfWorks\ManagerUnitOfWork.cs" />
-    <Compile Include="UnitOfWorks\ProductUnitOfWork.cs" />
-    <Compile Include="UnitOfWorks\SaleUnitOfWork.cs" />
+    <Compile Include="ReaderWriter\CustomerDbReaderWriter.cs" />
+    <Compile Include="ReaderWriter\ManagerDbReaderWriter.cs" />
+    <Compile Include="ReaderWriter\ProductDbReaderWriter.cs" />
+    <Compile Include="ReaderWriter\SaleDbReaderWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
