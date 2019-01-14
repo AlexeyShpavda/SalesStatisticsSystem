@@ -6,30 +6,30 @@
 
 <h3>@ViewBag.Error</h3>
 
-<table class="table" id="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Customer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Product)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Sum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Manager)
-        </th>
-        <th>
-            Actions
-        </th>
-    </tr>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
+@if (Model != null)
+{
+    <table class="table" id="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Sum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Manager)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -57,28 +57,25 @@
                 </td>
             </tr>
         }
-    }
-    else
+
+    </table>
+
+    
+    @Html.PagedListPager(Model, page => Url.Action("Find", "Sale", new SaleFilterModel
     {
-        <tr>
-            <td colspan="6">
-                No Sale List.
-            </td>
-        </tr>
-    }
-
-</table>
-
-@Html.PagedListPager(Model, page => Url.Action("Find", "Sale", new SaleFilterModel
+        Page = page,
+        CustomerFirstName = ViewBag.SaleFilterCustomerFirstNameValue,
+        CustomerLastName = ViewBag.SaleFilterCustomerLastNameValue,
+        DateFrom = ViewBag.SaleFilterDateFromValue,
+        DateTo = ViewBag.SaleFilterDateToValue,
+        ManagerLastName = ViewBag.SaleFilterManagerLastNameValue,
+        ProductName = ViewBag.SaleFilterProductNameValue,
+        SumFrom = ViewBag.SaleFilterSumFromValue,
+        SumTo = ViewBag.SaleFilterSumToValue
+    }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions {HttpMethod = "GET", UpdateTargetId = "updatedTableWithAjax"}))
+}
+else
 {
-    Page = page,
-    CustomerFirstName = ViewBag.SaleFilterCustomerFirstNameValue,
-    CustomerLastName = ViewBag.SaleFilterCustomerLastNameValue,
-    DateFrom = ViewBag.SaleFilterDateFromValue,
-    DateTo = ViewBag.SaleFilterDateToValue,
-    ManagerLastName = ViewBag.SaleFilterManagerLastNameValue,
-    ProductName = ViewBag.SaleFilterProductNameValue,
-    SumFrom = ViewBag.SaleFilterSumFromValue,
-    SumTo = ViewBag.SaleFilterSumToValue
-}),
-    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions {HttpMethod = "GET", UpdateTargetId = "updatedTableWithAjax"}))
+    <p>No Sale List.</p>
+}

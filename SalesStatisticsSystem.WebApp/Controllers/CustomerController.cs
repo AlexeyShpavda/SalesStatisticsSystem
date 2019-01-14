@@ -38,7 +38,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 var customersViewModels =
                         _mapper.Map<IPagedList<CustomerViewModel>>(customersDto);
 
-                return View(customersViewModels);
+                //return View(customersViewModels);
+                return View("Index",null);
             }
             catch (Exception exception)
             {

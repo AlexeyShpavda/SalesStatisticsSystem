@@ -6,18 +6,18 @@
 
 <h3>@ViewBag.Error</h3>
 
-<table class="table" id="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.First().Name)
-        </th>
-        <th>
-            Actions
-        </th>
-    </tr>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
+@if (Model != null)
+{
+    <table class="table" id="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Name)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+        @foreach (var item in Model)
         {
             <tr>
                 <td>
@@ -26,23 +26,22 @@
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary",
-                            onclick = "return confirm('Are you sure you wish to delete this Product?');" })
+                        @Html.ActionLink("Delete", "Delete", new {id = item.Id}, new
+                        {
+                            @class = "btn btn-primary",
+                            onclick = "return confirm('Are you sure you wish to delete this Product?');"
+                        })
                     </div>
                 </td>
             </tr>
         }
-    }
-    else
-    {
-        <tr>
-            <td colspan="2">
-                No Product List.
-            </td>
-        </tr>
-    }
 
-</table>
-
-@Html.PagedListPager(Model, page => Url.Action("Find", "Product", new ProductFilterModel{ Page = page, Name = ViewBag.ProductFilterNameValue }),
-    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "updatedTableWithAjax" }))
+    </table>
+  
+    @Html.PagedListPager(Model, page => Url.Action("Find", "Product", new ProductFilterModel{ Page = page, Name = ViewBag.ProductFilterNameValue }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "updatedTableWithAjax" }))
+}
+else
+{
+    <p>No Product List.</p>
+}
