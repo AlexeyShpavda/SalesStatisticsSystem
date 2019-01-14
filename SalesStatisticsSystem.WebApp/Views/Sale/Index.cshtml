@@ -8,14 +8,14 @@
 
 <h2>All Sales</h2>
 
-<p>
+<div id="button_container">
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
-</p>
+    @Ajax.ActionLink("Show Graph", "ShowGraph", new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "chart_container" })
+</div>
 
-@{Html.RenderPartial(
-        "~/Views/Sale/Partial/_Chart.cshtml",
-        new { uniqueProducts = ViewBag.UniqueProducts, productSalesQuantity = ViewBag.ProductSalesQuantity });
-}
+<div id="chart_container">
+
+</div>
 
 @Html.Partial("~/Views/Sale/Partial/_SaleFilter.cshtml", (SaleFilterModel)ViewBag.SaleFilter)
 

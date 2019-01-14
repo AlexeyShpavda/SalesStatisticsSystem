@@ -49,10 +49,24 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 var salesViewModels =
                         _mapper.Map<IPagedList<SaleViewModel>>(salesDto);
 
-                #region Chart
+                return View(salesViewModels);
+            }
+            catch (Exception exception)
+            {
+                ViewBag.Error = exception.Message;
 
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ShowGraph(int? page)
+        {
+            try
+            {
                 var salesForGraphDto =
-                    await _saleService.GetUsingPagedListAsync(page ?? 1, _numberOfRecordsToCreateSchedule, null, SortDirection.Descending);
+                    await _saleService.GetUsingPagedListAsync(page ?? 1, _numberOfRecordsToCreateSchedule, null,
+                        SortDirection.Descending);
 
                 var salesForGraphViewModels =
                     _mapper.Map<IEnumerable<SaleViewModel>>(salesForGraphDto).ToList();
@@ -64,15 +78,14 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
                 ViewBag.UniqueProducts = uniqueProducts;
                 ViewBag.ProductSalesQuantity = productSalesQuantity;
-                #endregion
 
-                return View(salesViewModels);
+                return PartialView("~/Views/Sale/Partial/_Chart.cshtml");
             }
             catch (Exception exception)
             {
                 ViewBag.Error = exception.Message;
 
-                return View();
+                return View("Index");
             }
         }
 
