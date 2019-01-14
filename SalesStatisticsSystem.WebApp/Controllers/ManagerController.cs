@@ -56,7 +56,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     var dto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
@@ -66,6 +66,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
                     return PartialView("Partial/_ManagerTable", viewModels);
                 }
+                #endregion
+
+                #region Filter
+                // Can be Transferred to Core.
 
                 IPagedList<ManagerDto> managersDto;
                 if (managerFilterModel.LastName == null)
@@ -81,8 +85,11 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
 
                 var managersViewModels = _mapper.Map<IPagedList<ManagerViewModel>>(managersDto);
+                #endregion
 
+                #region Filling ViewBag
                 ViewBag.ManagerFilterLastNameValue = managerFilterModel.LastName;
+                #endregion
 
                 return PartialView("Partial/_ManagerTable", managersViewModels);
             }
@@ -107,10 +114,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     return View(manager);
                 }
+                #endregion
 
                 await _managerService.AddAsync(_mapper.Map<ManagerDto>(manager)).ConfigureAwait(false);
 
@@ -150,10 +159,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     return View(manager);
                 }
+                #endregion
 
                 await _managerService.UpdateAsync(_mapper.Map<ManagerDto>(manager)).ConfigureAwait(false);
 

@@ -56,6 +56,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     var dto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
@@ -65,6 +66,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
                     return PartialView("Partial/_CustomerTable", viewModels);
                 }
+                #endregion
+
+                #region Filter
+                // Can be Transferred to Core.
 
                 IPagedList<CustomerDto> customersDto;
                 if (customerFilterModel.FirstName == null && customerFilterModel.LastName == null)
@@ -82,9 +87,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
 
                 var customersViewModels = _mapper.Map<IPagedList<CustomerViewModel>>(customersDto);
+                #endregion
 
+                #region Filling ViewBag
                 ViewBag.CustomerFilterFirstNameValue = customerFilterModel.FirstName;
                 ViewBag.CustomerFilterLastNameValue = customerFilterModel.LastName;
+                #endregion
 
                 return PartialView("Partial/_CustomerTable", customersViewModels);
             }
@@ -109,10 +117,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     return View(customer);
                 }
+                #endregion
 
                 await _customerService.AddAsync(_mapper.Map<CustomerDto>(customer)).ConfigureAwait(false);
 
@@ -152,10 +162,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     return View(customer);
                 }
+                #endregion
 
                 await _customerService.UpdateAsync(_mapper.Map<CustomerDto>(customer)).ConfigureAwait(false);
 

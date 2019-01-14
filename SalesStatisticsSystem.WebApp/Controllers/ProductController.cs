@@ -56,6 +56,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     var dto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
@@ -65,6 +66,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
                     return PartialView("Partial/_ProductTable", viewModels);
                 }
+                #endregion
+
+                #region Filter
+                // Can be Transferred to Core.
 
                 IPagedList<ProductDto> productsDto;
                 if (productFilterModel.Name == null)
@@ -80,8 +85,11 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
 
                 var productsViewModels = _mapper.Map<IPagedList<ProductViewModel>>(productsDto);
+                #endregion
 
+                #region Filling ViewBag
                 ViewBag.ProductFilterNameValue = productFilterModel.Name;
+                #endregion
 
                 return PartialView("Partial/_ProductTable", productsViewModels);
             }
@@ -106,10 +114,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     return View(product);
                 }
+                #endregion
 
                 await _productService.AddAsync(_mapper.Map<ProductDto>(product)).ConfigureAwait(false);
 
@@ -149,10 +159,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     return View(product);
                 }
+                #endregion
 
                 await _productService.UpdateAsync(_mapper.Map<ProductDto>(product)).ConfigureAwait(false);
 

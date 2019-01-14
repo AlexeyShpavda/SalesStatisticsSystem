@@ -94,6 +94,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     var dto = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
@@ -103,6 +104,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
                     return PartialView("Partial/_SaleTable", viewModels);
                 }
+                #endregion
+
+                # region Filter
+                // Can be Transferred to Core.
 
                 IPagedList<SaleDto> salesDto;
                 if (saleFilterModel.CustomerFirstName == null &&
@@ -130,7 +135,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
 
                 var salesViewModels = _mapper.Map<IPagedList<SaleViewModel>>(salesDto);
+                #endregion
 
+                #region Filling ViewBag
                 ViewBag.SaleFilterCustomerFirstNameValue = saleFilterModel.CustomerFirstName;
                 ViewBag.SaleFilterCustomerLastNameValue = saleFilterModel.CustomerLastName;
                 ViewBag.SaleFilterDateFromValue = saleFilterModel.DateFrom;
@@ -139,6 +146,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 ViewBag.SaleFilterProductNameValue = saleFilterModel.ProductName;
                 ViewBag.SaleFilterSumFromValue = saleFilterModel.SumFrom;
                 ViewBag.SaleFilterSumToValue = saleFilterModel.SumTo;
+                #endregion
 
                 return PartialView("Partial/_SaleTable", salesViewModels);
             }
@@ -163,10 +171,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     return View(sale);
                 }
+                #endregion
 
                 await _saleService.AddAsync(_mapper.Map<SaleDto>(sale)).ConfigureAwait(false);
 
@@ -206,10 +216,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
+                #region Validation
                 if (!ModelState.IsValid)
                 {
                     return View(sale);
                 }
+                #endregion
 
                 await _saleService.UpdateAsync(_mapper.Map<SaleDto>(sale)).ConfigureAwait(false);
 
