@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -17,11 +18,15 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
         private readonly IMapper _mapper;
 
+        private readonly int _pageSize;
+
         public CustomerController(ICustomerService customerService, IMapper mapper)
         {
             _customerService = customerService;
 
             _mapper = mapper;
+
+            _pageSize = int.Parse(ConfigurationManager.AppSettings["numberOfRecordsPerPage"]);
         }
 
         [HttpGet]
@@ -31,15 +36,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             {
                 ViewBag.CustomerFilter = new CustomerFilterModel();
 
-                const int pageSize = 3;
-
-                var customersDto = await _customerService.GetUsingPagedListAsync(page ?? 1, pageSize);
+                var customersDto = await _customerService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
                 var customersViewModels =
                         _mapper.Map<IPagedList<CustomerViewModel>>(customersDto);
 
-                //return View(customersViewModels);
-                return View("Index",null);
+                return View(customersViewModels);
             }
             catch (Exception exception)
             {
@@ -54,11 +56,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                const int pageSize = 3;
-
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, pageSize)
+                    var dto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<CustomerViewModel>>(dto);
@@ -69,13 +69,13 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 IPagedList<CustomerDto> customersDto;
                 if (customerFilterModel.FirstName == null && customerFilterModel.LastName == null)
                 {
-                    customersDto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, pageSize)
+                    customersDto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
                 }
                 else
                 {
                     customersDto = await _customerService.GetUsingPagedListAsync(
-                            customerFilterModel.Page ?? 1, pageSize,
+                            customerFilterModel.Page ?? 1, _pageSize,
                         x => x.FirstName.Contains(customerFilterModel.FirstName) ||
                                       x.LastName.Contains(customerFilterModel.LastName))
                         .ConfigureAwait(false);

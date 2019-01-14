@@ -60,7 +60,7 @@
 
     </table>
 
-    
+
     @Html.PagedListPager(Model, page => Url.Action("Find", "Sale", new SaleFilterModel
     {
         Page = page,
@@ -74,6 +74,7 @@
         SumTo = ViewBag.SaleFilterSumToValue
     }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions {HttpMethod = "GET", UpdateTargetId = "updatedTableWithAjax"}))
+
 }
 else
 {

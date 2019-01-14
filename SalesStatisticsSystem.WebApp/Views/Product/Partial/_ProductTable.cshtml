@@ -37,7 +37,7 @@
         }
 
     </table>
-  
+
     @Html.PagedListPager(Model, page => Url.Action("Find", "Product", new ProductFilterModel{ Page = page, Name = ViewBag.ProductFilterNameValue }),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "updatedTableWithAjax" }))
 }

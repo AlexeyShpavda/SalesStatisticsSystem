@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -17,11 +18,15 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
         private readonly IMapper _mapper;
 
+        private readonly int _pageSize;
+
         public ManagerController(IManagerService managerService, IMapper mapper)
         {
             _managerService = managerService;
 
             _mapper = mapper;
+
+            _pageSize = int.Parse(ConfigurationManager.AppSettings["numberOfRecordsPerPage"]);
         }
 
         [HttpGet]
@@ -31,9 +36,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             {
                 ViewBag.ManagerFilter = new ManagerFilterModel();
 
-                const int pageSize = 3;
-
-                var managersDto = await _managerService.GetUsingPagedListAsync(page ?? 1, pageSize);
+                var managersDto = await _managerService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
                 var managersViewModels =
                         _mapper.Map<IPagedList<ManagerViewModel>>(managersDto);
@@ -53,11 +56,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                const int pageSize = 3;
 
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, pageSize)
+                    var dto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<ManagerViewModel>>(dto);
@@ -68,12 +70,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 IPagedList<ManagerDto> managersDto;
                 if (managerFilterModel.LastName == null)
                 {
-                    managersDto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, pageSize)
+                    managersDto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
                 }
                 else
                 {
-                    managersDto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, pageSize,
+                    managersDto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize,
                             x => x.LastName.Contains(managerFilterModel.LastName))
                         .ConfigureAwait(false);
                 }

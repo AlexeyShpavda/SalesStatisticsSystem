@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Helpers;
@@ -20,11 +21,20 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
         private readonly IMapper _mapper;
 
+        private readonly int _pageSize;
+
+        private readonly int _numberOfRecordsToCreateSchedule;
+
         public SaleController(ISaleService saleService, IMapper mapper)
         {
             _saleService = saleService;
 
             _mapper = mapper;
+
+            _pageSize = int.Parse(ConfigurationManager.AppSettings["numberOfRecordsPerPage"]);
+
+            _numberOfRecordsToCreateSchedule =
+                int.Parse(ConfigurationManager.AppSettings["numberOfRecordsToCreateSchedule"]);
         }
 
         [HttpGet]
@@ -34,9 +44,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             {
                 ViewBag.SaleFilter = new SaleFilterModel();
 
-                const int pageSize = 3;
-
-                var salesDto = await _saleService.GetUsingPagedListAsync(page ?? 1, pageSize);
+                var salesDto = await _saleService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
                 var salesViewModels =
                         _mapper.Map<IPagedList<SaleViewModel>>(salesDto);
@@ -44,7 +52,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #region Chart
 
                 var salesForGraphDto =
-                    await _saleService.GetUsingPagedListAsync(page ?? 1, 100, null, SortDirection.Descending);
+                    await _saleService.GetUsingPagedListAsync(page ?? 1, _numberOfRecordsToCreateSchedule, null, SortDirection.Descending);
 
                 var salesForGraphViewModels =
                     _mapper.Map<IEnumerable<SaleViewModel>>(salesForGraphDto).ToList();
@@ -73,11 +81,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                const int pageSize = 3;
-
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, pageSize)
+                    var dto = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<SaleViewModel>>(dto);
@@ -95,13 +101,13 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                     saleFilterModel.SumFrom == null &&
                     saleFilterModel.SumTo == null)
                 {
-                    salesDto = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, pageSize)
+                    salesDto = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
                 }
                 else
                 {
                     salesDto = await _saleService.GetUsingPagedListAsync(
-                        saleFilterModel.Page ?? 1, pageSize, x =>
+                        saleFilterModel.Page ?? 1, _pageSize, x =>
                             (x.Date >= saleFilterModel.DateFrom && x.Date <= saleFilterModel.DateTo) &&
                             (x.Sum >= saleFilterModel.SumFrom && x.Sum <= saleFilterModel.SumTo) &&
                             x.Customer.FirstName.Contains(saleFilterModel.CustomerFirstName) &&

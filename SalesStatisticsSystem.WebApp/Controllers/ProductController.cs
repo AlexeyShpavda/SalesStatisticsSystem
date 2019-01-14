@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
@@ -17,11 +18,15 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
         private readonly IMapper _mapper;
 
+        private readonly int _pageSize;
+
         public ProductController(IProductService productService, IMapper mapper)
         {
             _productService = productService;
 
             _mapper = mapper;
+
+            _pageSize = int.Parse(ConfigurationManager.AppSettings["numberOfRecordsPerPage"]);
         }
 
         [HttpGet]
@@ -31,9 +36,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             {
                 ViewBag.ProductFilter = new ProductFilterModel();
 
-                const int pageSize = 3;
-
-                var productsDto = await _productService.GetUsingPagedListAsync(page ?? 1, pageSize);
+                var productsDto = await _productService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
                 var productsViewModels =
                         _mapper.Map<IPagedList<ProductViewModel>>(productsDto);
@@ -53,11 +56,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                const int pageSize = 3;
-
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, pageSize)
+                    var dto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<ProductViewModel>>(dto);
@@ -68,12 +69,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 IPagedList<ProductDto> productsDto;
                 if (productFilterModel.Name == null)
                 {
-                    productsDto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, pageSize)
+                    productsDto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
                 }
                 else
                 {
-                    productsDto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, pageSize,
+                    productsDto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize,
                             x => x.Name.Contains(productFilterModel.Name))
                         .ConfigureAwait(false);
                 }
