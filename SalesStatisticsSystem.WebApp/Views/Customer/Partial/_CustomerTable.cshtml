@@ -30,7 +30,8 @@
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-primary",
+                            onclick = "return confirm('Are you sure you wish to delete this Customer?');" })
                     </div>
                 </td>
             </tr>
