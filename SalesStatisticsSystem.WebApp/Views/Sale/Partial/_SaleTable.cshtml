@@ -4,7 +4,9 @@
 @using X.PagedList.Mvc.Common
 @model IPagedList<SalesStatisticsSystem.WebApp.Models.SaleViewModels.SaleViewModel>
 
-<h3>@ViewBag.Error</h3>
+<div class="alert alert-danger" role="alert">
+    @ViewBag.Error
+</div>
 
 @if (Model != null)
 {
