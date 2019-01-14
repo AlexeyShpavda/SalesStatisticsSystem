@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Web.Helpers;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
 using SalesStatisticsSystem.Contracts.Core.Services;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks;
-using SalesStatisticsSystem.DataAccessLayer.UnitOfWorks;
+using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
+using SalesStatisticsSystem.DataAccessLayer.ReaderWriter;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
 
@@ -19,7 +19,7 @@ namespace SalesStatisticsSystem.Core.Services
 
         private ReaderWriterLockSlim Locker { get; }
 
-        private ISaleUnitOfWork SaleUnitOfWork { get; }
+        private ISaleDbReaderWriter SaleDbReaderWriter { get; }
 
         public SaleService()
         {
@@ -27,39 +27,39 @@ namespace SalesStatisticsSystem.Core.Services
 
             Locker = new ReaderWriterLockSlim();
 
-            SaleUnitOfWork = new SaleUnitOfWork(Context, Locker);
+            SaleDbReaderWriter = new SaleDbReaderWriter(Context, Locker);
         }
 
         public async Task<IPagedList<SaleDto>> GetUsingPagedListAsync(int pageNumber, int pageSize,
             Expression<Func<SaleDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
-            return await SaleUnitOfWork.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
+            return await SaleDbReaderWriter.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
                 .ConfigureAwait(false);
         }
 
         public async Task<SaleDto> GetAsync(int id)
         {
-            return await SaleUnitOfWork.GetAsync(id).ConfigureAwait(false);
+            return await SaleDbReaderWriter.GetAsync(id).ConfigureAwait(false);
         }
 
         public async Task<SaleDto> AddAsync(SaleDto model)
         {
-            return await SaleUnitOfWork.AddAsync(model).ConfigureAwait(false);
+            return await SaleDbReaderWriter.AddAsync(model).ConfigureAwait(false);
         }
 
         public async Task<SaleDto> UpdateAsync(SaleDto model)
         {
-            return await SaleUnitOfWork.UpdateAsync(model).ConfigureAwait(false);
+            return await SaleDbReaderWriter.UpdateAsync(model).ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
         {
-            await SaleUnitOfWork.DeleteAsync(id).ConfigureAwait(false);
+            await SaleDbReaderWriter.DeleteAsync(id).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<SaleDto>> FindAsync(Expression<Func<SaleDto, bool>> predicate)
         {
-            return await SaleUnitOfWork.FindAsync(predicate).ConfigureAwait(false);
+            return await SaleDbReaderWriter.FindAsync(predicate).ConfigureAwait(false);
         }
 
         private bool _disposed;
