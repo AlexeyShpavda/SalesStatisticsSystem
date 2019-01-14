@@ -6,9 +6,9 @@ using System.Web.Helpers;
 using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
 using X.PagedList;
 
-namespace SalesStatisticsSystem.Contracts.DataAccessLayer.UnitOfWorks
+namespace SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter
 {
-    public interface IGenericUnitOfWork<TDto> where TDto :DataTransferObject
+    public interface IGenericDbReaderWriter<TDto> where TDto : DataTransferObject
     {
         Task<TDto> AddAsync(TDto model);
 
