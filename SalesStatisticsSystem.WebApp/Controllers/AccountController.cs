@@ -15,8 +15,11 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        readonly ApplicationDbContext _context;
+
         public AccountController()
         {
+            _context = new ApplicationDbContext();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -136,6 +139,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.Name = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin"))
+                .ToList(), "Name", "Name");
+
             return View();
         }
 
@@ -160,8 +166,14 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
+                    //await UserManager.AddToRoleAsync(user.Id, model.UserRole);
+
                     return RedirectToAction("Index", "Home");
                 }
+
+                ViewBag.Name = new SelectList(_context.Roles.Where(u => !u.Name.Contains("Admin"))
+                    .ToList(), "Name", "Name");
+
                 AddErrors(result);
             }
 

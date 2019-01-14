@@ -48,6 +48,10 @@ namespace SalesStatisticsSystem.WebApp.Models
 
     public class LoginViewModel
     {
+        //[Required]
+        //[Display(Name = "UserName")]
+        //public string UserName { get; set; }
+
         [Required]
         [Display(Name = "Email")]
         [EmailAddress]
@@ -64,6 +68,14 @@ namespace SalesStatisticsSystem.WebApp.Models
 
     public class RegisterViewModel
     {
+        //[Required]
+        //[Display(Name = "UserRole")]
+        //public string UserRole { get; set; }
+
+        //[Required]
+        //[Display(Name = "UserName")]
+        //public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
