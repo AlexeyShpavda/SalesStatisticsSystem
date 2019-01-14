@@ -1,8 +1,10 @@
 ﻿using System.Linq;
+using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNetCore.Mvc;
 using SalesStatisticsSystem.WebApp.Models;
+using ActionResult = Microsoft.AspNetCore.Mvc.ActionResult;
+using Controller = Microsoft.AspNetCore.Mvc.Controller;
 
 namespace SalesStatisticsSystem.WebApp.Controllers
 {
@@ -15,6 +17,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             Context = new ApplicationDbContext();
         }
 
+        [HttpGet]
         public ActionResult Index()
         {
             if (User.Identity.IsAuthenticated)

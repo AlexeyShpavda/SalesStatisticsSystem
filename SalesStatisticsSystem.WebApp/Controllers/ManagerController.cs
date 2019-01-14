@@ -10,6 +10,7 @@ using X.PagedList;
 
 namespace SalesStatisticsSystem.WebApp.Controllers
 {
+    [Authorize]
     public class ManagerController : Controller
     {
         private readonly IManagerService _managerService;
@@ -23,6 +24,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Index(int? page)
         {
             try
@@ -46,6 +48,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<ActionResult> Find(ManagerFilterModel managerFilterModel)
         {
             try
@@ -89,68 +92,15 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
-        //public async Task<ActionResult> Index()
-        //{
-        //    try
-        //    {
-        //        ViewBag.ManagerFilter = new ManagerFilterModel();
-
-        //        var managersDto = await _managerService.GetAllAsync().ConfigureAwait(false);
-
-        //        var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
-
-        //        return View(managersViewModels);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        ViewBag.Error = exception.Message;
-
-        //        return View();
-        //    }
-        //}
-
-        //public async Task<ActionResult> Find(ManagerFilterModel managerFilterModel)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            var dto = await _managerService.GetAllAsync().ConfigureAwait(false);
-
-        //            var viewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(dto);
-
-        //            return PartialView("Partial/_ManagerTable", viewModels);
-        //        }
-
-        //        IEnumerable<ManagerDto> managersDto;
-        //        if (managerFilterModel.LastName == null)
-        //        {
-        //            managersDto = await _managerService.GetAllAsync().ConfigureAwait(false);
-        //        }
-        //        else
-        //        {
-        //            managersDto = await _managerService.FindAsync(x =>
-        //                x.LastName.Contains(managerFilterModel.LastName)).ConfigureAwait(false);
-        //        }
-
-        //        var managersViewModels = _mapper.Map<IEnumerable<ManagerViewModel>>(managersDto);
-
-        //        return PartialView("Partial/_ManagerTable", managersViewModels);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        ViewBag.Error = exception.Message;
-
-        //        return PartialView("Partial/_ManagerTable");
-        //    }
-        //}
-
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create(ManagerViewModel manager)
         {
             try
@@ -172,6 +122,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int id)
         {
             try
@@ -191,6 +143,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(ManagerViewModel manager)
         {
             try
@@ -212,6 +165,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             try

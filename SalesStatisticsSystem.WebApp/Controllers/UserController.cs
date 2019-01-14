@@ -10,6 +10,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
     [Authorize]
     public class UserController : Controller
     {
+        [HttpGet]
         public ViewResult Index()
         {
             if (User.Identity.IsAuthenticated)
@@ -28,12 +29,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
             ViewBag.Name = "Not Logged IN";
             return View();
-
         }
 
         public bool IsAdminUser()
         {
             if (!User.Identity.IsAuthenticated) return false;
+
             var user = User.Identity;
             var context = new ApplicationDbContext();
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));

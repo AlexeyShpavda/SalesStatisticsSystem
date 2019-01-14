@@ -10,6 +10,7 @@ using X.PagedList;
 
 namespace SalesStatisticsSystem.WebApp.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
         private readonly ICustomerService _customerService;
@@ -23,6 +24,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Index(int? page)
         {
             try
@@ -46,6 +48,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<ActionResult> Find(CustomerFilterModel customerFilterModel)
         {
             try
@@ -92,12 +95,15 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create(CustomerViewModel customer)
         {
             try
@@ -119,6 +125,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int id)
         {
             try
@@ -138,6 +146,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(CustomerViewModel customer)
         {
             try
@@ -159,6 +168,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             try

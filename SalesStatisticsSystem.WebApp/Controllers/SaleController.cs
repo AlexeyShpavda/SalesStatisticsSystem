@@ -13,6 +13,7 @@ using X.PagedList;
 
 namespace SalesStatisticsSystem.WebApp.Controllers
 {
+    [Authorize]
     public class SaleController : Controller
     {
         private readonly ISaleService _saleService;
@@ -26,6 +27,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Index(int? page)
         {
             try
@@ -35,16 +37,17 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 const int pageSize = 3;
 
                 var salesDto = await _saleService.GetUsingPagedListAsync(page ?? 1, pageSize);
-                var salesForGraphDto =
-                    await _saleService.GetUsingPagedListAsync(page ?? 1, 100, null, SortDirection.Descending);
-
 
                 var salesViewModels =
                         _mapper.Map<IPagedList<SaleViewModel>>(salesDto);
-                var salesForGraphViewModels =
-                    _mapper.Map<IEnumerable<SaleViewModel>>(salesForGraphDto).ToList();
 
                 #region Chart
+
+                var salesForGraphDto =
+                    await _saleService.GetUsingPagedListAsync(page ?? 1, 100, null, SortDirection.Descending);
+
+                var salesForGraphViewModels =
+                    _mapper.Map<IEnumerable<SaleViewModel>>(salesForGraphDto).ToList();
 
                 var uniqueProducts = salesForGraphViewModels.Select(x => x.Product.Name).Distinct();
 
@@ -65,6 +68,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<ActionResult> Find(SaleFilterModel saleFilterModel)
         {
             try
@@ -127,12 +131,15 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create(SaleViewModel sale)
         {
             try
@@ -154,6 +161,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int id)
         {
             try
@@ -173,6 +182,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(SaleViewModel sale)
         {
             try
@@ -194,6 +204,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             try

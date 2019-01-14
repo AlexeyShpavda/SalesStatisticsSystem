@@ -10,6 +10,7 @@ using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
 
 namespace SalesStatisticsSystem.WebApp.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -23,6 +24,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Index(int? page)
         {
             try
@@ -46,6 +48,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<ActionResult> Find(ProductFilterModel productFilterModel)
         {
             try
@@ -89,12 +92,15 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create(ProductViewModel product)
         {
             try
@@ -116,6 +122,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int id)
         {
             try
@@ -135,6 +143,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(ProductViewModel product)
         {
             try
@@ -156,6 +165,8 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             try
