@@ -35,7 +35,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Abstract\CoreModel.cs" />
+    <Compile Include="Models\CustomerCoreModel.cs" />
+    <Compile Include="Models\ManagerCoreModel.cs" />
+    <Compile Include="Models\ProductCoreModel.cs" />
+    <Compile Include="Models\SaleCoreModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
