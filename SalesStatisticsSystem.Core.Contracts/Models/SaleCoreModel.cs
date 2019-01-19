@@ -1,8 +1,9 @@
 ﻿using System;
+using SalesStatisticsSystem.Core.Contracts.Models.Abstract;
 
 namespace SalesStatisticsSystem.Core.Contracts.Models
 {
-    public class SaleCoreModel
+    public class SaleCoreModel : CoreModel
     {
         public DateTime Date { get; set; }
 

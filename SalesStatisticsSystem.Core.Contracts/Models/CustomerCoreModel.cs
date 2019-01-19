@@ -1,6 +1,8 @@
-﻿namespace SalesStatisticsSystem.Core.Contracts.Models
+﻿using SalesStatisticsSystem.Core.Contracts.Models.Abstract;
+
+namespace SalesStatisticsSystem.Core.Contracts.Models
 {
-    public class CustomerCoreModel
+    public class CustomerCoreModel : CoreModel
     {
         public string FirstName { get; set; }
 
