@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesStatisticsSystem.DataA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesStatisticsSystem.Core", "SalesStatisticsSystem.Core\SalesStatisticsSystem.Core.csproj", "{4597DD71-B6AA-4974-A2A9-25FAE9352BFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesStatisticsSystem.Contracts", "SalesStatisticsSystem.Contracts\SalesStatisticsSystem.Contracts.csproj", "{D9D8E543-7A9A-458A-9008-AB535E9D8517}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesStatisticsSystem.WebApp", "SalesStatisticsSystem.WebApp\SalesStatisticsSystem.WebApp.csproj", "{EFF8E719-A97C-4556-B275-6803A06DC625}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesStatisticsSystem.DataAccessLayer.Contracts", "SalesStatisticsSystem.DataAccessLayer.Contracts\SalesStatisticsSystem.DataAccessLayer.Contracts.csproj", "{DC950943-BF96-4BC8-9A5F-27470FDDCE3A}"
@@ -35,10 +33,6 @@ Global
 		{4597DD71-B6AA-4974-A2A9-25FAE9352BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4597DD71-B6AA-4974-A2A9-25FAE9352BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4597DD71-B6AA-4974-A2A9-25FAE9352BFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9D8E543-7A9A-458A-9008-AB535E9D8517}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9D8E543-7A9A-458A-9008-AB535E9D8517}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9D8E543-7A9A-458A-9008-AB535E9D8517}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9D8E543-7A9A-458A-9008-AB535E9D8517}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFF8E719-A97C-4556-B275-6803A06DC625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFF8E719-A97C-4556-B275-6803A06DC625}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFF8E719-A97C-4556-B275-6803A06DC625}.Release|Any CPU.ActiveCfg = Release|Any CPU

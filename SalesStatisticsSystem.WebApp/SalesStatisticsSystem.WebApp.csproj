@@ -810,10 +810,6 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SalesStatisticsSystem.Contracts\SalesStatisticsSystem.Contracts.csproj">
-      <Project>{D9D8E543-7A9A-458A-9008-AB535E9D8517}</Project>
-      <Name>SalesStatisticsSystem.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SalesStatisticsSystem.Core\SalesStatisticsSystem.Core.csproj">
       <Project>{4597DD71-B6AA-4974-A2A9-25FAE9352BFE}</Project>
       <Name>SalesStatisticsSystem.Core</Name>
