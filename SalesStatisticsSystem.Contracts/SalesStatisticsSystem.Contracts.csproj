@@ -67,16 +67,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\DataTransferObjects\Abstract\DataTransferObject.cs" />
-    <Compile Include="Core\DataTransferObjects\CustomerDto.cs" />
-    <Compile Include="Core\DataTransferObjects\ManagerDto.cs" />
-    <Compile Include="Core\DataTransferObjects\ProductDto.cs" />
-    <Compile Include="Core\DataTransferObjects\SaleDto.cs" />
-    <Compile Include="Core\Services\ICustomerService.cs" />
-    <Compile Include="Core\Services\IGenericService.cs" />
-    <Compile Include="Core\Services\IManagerService.cs" />
-    <Compile Include="Core\Services\IProductService.cs" />
-    <Compile Include="Core\Services\ISaleService.cs" />
     <Compile Include="DataAccessLayer\Repositories\ICustomerRepository.cs" />
     <Compile Include="DataAccessLayer\Repositories\IGenericRepository.cs" />
     <Compile Include="DataAccessLayer\Repositories\IManagerRepository.cs" />
