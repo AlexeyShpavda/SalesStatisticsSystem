@@ -67,16 +67,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccessLayer\Repositories\ICustomerRepository.cs" />
-    <Compile Include="DataAccessLayer\Repositories\IGenericRepository.cs" />
-    <Compile Include="DataAccessLayer\Repositories\IManagerRepository.cs" />
-    <Compile Include="DataAccessLayer\Repositories\IProductRepository.cs" />
-    <Compile Include="DataAccessLayer\Repositories\ISaleRepository.cs" />
-    <Compile Include="DataAccessLayer\ReaderWriter\ICustomerDbReaderWriter.cs" />
-    <Compile Include="DataAccessLayer\ReaderWriter\IGenericDbReaderWriter.cs" />
-    <Compile Include="DataAccessLayer\ReaderWriter\IManagerDbReaderWriter.cs" />
-    <Compile Include="DataAccessLayer\ReaderWriter\IProductDbReaderWriter.cs" />
-    <Compile Include="DataAccessLayer\ReaderWriter\ISaleDbReaderWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
