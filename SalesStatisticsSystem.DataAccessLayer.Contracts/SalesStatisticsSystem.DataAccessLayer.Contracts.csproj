@@ -67,6 +67,11 @@
     <Compile Include="ReaderWriter\IManagerDbReaderWriter.cs" />
     <Compile Include="ReaderWriter\IProductDbReaderWriter.cs" />
     <Compile Include="ReaderWriter\ISaleDbReaderWriter.cs" />
+    <Compile Include="Repository\Generic\IGenericRepository.cs" />
+    <Compile Include="Repository\ICustomerRepository.cs" />
+    <Compile Include="Repository\IManagerRepository.cs" />
+    <Compile Include="Repository\IProductRepository.cs" />
+    <Compile Include="Repository\ISaleRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -77,5 +82,6 @@
       <Name>SalesStatisticsSystem.Core.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
