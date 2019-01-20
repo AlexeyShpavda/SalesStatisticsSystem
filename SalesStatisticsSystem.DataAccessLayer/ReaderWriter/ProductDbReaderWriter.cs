@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.Repository;
 using SalesStatisticsSystem.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
@@ -32,18 +32,18 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             Products = new ProductRepository(Context, mapper);
         }
 
-        public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int number, int size,
-            Expression<Func<ProductDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
+        public async Task<IPagedList<ProductCoreModel>> GetUsingPagedListAsync(int number, int size,
+            Expression<Func<ProductCoreModel, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             return await Products.GetUsingPagedListAsync(number, size, predicate).ConfigureAwait(false);
         }
 
-        public async Task<ProductDto> GetAsync(int id)
+        public async Task<ProductCoreModel> GetAsync(int id)
         {
             return await Products.GetAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<ProductDto> AddAsync(ProductDto product)
+        public async Task<ProductCoreModel> AddAsync(ProductCoreModel product)
         {
             Locker.EnterWriteLock();
             try
@@ -68,7 +68,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             }
         }
 
-        public async Task<ProductDto> UpdateAsync(ProductDto product)
+        public async Task<ProductCoreModel> UpdateAsync(ProductCoreModel product)
         {
             Locker.EnterWriteLock();
             try
@@ -107,7 +107,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             }
         }
 
-        public async Task<IEnumerable<ProductDto>> FindAsync(Expression<Func<ProductDto, bool>> predicate)
+        public async Task<IEnumerable<ProductCoreModel>> FindAsync(Expression<Func<ProductCoreModel, bool>> predicate)
         {
             return await Products.FindAsync(predicate).ConfigureAwait(false);
         }

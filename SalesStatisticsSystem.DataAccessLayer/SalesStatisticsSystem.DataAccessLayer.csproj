@@ -43,6 +43,10 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="SalesStatisticsSystem.Contracts, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\SalesStatisticsSystem.WebApp\Bin\SalesStatisticsSystem.Contracts.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -100,6 +104,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SalesStatisticsSystem.Core.Contracts\SalesStatisticsSystem.Core.Contracts.csproj">
+      <Project>{C6AB04D1-ADA2-4D63-881F-962584CC18CC}</Project>
+      <Name>SalesStatisticsSystem.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SalesStatisticsSystem.DataAccessLayer.Contracts\SalesStatisticsSystem.DataAccessLayer.Contracts.csproj">
+      <Project>{DC950943-BF96-4BC8-9A5F-27470FDDCE3A}</Project>
+      <Name>SalesStatisticsSystem.DataAccessLayer.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SalesStatisticsSystem.Entity\SalesStatisticsSystem.Entity.csproj">
       <Project>{E6F12439-A456-4317-AD09-888983858F94}</Project>
       <Name>SalesStatisticsSystem.Entity</Name>

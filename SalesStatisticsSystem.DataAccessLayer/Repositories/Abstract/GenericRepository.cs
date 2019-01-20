@@ -6,8 +6,8 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 using AutoMapper;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects.Abstract;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
+using SalesStatisticsSystem.Core.Contracts.Models.Abstract;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.Repository.Generic;
 using SalesStatisticsSystem.DataAccessLayer.Support.Adapter;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
@@ -15,7 +15,7 @@ using X.PagedList;
 namespace SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract
 {
     public abstract class GenericRepository<TDto, TEntity> : IGenericRepository<TDto>
-         where TDto : DataTransferObject
+         where TDto : CoreModel
          where TEntity : class
     {
         protected readonly SalesInformationEntities Context;

@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.Repository;
 using SalesStatisticsSystem.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
@@ -32,19 +32,19 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             Customers = new CustomerRepository(Context, mapper);
         }
 
-        public async Task<IPagedList<CustomerDto>> GetUsingPagedListAsync(int number, int size,
-            Expression<Func<CustomerDto, bool>> predicate = null,
+        public async Task<IPagedList<CustomerCoreModel>> GetUsingPagedListAsync(int number, int size,
+            Expression<Func<CustomerCoreModel, bool>> predicate = null,
             SortDirection sortDirection = SortDirection.Ascending)
         {
             return await Customers.GetUsingPagedListAsync(number, size, predicate).ConfigureAwait(false);
         }
 
-        public async Task<CustomerDto> GetAsync(int id)
+        public async Task<CustomerCoreModel> GetAsync(int id)
         {
             return await Customers.GetAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<CustomerDto> AddAsync(CustomerDto customer)
+        public async Task<CustomerCoreModel> AddAsync(CustomerCoreModel customer)
         {
             Locker.EnterWriteLock();
             try
@@ -69,7 +69,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             }
         }
 
-        public async Task<CustomerDto> UpdateAsync(CustomerDto customer)
+        public async Task<CustomerCoreModel> UpdateAsync(CustomerCoreModel customer)
         {
             Locker.EnterWriteLock();
             try
@@ -108,7 +108,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             }
         }
 
-        public async Task<IEnumerable<CustomerDto>> FindAsync(Expression<Func<CustomerDto, bool>> predicate)
+        public async Task<IEnumerable<CustomerCoreModel>> FindAsync(Expression<Func<CustomerCoreModel, bool>> predicate)
         {
             return await Customers.FindAsync(predicate).ConfigureAwait(false);
         }

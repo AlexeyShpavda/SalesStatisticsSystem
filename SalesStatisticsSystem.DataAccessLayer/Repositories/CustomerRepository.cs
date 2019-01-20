@@ -3,33 +3,33 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.Repository;
 using SalesStatisticsSystem.DataAccessLayer.Repositories.Abstract;
 using SalesStatisticsSystem.Entity;
 
 namespace SalesStatisticsSystem.DataAccessLayer.Repositories
 {
-    public class CustomerRepository : GenericRepository<CustomerDto, Customer>, ICustomerRepository
+    public class CustomerRepository : GenericRepository<CustomerCoreModel, Customer>, ICustomerRepository
     {
         public CustomerRepository(SalesInformationEntities context, IMapper mapper) : base(context, mapper)
         {
         }
 
-        public async Task<bool> TryAddUniqueCustomerAsync(CustomerDto customerDto)
+        public async Task<bool> TryAddUniqueCustomerAsync(CustomerCoreModel customerCoreModel)
         {
-            if (await DoesCustomerExistAsync(customerDto).ConfigureAwait(false))
+            if (await DoesCustomerExistAsync(customerCoreModel).ConfigureAwait(false))
             {
                 return false;
             }
 
-            Add(customerDto);
+            Add(customerCoreModel);
             return true;
         }
 
         public async Task<int> GetIdAsync(string customerFirstName, string customerLastName)
         {
-            Expression<Func<CustomerDto, bool>> predicate = x =>
+            Expression<Func<CustomerCoreModel, bool>> predicate = x =>
                 x.FirstName == customerFirstName && x.LastName == customerLastName;
 
             var result = await FindAsync(predicate).ConfigureAwait(false);
@@ -37,10 +37,10 @@ namespace SalesStatisticsSystem.DataAccessLayer.Repositories
             return result.First().Id;
         }
 
-        public async Task<bool> DoesCustomerExistAsync(CustomerDto customerDto)
+        public async Task<bool> DoesCustomerExistAsync(CustomerCoreModel customerCoreModel)
         {
-            Expression<Func<CustomerDto, bool>> predicate = x =>
-                x.LastName == customerDto.LastName && x.FirstName == customerDto.FirstName;
+            Expression<Func<CustomerCoreModel, bool>> predicate = x =>
+                x.LastName == customerCoreModel.LastName && x.FirstName == customerCoreModel.FirstName;
 
             var result = await FindAsync(predicate).ConfigureAwait(false);
 

@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.Repository;
 using SalesStatisticsSystem.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
@@ -32,18 +32,18 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             Managers = new ManagerRepository(Context, mapper);
         }
 
-        public async Task<IPagedList<ManagerDto>> GetUsingPagedListAsync(int number, int size,
-            Expression<Func<ManagerDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
+        public async Task<IPagedList<ManagerCoreModel>> GetUsingPagedListAsync(int number, int size,
+            Expression<Func<ManagerCoreModel, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             return await Managers.GetUsingPagedListAsync(number, size, predicate).ConfigureAwait(false);
         }
 
-        public async Task<ManagerDto> GetAsync(int id)
+        public async Task<ManagerCoreModel> GetAsync(int id)
         {
             return await Managers.GetAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<ManagerDto> AddAsync(ManagerDto manager)
+        public async Task<ManagerCoreModel> AddAsync(ManagerCoreModel manager)
         {
             Locker.EnterWriteLock();
             try
@@ -68,7 +68,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             }
         }
 
-        public async Task<ManagerDto> UpdateAsync(ManagerDto manager)
+        public async Task<ManagerCoreModel> UpdateAsync(ManagerCoreModel manager)
         {
             Locker.EnterWriteLock();
             try
@@ -107,7 +107,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             }
         }
 
-        public async Task<IEnumerable<ManagerDto>> FindAsync(Expression<Func<ManagerDto, bool>> predicate)
+        public async Task<IEnumerable<ManagerCoreModel>> FindAsync(Expression<Func<ManagerCoreModel, bool>> predicate)
         {
             return await Managers.FindAsync(predicate).ConfigureAwait(false);
         }

@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.Repositories;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.Repository;
 using SalesStatisticsSystem.DataAccessLayer.Repositories;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
@@ -35,18 +35,18 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             Sales = new SaleRepository(Context, mapper);
         }
 
-        public async Task<IPagedList<SaleDto>> GetUsingPagedListAsync(int number, int size,
-            Expression<Func<SaleDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
+        public async Task<IPagedList<SaleCoreModel>> GetUsingPagedListAsync(int number, int size,
+            Expression<Func<SaleCoreModel, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             return await Sales.GetUsingPagedListAsync(number, size, predicate).ConfigureAwait(false);
         }
 
-        public async Task<SaleDto> GetAsync(int id)
+        public async Task<SaleCoreModel> GetAsync(int id)
         {
             return await Sales.GetAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<SaleDto> AddAsync(SaleDto sale)
+        public async Task<SaleCoreModel> AddAsync(SaleCoreModel sale)
         {
             Locker.EnterWriteLock();
             try
@@ -67,7 +67,7 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             }
         }
 
-        public async Task<SaleDto> UpdateAsync(SaleDto sale)
+        public async Task<SaleCoreModel> UpdateAsync(SaleCoreModel sale)
         {
             Locker.EnterWriteLock();
             try
@@ -105,12 +105,12 @@ namespace SalesStatisticsSystem.DataAccessLayer.ReaderWriter
             }
         }
 
-        public async Task<IEnumerable<SaleDto>> FindAsync(Expression<Func<SaleDto, bool>> predicate)
+        public async Task<IEnumerable<SaleCoreModel>> FindAsync(Expression<Func<SaleCoreModel, bool>> predicate)
         {
             return await Sales.FindAsync(predicate).ConfigureAwait(false);
         }
 
-        private async Task FindOutIds(SaleDto sale)
+        private async Task FindOutIds(SaleCoreModel sale)
         {
             if (await Customers.DoesCustomerExistAsync(sale.Customer).ConfigureAwait(false))
             {
