@@ -81,6 +81,14 @@
     <Compile Include="Services\SaleService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SalesStatisticsSystem.Core.Contracts\SalesStatisticsSystem.Core.Contracts.csproj">
+      <Project>{C6AB04D1-ADA2-4D63-881F-962584CC18CC}</Project>
+      <Name>SalesStatisticsSystem.Core.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SalesStatisticsSystem.DataAccessLayer.Contracts\SalesStatisticsSystem.DataAccessLayer.Contracts.csproj">
+      <Project>{DC950943-BF96-4BC8-9A5F-27470FDDCE3A}</Project>
+      <Name>SalesStatisticsSystem.DataAccessLayer.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SalesStatisticsSystem.DataAccessLayer\SalesStatisticsSystem.DataAccessLayer.csproj">
       <Project>{266E00CC-6D19-456D-91A1-E56A265C3E57}</Project>
       <Name>SalesStatisticsSystem.DataAccessLayer</Name>

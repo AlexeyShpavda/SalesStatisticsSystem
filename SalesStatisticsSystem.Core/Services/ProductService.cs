@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.Core.Services;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Services;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
 using SalesStatisticsSystem.DataAccessLayer.ReaderWriter;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
@@ -30,24 +30,24 @@ namespace SalesStatisticsSystem.Core.Services
             ProductDbReaderWriter = new ProductDbReaderWriter(Context, Locker);
         }
 
-        public async Task<IPagedList<ProductDto>> GetUsingPagedListAsync(int pageNumber, int pageSize,
-            Expression<Func<ProductDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
+        public async Task<IPagedList<ProductCoreModel>> GetUsingPagedListAsync(int pageNumber, int pageSize,
+            Expression<Func<ProductCoreModel, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             return await ProductDbReaderWriter.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
                 .ConfigureAwait(false);
         }
 
-        public async Task<ProductDto> GetAsync(int id)
+        public async Task<ProductCoreModel> GetAsync(int id)
         {
             return await ProductDbReaderWriter.GetAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<ProductDto> AddAsync(ProductDto model)
+        public async Task<ProductCoreModel> AddAsync(ProductCoreModel model)
         {
             return await ProductDbReaderWriter.AddAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<ProductDto> UpdateAsync(ProductDto model)
+        public async Task<ProductCoreModel> UpdateAsync(ProductCoreModel model)
         {
             return await ProductDbReaderWriter.UpdateAsync(model).ConfigureAwait(false);
         }
@@ -57,7 +57,7 @@ namespace SalesStatisticsSystem.Core.Services
             await ProductDbReaderWriter.DeleteAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<ProductDto>> FindAsync(Expression<Func<ProductDto, bool>> predicate)
+        public async Task<IEnumerable<ProductCoreModel>> FindAsync(Expression<Func<ProductCoreModel, bool>> predicate)
         {
             return await ProductDbReaderWriter.FindAsync(predicate).ConfigureAwait(false);
         }

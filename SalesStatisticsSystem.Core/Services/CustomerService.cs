@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.Core.Services;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Services;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
 using SalesStatisticsSystem.DataAccessLayer.ReaderWriter;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
@@ -30,25 +30,25 @@ namespace SalesStatisticsSystem.Core.Services
             CustomerDbReaderWriter = new CustomerDbReaderWriter(Context, Locker);
         }
 
-        public async Task<IPagedList<CustomerDto>> GetUsingPagedListAsync(int pageNumber, int pageSize,
-            Expression<Func<CustomerDto, bool>> predicate = null,
+        public async Task<IPagedList<CustomerCoreModel>> GetUsingPagedListAsync(int pageNumber, int pageSize,
+            Expression<Func<CustomerCoreModel, bool>> predicate = null,
             SortDirection sortDirection = SortDirection.Ascending)
         {
             return await CustomerDbReaderWriter.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
                 .ConfigureAwait(false);
         }
 
-        public async Task<CustomerDto> GetAsync(int id)
+        public async Task<CustomerCoreModel> GetAsync(int id)
         {
             return await CustomerDbReaderWriter.GetAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<CustomerDto> AddAsync(CustomerDto model)
+        public async Task<CustomerCoreModel> AddAsync(CustomerCoreModel model)
         {
             return await CustomerDbReaderWriter.AddAsync(model).ConfigureAwait(false);      
         }
 
-        public async Task<CustomerDto> UpdateAsync(CustomerDto model)
+        public async Task<CustomerCoreModel> UpdateAsync(CustomerCoreModel model)
         {
             return await CustomerDbReaderWriter.UpdateAsync(model).ConfigureAwait(false);
         }
@@ -58,7 +58,7 @@ namespace SalesStatisticsSystem.Core.Services
             await CustomerDbReaderWriter.DeleteAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<CustomerDto>> FindAsync(Expression<Func<CustomerDto, bool>> predicate)
+        public async Task<IEnumerable<CustomerCoreModel>> FindAsync(Expression<Func<CustomerCoreModel, bool>> predicate)
         {
             return await CustomerDbReaderWriter.FindAsync(predicate).ConfigureAwait(false);
         }

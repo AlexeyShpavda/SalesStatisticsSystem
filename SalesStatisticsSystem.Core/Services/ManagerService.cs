@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.Core.Services;
-using SalesStatisticsSystem.Contracts.DataAccessLayer.ReaderWriter;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Services;
+using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
 using SalesStatisticsSystem.DataAccessLayer.ReaderWriter;
 using SalesStatisticsSystem.Entity;
 using X.PagedList;
@@ -30,24 +30,24 @@ namespace SalesStatisticsSystem.Core.Services
             ManagerDbReaderWriter = new ManagerDbReaderWriter(Context, Locker);
         }
 
-        public async Task<IPagedList<ManagerDto>> GetUsingPagedListAsync(int pageNumber, int pageSize,
-            Expression<Func<ManagerDto, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
+        public async Task<IPagedList<ManagerCoreModel>> GetUsingPagedListAsync(int pageNumber, int pageSize,
+            Expression<Func<ManagerCoreModel, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             return await ManagerDbReaderWriter.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
                 .ConfigureAwait(false);
         }
 
-        public async Task<ManagerDto> GetAsync(int id)
+        public async Task<ManagerCoreModel> GetAsync(int id)
         {
             return await ManagerDbReaderWriter.GetAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<ManagerDto> AddAsync(ManagerDto model)
+        public async Task<ManagerCoreModel> AddAsync(ManagerCoreModel model)
         {
             return await ManagerDbReaderWriter.AddAsync(model).ConfigureAwait(false);
         }
 
-        public async Task<ManagerDto> UpdateAsync(ManagerDto model)
+        public async Task<ManagerCoreModel> UpdateAsync(ManagerCoreModel model)
         {
             return await ManagerDbReaderWriter.UpdateAsync(model).ConfigureAwait(false);
         }
@@ -57,7 +57,7 @@ namespace SalesStatisticsSystem.Core.Services
             await ManagerDbReaderWriter.DeleteAsync(id).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<ManagerDto>> FindAsync(Expression<Func<ManagerDto, bool>> predicate)
+        public async Task<IEnumerable<ManagerCoreModel>> FindAsync(Expression<Func<ManagerCoreModel, bool>> predicate)
         {
             return await ManagerDbReaderWriter.FindAsync(predicate).ConfigureAwait(false);
         }
