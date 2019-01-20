@@ -3,8 +3,8 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.Core.Services;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
 using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
 using X.PagedList;
@@ -36,10 +36,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             {
                 ViewBag.CustomerFilter = new CustomerFilterModel();
 
-                var customersDto = await _customerService.GetUsingPagedListAsync(page ?? 1, _pageSize);
+                var customersCoreModels = await _customerService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
                 var customersViewModels =
-                        _mapper.Map<IPagedList<CustomerViewModel>>(customersDto);
+                        _mapper.Map<IPagedList<CustomerViewModel>>(customersCoreModels);
 
                 return View(customersViewModels);
             }
@@ -59,10 +59,11 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #region Validation
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
+                    var coreModels = await _customerService
+                        .GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
-                    var viewModels = _mapper.Map<IPagedList<CustomerViewModel>>(dto);
+                    var viewModels = _mapper.Map<IPagedList<CustomerViewModel>>(coreModels);
 
                     return PartialView("Partial/_CustomerTable", viewModels);
                 }
@@ -71,22 +72,22 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #region Filter
                 // Can be Transferred to Core.
 
-                IPagedList<CustomerDto> customersDto;
+                IPagedList<CustomerCoreModel> customersCoreModels;
                 if (customerFilterModel.FirstName == null && customerFilterModel.LastName == null)
                 {
-                    customersDto = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
+                    customersCoreModels = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
                 }
                 else
                 {
-                    customersDto = await _customerService.GetUsingPagedListAsync(
+                    customersCoreModels = await _customerService.GetUsingPagedListAsync(
                             customerFilterModel.Page ?? 1, _pageSize,
                         x => x.FirstName.Contains(customerFilterModel.FirstName) ||
                                       x.LastName.Contains(customerFilterModel.LastName))
                         .ConfigureAwait(false);
                 }
 
-                var customersViewModels = _mapper.Map<IPagedList<CustomerViewModel>>(customersDto);
+                var customersViewModels = _mapper.Map<IPagedList<CustomerViewModel>>(customersCoreModels);
                 #endregion
 
                 #region Filling ViewBag
@@ -113,18 +114,19 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(CustomerViewModel customer)
+        public async Task<ActionResult> Create(CustomerViewModel customerViewModel)
         {
             try
             {
                 #region Validation
                 if (!ModelState.IsValid)
                 {
-                    return View(customer);
+                    return View(customerViewModel);
                 }
                 #endregion
 
-                await _customerService.AddAsync(_mapper.Map<CustomerDto>(customer)).ConfigureAwait(false);
+                await _customerService.AddAsync(_mapper.Map<CustomerCoreModel>(customerViewModel))
+                    .ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -142,9 +144,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                var customerDto = await _customerService.GetAsync(id).ConfigureAwait(false);
+                var customerCoreModel = await _customerService.GetAsync(id).ConfigureAwait(false);
 
-                var customerViewModel = _mapper.Map<CustomerViewModel>(customerDto);
+                var customerViewModel = _mapper.Map<CustomerViewModel>(customerCoreModel);
 
                 return View(customerViewModel);
             }
@@ -158,18 +160,19 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Edit(CustomerViewModel customer)
+        public async Task<ActionResult> Edit(CustomerViewModel customerViewModel)
         {
             try
             {
                 #region Validation
                 if (!ModelState.IsValid)
                 {
-                    return View(customer);
+                    return View(customerViewModel);
                 }
                 #endregion
 
-                await _customerService.UpdateAsync(_mapper.Map<CustomerDto>(customer)).ConfigureAwait(false);
+                await _customerService.UpdateAsync(_mapper.Map<CustomerCoreModel>(customerViewModel))
+                    .ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }

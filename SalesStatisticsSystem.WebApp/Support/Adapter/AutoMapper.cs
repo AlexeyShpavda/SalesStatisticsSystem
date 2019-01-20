@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
+using SalesStatisticsSystem.Core.Contracts.Models;
 using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
 using X.PagedList;
 
@@ -12,45 +12,45 @@ namespace SalesStatisticsSystem.WebApp.Support.Adapter
         {
             return new MapperConfiguration(config =>
             {
-                config.CreateMap<CustomerViewModel, CustomerDto>();
-                config.CreateMap<CustomerDto, CustomerViewModel>();
+                config.CreateMap<CustomerViewModel, CustomerCoreModel>();
+                config.CreateMap<CustomerCoreModel, CustomerViewModel>();
 
-                config.CreateMap<ProductViewModel, ProductDto>();
-                config.CreateMap<ProductDto, ProductViewModel>();
+                config.CreateMap<ProductViewModel, ProductCoreModel>();
+                config.CreateMap<ProductCoreModel, ProductViewModel>();
 
-                config.CreateMap<ManagerViewModel, ManagerDto>();
-                config.CreateMap<ManagerDto, ManagerViewModel>();
+                config.CreateMap<ManagerViewModel, ManagerCoreModel>();
+                config.CreateMap<ManagerCoreModel, ManagerViewModel>();
 
-                config.CreateMap<SaleViewModel, SaleDto>();
-                config.CreateMap<SaleDto, SaleViewModel>();
-
-                config
-                    .CreateMap<IPagedList<CustomerViewModel>, IPagedList<CustomerDto>>()
-                    .ConvertUsing<PagedListConverter<CustomerViewModel, CustomerDto>>();
-                config
-                    .CreateMap<IPagedList<CustomerDto>, IPagedList<CustomerViewModel>>()
-                    .ConvertUsing<PagedListConverter<CustomerDto, CustomerViewModel>>();
+                config.CreateMap<SaleViewModel, SaleCoreModel>();
+                config.CreateMap<SaleCoreModel, SaleViewModel>();
 
                 config
-                    .CreateMap<IPagedList<ProductViewModel>, IPagedList<ProductDto>>()
-                    .ConvertUsing<PagedListConverter<ProductViewModel, ProductDto>>();
+                    .CreateMap<IPagedList<CustomerViewModel>, IPagedList<CustomerCoreModel>>()
+                    .ConvertUsing<PagedListConverter<CustomerViewModel, CustomerCoreModel>>();
                 config
-                    .CreateMap<IPagedList<ProductDto>, IPagedList<ProductViewModel>>()
-                    .ConvertUsing<PagedListConverter<ProductDto, ProductViewModel>>();
+                    .CreateMap<IPagedList<CustomerCoreModel>, IPagedList<CustomerViewModel>>()
+                    .ConvertUsing<PagedListConverter<CustomerCoreModel, CustomerViewModel>>();
 
                 config
-                    .CreateMap<IPagedList<ManagerViewModel>, IPagedList<ManagerDto>>()
-                    .ConvertUsing<PagedListConverter<ManagerViewModel, ManagerDto>>();
+                    .CreateMap<IPagedList<ProductViewModel>, IPagedList<ProductCoreModel>>()
+                    .ConvertUsing<PagedListConverter<ProductViewModel, ProductCoreModel>>();
                 config
-                    .CreateMap<IPagedList<ManagerDto>, IPagedList<ManagerViewModel>>()
-                    .ConvertUsing<PagedListConverter<ManagerDto, ManagerViewModel>>();
+                    .CreateMap<IPagedList<ProductCoreModel>, IPagedList<ProductViewModel>>()
+                    .ConvertUsing<PagedListConverter<ProductCoreModel, ProductViewModel>>();
 
                 config
-                    .CreateMap<IPagedList<SaleViewModel>, IPagedList<SaleDto>>()
-                    .ConvertUsing<PagedListConverter<SaleViewModel, SaleDto>>();
+                    .CreateMap<IPagedList<ManagerViewModel>, IPagedList<ManagerCoreModel>>()
+                    .ConvertUsing<PagedListConverter<ManagerViewModel, ManagerCoreModel>>();
                 config
-                    .CreateMap<IPagedList<SaleDto>, IPagedList<SaleViewModel>>()
-                    .ConvertUsing<PagedListConverter<SaleDto, SaleViewModel>>();
+                    .CreateMap<IPagedList<ManagerCoreModel>, IPagedList<ManagerViewModel>>()
+                    .ConvertUsing<PagedListConverter<ManagerCoreModel, ManagerViewModel>>();
+
+                config
+                    .CreateMap<IPagedList<SaleViewModel>, IPagedList<SaleCoreModel>>()
+                    .ConvertUsing<PagedListConverter<SaleViewModel, SaleCoreModel>>();
+                config
+                    .CreateMap<IPagedList<SaleCoreModel>, IPagedList<SaleViewModel>>()
+                    .ConvertUsing<PagedListConverter<SaleCoreModel, SaleViewModel>>();
             });
         }
     }

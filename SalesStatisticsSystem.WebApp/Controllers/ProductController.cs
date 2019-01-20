@@ -3,9 +3,9 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Services;
 using X.PagedList;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.Core.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
 using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
 
@@ -36,10 +36,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             {
                 ViewBag.ProductFilter = new ProductFilterModel();
 
-                var productsDto = await _productService.GetUsingPagedListAsync(page ?? 1, _pageSize);
+                var productsCoreModels = await _productService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
                 var productsViewModels =
-                        _mapper.Map<IPagedList<ProductViewModel>>(productsDto);
+                        _mapper.Map<IPagedList<ProductViewModel>>(productsCoreModels);
 
                 return View(productsViewModels);
             }
@@ -59,10 +59,11 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #region Validation
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
+                    var coreModels = await _productService
+                        .GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
-                    var viewModels = _mapper.Map<IPagedList<ProductViewModel>>(dto);
+                    var viewModels = _mapper.Map<IPagedList<ProductViewModel>>(coreModels);
 
                     return PartialView("Partial/_ProductTable", viewModels);
                 }
@@ -71,20 +72,22 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #region Filter
                 // Can be Transferred to Core.
 
-                IPagedList<ProductDto> productsDto;
+                IPagedList<ProductCoreModel> productsCoreModels;
                 if (productFilterModel.Name == null)
                 {
-                    productsDto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
+                    productsCoreModels = await _productService
+                        .GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
                 }
                 else
                 {
-                    productsDto = await _productService.GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize,
-                            x => x.Name.Contains(productFilterModel.Name))
+                    productsCoreModels = await _productService
+                        .GetUsingPagedListAsync(productFilterModel.Page ?? 1,
+                            _pageSize, x => x.Name.Contains(productFilterModel.Name))
                         .ConfigureAwait(false);
                 }
 
-                var productsViewModels = _mapper.Map<IPagedList<ProductViewModel>>(productsDto);
+                var productsViewModels = _mapper.Map<IPagedList<ProductViewModel>>(productsCoreModels);
                 #endregion
 
                 #region Filling ViewBag
@@ -121,7 +124,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
                 #endregion
 
-                await _productService.AddAsync(_mapper.Map<ProductDto>(product)).ConfigureAwait(false);
+                await _productService.AddAsync(_mapper.Map<ProductCoreModel>(product)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -139,9 +142,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                var productDto = await _productService.GetAsync(id).ConfigureAwait(false);
+                var productCoreModel = await _productService.GetAsync(id).ConfigureAwait(false);
 
-                var productViewModel = _mapper.Map<ProductViewModel>(productDto);
+                var productViewModel = _mapper.Map<ProductViewModel>(productCoreModel);
 
                 return View(productViewModel);
             }
@@ -166,7 +169,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
                 #endregion
 
-                await _productService.UpdateAsync(_mapper.Map<ProductDto>(product)).ConfigureAwait(false);
+                await _productService.UpdateAsync(_mapper.Map<ProductCoreModel>(product)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }

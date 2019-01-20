@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.Core.Services;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
 using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
 using X.PagedList;
@@ -44,10 +44,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             {
                 ViewBag.SaleFilter = new SaleFilterModel();
 
-                var salesDto = await _saleService.GetUsingPagedListAsync(page ?? 1, _pageSize);
+                var salesCoreModels = await _saleService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
                 var salesViewModels =
-                        _mapper.Map<IPagedList<SaleViewModel>>(salesDto);
+                        _mapper.Map<IPagedList<SaleViewModel>>(salesCoreModels);
 
                 return View(salesViewModels);
             }
@@ -64,12 +64,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                var salesForGraphDto =
+                var salesForGraphCoreModels =
                     await _saleService.GetUsingPagedListAsync(page ?? 1, _numberOfRecordsToCreateSchedule, null,
                         SortDirection.Descending);
 
                 var salesForGraphViewModels =
-                    _mapper.Map<IEnumerable<SaleViewModel>>(salesForGraphDto).ToList();
+                    _mapper.Map<IEnumerable<SaleViewModel>>(salesForGraphCoreModels).ToList();
 
                 var uniqueProducts = salesForGraphViewModels.Select(x => x.Product.Name).Distinct();
 
@@ -97,10 +97,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #region Validation
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
+                    var coreModels = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
-                    var viewModels = _mapper.Map<IPagedList<SaleViewModel>>(dto);
+                    var viewModels = _mapper.Map<IPagedList<SaleViewModel>>(coreModels);
 
                     return PartialView("Partial/_SaleTable", viewModels);
                 }
@@ -109,7 +109,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 # region Filter
                 // Can be Transferred to Core.
 
-                IPagedList<SaleDto> salesDto;
+                IPagedList<SaleCoreModel> salesCoreModels;
                 if (saleFilterModel.CustomerFirstName == null &&
                     saleFilterModel.CustomerLastName == null &&
                     saleFilterModel.DateFrom == null &&
@@ -119,12 +119,12 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                     saleFilterModel.SumFrom == null &&
                     saleFilterModel.SumTo == null)
                 {
-                    salesDto = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
+                    salesCoreModels = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
                 }
                 else
                 {
-                    salesDto = await _saleService.GetUsingPagedListAsync(
+                    salesCoreModels = await _saleService.GetUsingPagedListAsync(
                         saleFilterModel.Page ?? 1, _pageSize, x =>
                             (x.Date >= saleFilterModel.DateFrom && x.Date <= saleFilterModel.DateTo) &&
                             (x.Sum >= saleFilterModel.SumFrom && x.Sum <= saleFilterModel.SumTo) &&
@@ -134,7 +134,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                             x.Product.Name.Contains(saleFilterModel.ProductName)).ConfigureAwait(false);
                 }
 
-                var salesViewModels = _mapper.Map<IPagedList<SaleViewModel>>(salesDto);
+                var salesViewModels = _mapper.Map<IPagedList<SaleViewModel>>(salesCoreModels);
                 #endregion
 
                 #region Filling ViewBag
@@ -178,7 +178,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
                 #endregion
 
-                await _saleService.AddAsync(_mapper.Map<SaleDto>(sale)).ConfigureAwait(false);
+                await _saleService.AddAsync(_mapper.Map<SaleCoreModel>(sale)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -196,9 +196,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                var saleDto = await _saleService.GetAsync(id).ConfigureAwait(false);
+                var saleCoreModel = await _saleService.GetAsync(id).ConfigureAwait(false);
 
-                var saleViewModel = _mapper.Map<SaleViewModel>(saleDto);
+                var saleViewModel = _mapper.Map<SaleViewModel>(saleCoreModel);
 
                 return View(saleViewModel);
             }
@@ -223,7 +223,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
                 #endregion
 
-                await _saleService.UpdateAsync(_mapper.Map<SaleDto>(sale)).ConfigureAwait(false);
+                await _saleService.UpdateAsync(_mapper.Map<SaleCoreModel>(sale)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }

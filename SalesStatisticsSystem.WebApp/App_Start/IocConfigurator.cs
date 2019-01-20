@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using SalesStatisticsSystem.Contracts.Core.Services;
+using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.Core.Services;
 using SalesStatisticsSystem.WebApp.Infrastructure;
 using Unity;

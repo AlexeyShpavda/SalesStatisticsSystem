@@ -3,8 +3,8 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
-using SalesStatisticsSystem.Contracts.Core.DataTransferObjects;
-using SalesStatisticsSystem.Contracts.Core.Services;
+using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
 using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
 using X.PagedList;
@@ -36,10 +36,10 @@ namespace SalesStatisticsSystem.WebApp.Controllers
             {
                 ViewBag.ManagerFilter = new ManagerFilterModel();
 
-                var managersDto = await _managerService.GetUsingPagedListAsync(page ?? 1, _pageSize);
+                var managersCoreModels = await _managerService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
                 var managersViewModels =
-                        _mapper.Map<IPagedList<ManagerViewModel>>(managersDto);
+                        _mapper.Map<IPagedList<ManagerViewModel>>(managersCoreModels);
 
                 return View(managersViewModels);
             }
@@ -59,10 +59,11 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #region Validation
                 if (!ModelState.IsValid)
                 {
-                    var dto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
+                    var coreModels = await _managerService
+                        .GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
-                    var viewModels = _mapper.Map<IPagedList<ManagerViewModel>>(dto);
+                    var viewModels = _mapper.Map<IPagedList<ManagerViewModel>>(coreModels);
 
                     return PartialView("Partial/_ManagerTable", viewModels);
                 }
@@ -71,20 +72,20 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #region Filter
                 // Can be Transferred to Core.
 
-                IPagedList<ManagerDto> managersDto;
+                IPagedList<ManagerCoreModel> managersCoreModels;
                 if (managerFilterModel.LastName == null)
                 {
-                    managersDto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
+                    managersCoreModels = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
                 }
                 else
                 {
-                    managersDto = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize,
+                    managersCoreModels = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize,
                             x => x.LastName.Contains(managerFilterModel.LastName))
                         .ConfigureAwait(false);
                 }
 
-                var managersViewModels = _mapper.Map<IPagedList<ManagerViewModel>>(managersDto);
+                var managersViewModels = _mapper.Map<IPagedList<ManagerViewModel>>(managersCoreModels);
                 #endregion
 
                 #region Filling ViewBag
@@ -110,18 +111,18 @@ namespace SalesStatisticsSystem.WebApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Create(ManagerViewModel manager)
+        public async Task<ActionResult> Create(ManagerViewModel managerViewModel)
         {
             try
             {
                 #region Validation
                 if (!ModelState.IsValid)
                 {
-                    return View(manager);
+                    return View(managerViewModel);
                 }
                 #endregion
 
-                await _managerService.AddAsync(_mapper.Map<ManagerDto>(manager)).ConfigureAwait(false);
+                await _managerService.AddAsync(_mapper.Map<ManagerCoreModel>(managerViewModel)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
@@ -139,9 +140,9 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                var managerDto = await _managerService.GetAsync(id).ConfigureAwait(false);
+                var managerCoreModel = await _managerService.GetAsync(id).ConfigureAwait(false);
 
-                var managerViewModel = _mapper.Map<ManagerViewModel>(managerDto);
+                var managerViewModel = _mapper.Map<ManagerViewModel>(managerCoreModel);
 
                 return View(managerViewModel);
             }
@@ -166,7 +167,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 }
                 #endregion
 
-                await _managerService.UpdateAsync(_mapper.Map<ManagerDto>(manager)).ConfigureAwait(false);
+                await _managerService.UpdateAsync(_mapper.Map<ManagerCoreModel>(manager)).ConfigureAwait(false);
 
                 return RedirectToAction("Index");
             }
