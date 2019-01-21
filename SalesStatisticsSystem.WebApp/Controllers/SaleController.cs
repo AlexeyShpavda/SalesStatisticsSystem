@@ -42,7 +42,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                ViewBag.SaleFilter = new SaleFilterModel();
+                ViewBag.SaleFilter = new SaleFilterViewModel();
 
                 var salesCoreModels = await _saleService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
@@ -90,7 +90,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Find(SaleFilterModel saleFilterModel)
+        public async Task<ActionResult> Find(SaleFilterViewModel saleFilterModel)
         {
             try
             {

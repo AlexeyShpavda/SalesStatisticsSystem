@@ -34,7 +34,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         {
             try
             {
-                ViewBag.ManagerFilter = new ManagerFilterModel();
+                ViewBag.ManagerFilter = new ManagerFilterViewModel();
 
                 var managersCoreModels = await _managerService.GetUsingPagedListAsync(page ?? 1, _pageSize);
 
@@ -52,7 +52,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Find(ManagerFilterModel managerFilterModel)
+        public async Task<ActionResult> Find(ManagerFilterViewModel managerFilterModel)
         {
             try
             {
