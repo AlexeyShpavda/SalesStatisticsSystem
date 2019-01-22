@@ -81,6 +81,10 @@
     <Compile Include="Services\SaleService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SalesStatisticsSystem.Core.Contracts\SalesStatisticsSystem.Core.Contracts.csproj">
       <Project>{C6AB04D1-ADA2-4D63-881F-962584CC18CC}</Project>
       <Name>SalesStatisticsSystem.Core.Contracts</Name>
@@ -97,10 +101,6 @@
       <Project>{E6F12439-A456-4317-AD09-888983858F94}</Project>
       <Name>SalesStatisticsSystem.Entity</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

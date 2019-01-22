@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
 using SalesStatisticsSystem.DataAccessLayer.ReaderWriter;
