@@ -61,11 +61,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Abstract\CoreModel.cs" />
-    <Compile Include="Models\CustomerCoreModel.cs" />
-    <Compile Include="Models\ManagerCoreModel.cs" />
-    <Compile Include="Models\ProductCoreModel.cs" />
-    <Compile Include="Models\SaleCoreModel.cs" />
+    <Compile Include="Models\Sales\Abstract\CoreModel.cs" />
+    <Compile Include="Models\Sales\CustomerCoreModel.cs" />
+    <Compile Include="Models\Sales\ManagerCoreModel.cs" />
+    <Compile Include="Models\Sales\ProductCoreModel.cs" />
+    <Compile Include="Models\Sales\SaleCoreModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Generic\IGenericService.cs" />
     <Compile Include="Services\ICustomerService.cs" />

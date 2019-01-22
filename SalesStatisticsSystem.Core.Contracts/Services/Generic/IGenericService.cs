@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Helpers;
-using SalesStatisticsSystem.Core.Contracts.Models.Abstract;
+using SalesStatisticsSystem.Core.Contracts.Models.Sales.Abstract;
 using X.PagedList;
 
 namespace SalesStatisticsSystem.Core.Contracts.Services.Generic

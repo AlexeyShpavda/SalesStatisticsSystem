@@ -1,6 +1,6 @@
-﻿using SalesStatisticsSystem.Core.Contracts.Models.Abstract;
+﻿using SalesStatisticsSystem.Core.Contracts.Models.Sales.Abstract;
 
-namespace SalesStatisticsSystem.Core.Contracts.Models
+namespace SalesStatisticsSystem.Core.Contracts.Models.Sales
 {
     public class CustomerCoreModel : CoreModel
     {

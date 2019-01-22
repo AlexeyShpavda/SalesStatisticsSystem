@@ -1,4 +1,4 @@
-﻿namespace SalesStatisticsSystem.Core.Contracts.Models.Abstract
+﻿namespace SalesStatisticsSystem.Core.Contracts.Models.Sales.Abstract
 {
     public class CoreModel
     {
