@@ -61,6 +61,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Filters\Abstract\PagedListParameterCoreModel.cs" />
+    <Compile Include="Models\Filters\CustomerFilterCoreModel.cs" />
+    <Compile Include="Models\Filters\ManagerFilterCoreModel.cs" />
+    <Compile Include="Models\Filters\ProductFilterCoreModel.cs" />
+    <Compile Include="Models\Filters\SaleFilterCoreModel.cs" />
     <Compile Include="Models\Sales\Abstract\CoreModel.cs" />
     <Compile Include="Models\Sales\CustomerCoreModel.cs" />
     <Compile Include="Models\Sales\ManagerCoreModel.cs" />
