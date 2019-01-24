@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using SalesStatisticsSystem.Core.Contracts.Models.Filters;
 using SalesStatisticsSystem.Core.Contracts.Models.Sales;
+using SalesStatisticsSystem.WebApp.Models.Filters;
 using SalesStatisticsSystem.WebApp.Models.SaleViewModels;
 using X.PagedList;
 
@@ -23,6 +25,18 @@ namespace SalesStatisticsSystem.WebApp.Support.Adapter
 
                 config.CreateMap<SaleViewModel, SaleCoreModel>();
                 config.CreateMap<SaleCoreModel, SaleViewModel>();
+
+                config.CreateMap<CustomerFilterCoreModel, CustomerFilterViewModel>();
+                config.CreateMap<CustomerFilterViewModel, CustomerFilterCoreModel>();
+
+                config.CreateMap<ProductFilterCoreModel, ProductFilterViewModel>();
+                config.CreateMap<ProductFilterViewModel, ProductFilterCoreModel>();
+
+                config.CreateMap<ManagerFilterViewModel, ManagerFilterCoreModel>();
+                config.CreateMap<ManagerFilterCoreModel, ManagerFilterViewModel>();
+
+                config.CreateMap<SaleFilterViewModel, SaleFilterCoreModel>();
+                config.CreateMap<SaleFilterCoreModel, SaleFilterViewModel>();
 
                 config
                     .CreateMap<IPagedList<CustomerViewModel>, IPagedList<CustomerCoreModel>>()
