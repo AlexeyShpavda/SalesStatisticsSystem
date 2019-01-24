@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
+using SalesStatisticsSystem.Core.Contracts.Models.Filters;
 using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
@@ -35,6 +36,33 @@ namespace SalesStatisticsSystem.Core.Services
         {
             return await SaleDbReaderWriter.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
                 .ConfigureAwait(false);
+        }
+
+        public async Task<IPagedList<SaleCoreModel>> Filter(SaleFilterCoreModel saleFilterCoreModel,
+            int pageSize, SortDirection sortDirection = SortDirection.Ascending)
+        {
+            if (saleFilterCoreModel.CustomerFirstName == null &&
+                saleFilterCoreModel.CustomerLastName == null &&
+                saleFilterCoreModel.DateFrom == null &&
+                saleFilterCoreModel.DateTo == null &&
+                saleFilterCoreModel.ManagerLastName == null &&
+                saleFilterCoreModel.ProductName == null &&
+                saleFilterCoreModel.SumFrom == null &&
+                saleFilterCoreModel.SumTo == null)
+            {
+                return await GetUsingPagedListAsync(saleFilterCoreModel.Page ?? 1, pageSize)
+                    .ConfigureAwait(false);
+            }
+
+            return await GetUsingPagedListAsync(
+                saleFilterCoreModel.Page ?? 1, pageSize, x =>
+                    (x.Date >= saleFilterCoreModel.DateFrom && x.Date <= saleFilterCoreModel.DateTo) &&
+                    (x.Sum >= saleFilterCoreModel.SumFrom && x.Sum <= saleFilterCoreModel.SumTo) &&
+                    x.Customer.FirstName.Contains(saleFilterCoreModel.CustomerFirstName) &&
+                    x.Customer.LastName.Contains(saleFilterCoreModel.CustomerLastName) &&
+                    x.Manager.LastName.Contains(saleFilterCoreModel.ManagerLastName) &&
+                    x.Product.Name.Contains(saleFilterCoreModel.ProductName)).ConfigureAwait(false);
+
         }
 
         public async Task<SaleCoreModel> GetAsync(int id)

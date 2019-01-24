@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
+using SalesStatisticsSystem.Core.Contracts.Models.Filters;
 using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
@@ -38,6 +39,22 @@ namespace SalesStatisticsSystem.Core.Services
                 .ConfigureAwait(false);
         }
 
+        public async Task<IPagedList<CustomerCoreModel>> Filter(CustomerFilterCoreModel customerFilterCoreModel,
+            int pageSize, SortDirection sortDirection = SortDirection.Ascending)
+        {
+            if (customerFilterCoreModel.FirstName == null && customerFilterCoreModel.LastName == null)
+            {
+                return await GetUsingPagedListAsync(customerFilterCoreModel.Page ?? 1, pageSize)
+                    .ConfigureAwait(false);
+            }
+
+            return await GetUsingPagedListAsync(
+                    customerFilterCoreModel.Page ?? 1, pageSize,
+                    x => x.FirstName.Contains(customerFilterCoreModel.FirstName) ||
+                         x.LastName.Contains(customerFilterCoreModel.LastName))
+                .ConfigureAwait(false);
+        }
+
         public async Task<CustomerCoreModel> GetAsync(int id)
         {
             return await CustomerDbReaderWriter.GetAsync(id).ConfigureAwait(false);
@@ -45,7 +62,7 @@ namespace SalesStatisticsSystem.Core.Services
 
         public async Task<CustomerCoreModel> AddAsync(CustomerCoreModel model)
         {
-            return await CustomerDbReaderWriter.AddAsync(model).ConfigureAwait(false);      
+            return await CustomerDbReaderWriter.AddAsync(model).ConfigureAwait(false);
         }
 
         public async Task<CustomerCoreModel> UpdateAsync(CustomerCoreModel model)

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Helpers;
+using SalesStatisticsSystem.Core.Contracts.Models.Filters;
 using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.DataAccessLayer.Contracts.ReaderWriter;
@@ -34,6 +35,20 @@ namespace SalesStatisticsSystem.Core.Services
             Expression<Func<ProductCoreModel, bool>> predicate = null, SortDirection sortDirection = SortDirection.Ascending)
         {
             return await ProductDbReaderWriter.GetUsingPagedListAsync(pageNumber, pageSize, predicate)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IPagedList<ProductCoreModel>> Filter(ProductFilterCoreModel productFilterCoreModel,
+            int pageSize, SortDirection sortDirection = SortDirection.Ascending)
+        {
+            if (productFilterCoreModel.Name == null)
+            {
+                return await GetUsingPagedListAsync(productFilterCoreModel.Page ?? 1, pageSize)
+                    .ConfigureAwait(false);
+            }
+
+            return await GetUsingPagedListAsync(productFilterCoreModel.Page ?? 1,
+                    pageSize, x => x.Name.Contains(productFilterCoreModel.Name))
                 .ConfigureAwait(false);
         }
 
