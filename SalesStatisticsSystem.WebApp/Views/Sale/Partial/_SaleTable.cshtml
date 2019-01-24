@@ -1,6 +1,5 @@
-﻿@using X.PagedList.Mvc;
+﻿@using SalesStatisticsSystem.WebApp.Models.Filters
 @using X.PagedList;
-@using SalesStatisticsSystem.WebApp.Models.Filters
 @using X.PagedList.Mvc.Common
 @model IPagedList<SalesStatisticsSystem.WebApp.Models.SaleViewModels.SaleViewModel>
 
@@ -63,18 +62,18 @@
     </table>
 
 
-    @Html.PagedListPager(Model, page => Url.Action("Find", "Sale", new SaleFilterModel
-    {
-        Page = page,
-        CustomerFirstName = ViewBag.SaleFilterCustomerFirstNameValue,
-        CustomerLastName = ViewBag.SaleFilterCustomerLastNameValue,
-        DateFrom = ViewBag.SaleFilterDateFromValue,
-        DateTo = ViewBag.SaleFilterDateToValue,
-        ManagerLastName = ViewBag.SaleFilterManagerLastNameValue,
-        ProductName = ViewBag.SaleFilterProductNameValue,
-        SumFrom = ViewBag.SaleFilterSumFromValue,
-        SumTo = ViewBag.SaleFilterSumToValue
-    }),
+    @Html.PagedListPager(Model, page => Url.Action("Find", "Sale", new SaleFilterViewModel
+{
+    Page = page,
+    CustomerFirstName = ViewBag.SaleFilterCustomerFirstNameValue,
+    CustomerLastName = ViewBag.SaleFilterCustomerLastNameValue,
+    DateFrom = ViewBag.SaleFilterDateFromValue,
+    DateTo = ViewBag.SaleFilterDateToValue,
+    ManagerLastName = ViewBag.SaleFilterManagerLastNameValue,
+    ProductName = ViewBag.SaleFilterProductNameValue,
+    SumFrom = ViewBag.SaleFilterSumFromValue,
+    SumTo = ViewBag.SaleFilterSumToValue
+}),
         PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions {HttpMethod = "GET", UpdateTargetId = "updatedTableWithAjax"}))
 
 }

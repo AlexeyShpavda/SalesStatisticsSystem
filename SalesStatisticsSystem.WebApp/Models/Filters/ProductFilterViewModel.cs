@@ -2,7 +2,7 @@
 
 namespace SalesStatisticsSystem.WebApp.Models.Filters
 {
-    public class ProductFilterViewModel : PagedListParameter
+    public class ProductFilterViewModel : PagedListParameterViewModel
     {
         public string Name { get; set; } = null;
     }

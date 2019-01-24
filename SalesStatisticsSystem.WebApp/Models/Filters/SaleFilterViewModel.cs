@@ -4,7 +4,7 @@ using SalesStatisticsSystem.WebApp.Models.Filters.Abstract;
 
 namespace SalesStatisticsSystem.WebApp.Models.Filters
 {
-    public class SaleFilterViewModel : PagedListParameter
+    public class SaleFilterViewModel : PagedListParameterViewModel
     {
         [DataType(DataType.Date)]
         public DateTime? DateFrom { get; set; } = null;

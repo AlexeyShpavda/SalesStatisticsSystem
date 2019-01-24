@@ -1,5 +1,5 @@
-﻿@using X.PagedList;
-@using SalesStatisticsSystem.WebApp.Models.Filters
+﻿@using SalesStatisticsSystem.WebApp.Models.Filters
+@using X.PagedList;
 @model IPagedList<SalesStatisticsSystem.WebApp.Models.SaleViewModels.ManagerViewModel>
 
 @{
@@ -13,7 +13,7 @@
 </p>
 
 <div id="filterDiv">
-    @Html.Partial("~/Views/Manager/Partial/_ManagerFilter.cshtml", (ManagerFilterModel)ViewBag.ManagerFilter)
+    @Html.Partial("~/Views/Manager/Partial/_ManagerFilter.cshtml", (ManagerFilterViewModel)ViewBag.ManagerFilter)
 </div>
 
 <div id="updatedTableWithAjax">

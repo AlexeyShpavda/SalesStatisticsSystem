@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
-using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
 using SalesStatisticsSystem.WebApp.Models.SaleViewModels;

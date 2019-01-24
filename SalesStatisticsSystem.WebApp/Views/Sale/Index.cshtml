@@ -1,5 +1,6 @@
-﻿@using X.PagedList;
+﻿@using X.PagedList.Mvc;
 @using SalesStatisticsSystem.WebApp.Models.Filters
+@using X.PagedList;
 @model IPagedList<SalesStatisticsSystem.WebApp.Models.SaleViewModels.SaleViewModel>
 
 @{
@@ -17,7 +18,7 @@
 
 </div>
 
-@Html.Partial("~/Views/Sale/Partial/_SaleFilter.cshtml", (SaleFilterModel)ViewBag.SaleFilter)
+@Html.Partial("~/Views/Sale/Partial/_SaleFilter.cshtml", (SaleFilterViewModel)ViewBag.SaleFilter)
 
 <div id="updatedTableWithAjax">
     @Html.Partial("~/Views/Sale/Partial/_SaleTable.cshtml", Model)
