@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Core.Contracts.Models.Filters;
 using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
@@ -90,14 +91,14 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Find(SaleFilterViewModel saleFilterModel)
+        public async Task<ActionResult> Find(SaleFilterViewModel saleFilterViewModel)
         {
             try
             {
                 #region Validation
                 if (!ModelState.IsValid)
                 {
-                    var coreModels = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
+                    var coreModels = await _saleService.GetUsingPagedListAsync(saleFilterViewModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<SaleViewModel>>(coreModels);
@@ -107,45 +108,22 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #endregion
 
                 # region Filter
-                // Can be Transferred to Core.
 
-                IPagedList<SaleCoreModel> salesCoreModels;
-                if (saleFilterModel.CustomerFirstName == null &&
-                    saleFilterModel.CustomerLastName == null &&
-                    saleFilterModel.DateFrom == null &&
-                    saleFilterModel.DateTo == null &&
-                    saleFilterModel.ManagerLastName == null &&
-                    saleFilterModel.ProductName == null &&
-                    saleFilterModel.SumFrom == null &&
-                    saleFilterModel.SumTo == null)
-                {
-                    salesCoreModels = await _saleService.GetUsingPagedListAsync(saleFilterModel.Page ?? 1, _pageSize)
-                        .ConfigureAwait(false);
-                }
-                else
-                {
-                    salesCoreModels = await _saleService.GetUsingPagedListAsync(
-                        saleFilterModel.Page ?? 1, _pageSize, x =>
-                            (x.Date >= saleFilterModel.DateFrom && x.Date <= saleFilterModel.DateTo) &&
-                            (x.Sum >= saleFilterModel.SumFrom && x.Sum <= saleFilterModel.SumTo) &&
-                            x.Customer.FirstName.Contains(saleFilterModel.CustomerFirstName) &&
-                            x.Customer.LastName.Contains(saleFilterModel.CustomerLastName) &&
-                            x.Manager.LastName.Contains(saleFilterModel.ManagerLastName) &&
-                            x.Product.Name.Contains(saleFilterModel.ProductName)).ConfigureAwait(false);
-                }
+                var salesCoreModels = _saleService.Filter(
+                    _mapper.Map<SaleFilterCoreModel>(saleFilterViewModel), _pageSize);
 
                 var salesViewModels = _mapper.Map<IPagedList<SaleViewModel>>(salesCoreModels);
                 #endregion
 
                 #region Filling ViewBag
-                ViewBag.SaleFilterCustomerFirstNameValue = saleFilterModel.CustomerFirstName;
-                ViewBag.SaleFilterCustomerLastNameValue = saleFilterModel.CustomerLastName;
-                ViewBag.SaleFilterDateFromValue = saleFilterModel.DateFrom;
-                ViewBag.SaleFilterDateToValue = saleFilterModel.DateTo;
-                ViewBag.SaleFilterManagerLastNameValue = saleFilterModel.ManagerLastName;
-                ViewBag.SaleFilterProductNameValue = saleFilterModel.ProductName;
-                ViewBag.SaleFilterSumFromValue = saleFilterModel.SumFrom;
-                ViewBag.SaleFilterSumToValue = saleFilterModel.SumTo;
+                ViewBag.SaleFilterCustomerFirstNameValue = saleFilterViewModel.CustomerFirstName;
+                ViewBag.SaleFilterCustomerLastNameValue = saleFilterViewModel.CustomerLastName;
+                ViewBag.SaleFilterDateFromValue = saleFilterViewModel.DateFrom;
+                ViewBag.SaleFilterDateToValue = saleFilterViewModel.DateTo;
+                ViewBag.SaleFilterManagerLastNameValue = saleFilterViewModel.ManagerLastName;
+                ViewBag.SaleFilterProductNameValue = saleFilterViewModel.ProductName;
+                ViewBag.SaleFilterSumFromValue = saleFilterViewModel.SumFrom;
+                ViewBag.SaleFilterSumToValue = saleFilterViewModel.SumTo;
                 #endregion
 
                 return PartialView("Partial/_SaleTable", salesViewModels);

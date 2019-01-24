@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Core.Contracts.Models.Filters;
 using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
@@ -52,7 +53,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Find(CustomerFilterViewModel customerFilterModel)
+        public async Task<ActionResult> Find(CustomerFilterViewModel customerFilterViewModel)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 if (!ModelState.IsValid)
                 {
                     var coreModels = await _customerService
-                        .GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
+                        .GetUsingPagedListAsync(customerFilterViewModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<CustomerViewModel>>(coreModels);
@@ -70,29 +71,15 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #endregion
 
                 #region Filter
-                // Can be Transferred to Core.
-
-                IPagedList<CustomerCoreModel> customersCoreModels;
-                if (customerFilterModel.FirstName == null && customerFilterModel.LastName == null)
-                {
-                    customersCoreModels = await _customerService.GetUsingPagedListAsync(customerFilterModel.Page ?? 1, _pageSize)
-                        .ConfigureAwait(false);
-                }
-                else
-                {
-                    customersCoreModels = await _customerService.GetUsingPagedListAsync(
-                            customerFilterModel.Page ?? 1, _pageSize,
-                        x => x.FirstName.Contains(customerFilterModel.FirstName) ||
-                                      x.LastName.Contains(customerFilterModel.LastName))
-                        .ConfigureAwait(false);
-                }
+                var customersCoreModels = _customerService.Filter(
+                    _mapper.Map<CustomerFilterCoreModel>(customerFilterViewModel), _pageSize);
 
                 var customersViewModels = _mapper.Map<IPagedList<CustomerViewModel>>(customersCoreModels);
                 #endregion
 
                 #region Filling ViewBag
-                ViewBag.CustomerFilterFirstNameValue = customerFilterModel.FirstName;
-                ViewBag.CustomerFilterLastNameValue = customerFilterModel.LastName;
+                ViewBag.CustomerFilterFirstNameValue = customerFilterViewModel.FirstName;
+                ViewBag.CustomerFilterLastNameValue = customerFilterViewModel.LastName;
                 #endregion
 
                 return PartialView("Partial/_CustomerTable", customersViewModels);

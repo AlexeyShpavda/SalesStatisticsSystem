@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Core.Contracts.Models.Filters;
 using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using SalesStatisticsSystem.WebApp.Models.Filters;
@@ -52,7 +53,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Find(ManagerFilterViewModel managerFilterModel)
+        public async Task<ActionResult> Find(ManagerFilterViewModel managerFilterViewModel)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 if (!ModelState.IsValid)
                 {
                     var coreModels = await _managerService
-                        .GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
+                        .GetUsingPagedListAsync(managerFilterViewModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<ManagerViewModel>>(coreModels);
@@ -70,26 +71,14 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #endregion
 
                 #region Filter
-                // Can be Transferred to Core.
-
-                IPagedList<ManagerCoreModel> managersCoreModels;
-                if (managerFilterModel.LastName == null)
-                {
-                    managersCoreModels = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize)
-                        .ConfigureAwait(false);
-                }
-                else
-                {
-                    managersCoreModels = await _managerService.GetUsingPagedListAsync(managerFilterModel.Page ?? 1, _pageSize,
-                            x => x.LastName.Contains(managerFilterModel.LastName))
-                        .ConfigureAwait(false);
-                }
+                var managersCoreModels = _managerService.Filter(
+                    _mapper.Map<ManagerFilterCoreModel>(managerFilterViewModel), _pageSize);
 
                 var managersViewModels = _mapper.Map<IPagedList<ManagerViewModel>>(managersCoreModels);
                 #endregion
 
                 #region Filling ViewBag
-                ViewBag.ManagerFilterLastNameValue = managerFilterModel.LastName;
+                ViewBag.ManagerFilterLastNameValue = managerFilterViewModel.LastName;
                 #endregion
 
                 return PartialView("Partial/_ManagerTable", managersViewModels);

@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using AutoMapper;
+using SalesStatisticsSystem.Core.Contracts.Models.Filters;
 using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.Core.Contracts.Services;
 using X.PagedList;
@@ -52,7 +53,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Find(ProductFilterViewModel productFilterModel)
+        public async Task<ActionResult> Find(ProductFilterViewModel productFilterViewModel)
         {
             try
             {
@@ -60,7 +61,7 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 if (!ModelState.IsValid)
                 {
                     var coreModels = await _productService
-                        .GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
+                        .GetUsingPagedListAsync(productFilterViewModel.Page ?? 1, _pageSize)
                         .ConfigureAwait(false);
 
                     var viewModels = _mapper.Map<IPagedList<ProductViewModel>>(coreModels);
@@ -70,28 +71,14 @@ namespace SalesStatisticsSystem.WebApp.Controllers
                 #endregion
 
                 #region Filter
-                // Can be Transferred to Core.
-
-                IPagedList<ProductCoreModel> productsCoreModels;
-                if (productFilterModel.Name == null)
-                {
-                    productsCoreModels = await _productService
-                        .GetUsingPagedListAsync(productFilterModel.Page ?? 1, _pageSize)
-                        .ConfigureAwait(false);
-                }
-                else
-                {
-                    productsCoreModels = await _productService
-                        .GetUsingPagedListAsync(productFilterModel.Page ?? 1,
-                            _pageSize, x => x.Name.Contains(productFilterModel.Name))
-                        .ConfigureAwait(false);
-                }
+                var productsCoreModels = _productService.Filter(
+                    _mapper.Map<ProductFilterCoreModel>(productFilterViewModel), _pageSize);
 
                 var productsViewModels = _mapper.Map<IPagedList<ProductViewModel>>(productsCoreModels);
                 #endregion
 
                 #region Filling ViewBag
-                ViewBag.ProductFilterNameValue = productFilterModel.Name;
+                ViewBag.ProductFilterNameValue = productFilterViewModel.Name;
                 #endregion
 
                 return PartialView("Partial/_ProductTable", productsViewModels);
