@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Web.Helpers;
 using AutoMapper;
-using SalesStatisticsSystem.Core.Contracts.Models.Abstract;
+using SalesStatisticsSystem.Core.Contracts.Models.Sales.Abstract;
 using SalesStatisticsSystem.DataAccessLayer.Contracts.Repository.Generic;
 using SalesStatisticsSystem.DataAccessLayer.Support.Adapter;
 using SalesStatisticsSystem.Entity;
