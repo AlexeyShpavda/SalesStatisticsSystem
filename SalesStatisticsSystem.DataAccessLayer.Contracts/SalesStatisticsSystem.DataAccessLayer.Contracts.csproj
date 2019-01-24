@@ -82,6 +82,5 @@
       <Name>SalesStatisticsSystem.Core.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

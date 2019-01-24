@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using SalesStatisticsSystem.Core.Contracts.Models;
+using SalesStatisticsSystem.Core.Contracts.Models.Sales;
 using SalesStatisticsSystem.DataAccessLayer.Contracts.Repository.Generic;
 
 namespace SalesStatisticsSystem.DataAccessLayer.Contracts.Repository
